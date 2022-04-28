@@ -11,34 +11,31 @@ pipeline{
                 stage("Build API"){
                     when {
                         anyOf {
-                            changeset "Backend/**"
+                            changeset "backend/**"
                         }
                     }
                     steps{
-                        sh "npm run build"
                         sh "docker-compose --env-file config/Test.env build api"
                     }
                 }
 
                 stage('Build Frontend') {
                     when {
-                        changeset "Frontend/**"
+                        changeset "frontend/**"
                     }
                     steps {
-                      sh "npm run build"
-                      sh "docker-compose --env-file config/Test.env build web"
+                        sh "docker-compose --env-file config/Test.env build web"
                     }
                 }
             }
-
         }
-        /*
         stage("Unit test"){
             steps{
-                sh "dotnet test --collect:'XPlat Code Coverage'"
+                dir("backend"){
+                    sh "npm run test:cov"
+                }
             }
         }
-        */
         stage("Clean containers") {
             steps {
                 script {
