@@ -51,6 +51,9 @@ pipeline{
                     try {
                         sh "docker-compose --env-file config/Test.env down"
                     }
+                    catch{
+                        sh "docker-compose --env-file config/Test.env down --remove-orphans"
+                    }
                     finally { }
                 }
             }
