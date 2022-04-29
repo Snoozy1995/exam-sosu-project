@@ -49,7 +49,7 @@ pipeline{
             steps {
                 script {
                     try {
-                        sh "docker-compose --env-file config/Test.env down --remove-orphans"
+                        sh "docker-compose --env-file config/Test.env down"
                     }
                     finally { }
                 }
