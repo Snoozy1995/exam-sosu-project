@@ -63,7 +63,7 @@ pipeline{
 
         /*stage('Performance Testing') {
             steps {
-                sh 'k6 run loadtests/performance-test.js'
+                sh 'k6 run backend/loadtests/performance-test.js'
             }
         }*/
 
