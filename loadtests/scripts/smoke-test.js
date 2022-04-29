@@ -19,7 +19,7 @@ export let options = {
   ]
 };
 export default function () {
-  const response = http.get("http://185.196.21.189:3090/");
+  const response = http.get("http://185.196.21.189:3091/");
   check(response, { "status is 200": (r) => r.status === 200 });
 };
 
