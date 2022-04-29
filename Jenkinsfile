@@ -64,7 +64,7 @@ pipeline{
         stage('Performance Testing') {
             steps {
                 sh 'docker-compose run -v \
-                    $PWD/loadtests:/scripts \
+                    $PWD/backend/loadtests:/scripts \
                     k6 run /scripts/performance-test.js'
             }
         }
