@@ -61,6 +61,12 @@ pipeline{
             }
         }
 
+        /*stage('Performance Testing') {
+            steps {
+                sh 'k6 run loadtests/performance-test.js'
+            }
+        }*/
+
         stage("Push to registry") {
             steps {
                 sh "docker-compose --env-file config/Test.env push"
