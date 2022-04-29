@@ -30,6 +30,11 @@ pipeline{
             }
         }
         stage("Unit test"){
+            when {
+                anyOf {
+                    changeset "backend/**"
+                }
+            }
             steps{
                 dir("backend"){
                     sh "npm install jest"
@@ -57,7 +62,7 @@ pipeline{
         }
         stage("Deploy") {
             steps {
-                sh "docker-compose --env-file config/Test.env up -d"
+                sh "docker-compose --env-file config/Test.env up -d health-web health-api influxdb grafana"
             }
         }
 
