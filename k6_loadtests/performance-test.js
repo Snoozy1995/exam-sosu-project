@@ -10,6 +10,6 @@ export const options = {
 };
 
 export default function () {
-  http.get('http://localhost:3090/');
+  http.get('http://185.196.21.189:3090/');
   sleep(3);
 }
