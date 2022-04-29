@@ -61,11 +61,13 @@ pipeline{
             }
         }
 
-        /*stage('Performance Testing') {
+        stage('Performance Testing') {
             steps {
-                sh 'k6 run backend/loadtests/performance-test.js'
+                sh 'docker-compose run -v \
+                    $PWD/loadtests:/scripts \
+                    k6 run /scripts/performance-test.js'
             }
-        }*/
+        }
 
         stage("Push to registry") {
             steps {
