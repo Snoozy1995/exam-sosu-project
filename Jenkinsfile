@@ -15,7 +15,7 @@ pipeline{
                         }
                     }
                     steps{
-                        sh "docker-compose --env-file config/Test.env build api"
+                        sh "docker-compose --env-file config/Test.env build health-api"
                     }
                 }
 
@@ -24,7 +24,7 @@ pipeline{
                         changeset "frontend/**"
                     }
                     steps {
-                        sh "docker-compose --env-file config/Test.env build web"
+                        sh "docker-compose --env-file config/Test.env build health-web"
                     }
                 }
             }

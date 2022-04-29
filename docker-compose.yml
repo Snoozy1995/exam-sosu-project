@@ -1,7 +1,7 @@
 version: "3.9"
 
 services:
-  web:
+  health-web:
     build:
       context: "frontend"
     image: "localhost:7002/web:${IMAGE_TAG}"
@@ -10,7 +10,7 @@ services:
       - "${WEB_PORT}:80"
     environment:
       - API_URL=${API_URL}
-  api:
+  health-api:
     build:
         context: "backend"
     image: "localhost:7002/api:${IMAGE_TAG}"
