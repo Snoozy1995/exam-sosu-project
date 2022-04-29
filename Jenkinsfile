@@ -62,7 +62,7 @@ pipeline{
 
         stage('Smoke Test') {
             steps {
-                sh 'docker-compose --env-file config/Test.env run k6 run /k6_loadtests/smoke-test.js'
+                sh 'docker-compose --env-file config/Test.env run k6 run /scripts/smoke-test.js'
             }
         }
 
