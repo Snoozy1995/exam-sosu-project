@@ -30,11 +30,6 @@ pipeline{
             }
         }
         stage("Unit test"){
-            when {
-                anyOf {
-                    changeset "backend/**"
-                }
-            }
             steps{
                 dir("backend"){
                     sh "npm install jest"
@@ -66,7 +61,7 @@ pipeline{
             }
         }
 
-        stage('Smoke Testing') {
+        stage('Smoke Test') {
             steps {
                 sh 'docker-compose --env-file config/Test.env run k6 run /k6_loadtests/smoke-test.js'
             }

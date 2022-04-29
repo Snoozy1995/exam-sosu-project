@@ -13,3 +13,5 @@ export default function () {
   http.get('http://185.196.21.189:3090/');
   sleep(1);
 }
+
+//@todo https://k6.io/docs/test-types/smoke-testing/
