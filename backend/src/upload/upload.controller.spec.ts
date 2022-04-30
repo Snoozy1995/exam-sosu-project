@@ -2,7 +2,6 @@ import { APP_GUARD } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
 import { RolesGuard } from '../roles/roles.guard';
 import { UploadController } from './upload.controller';
-import { UploadService } from './upload.service';
 
 describe('UploadController', () => {
   let controller: UploadController;
@@ -11,7 +10,6 @@ describe('UploadController', () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UploadController],
       providers: [
-        UploadService,
         {
           provide: APP_GUARD,
           useClass: RolesGuard,
