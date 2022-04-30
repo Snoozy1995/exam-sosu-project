@@ -1,5 +1,5 @@
-import { Citizen } from '../../entities/citizen.entity';
-import { CitizenRepository } from '../borders/citizen.repository';
+import { Citizen } from '../../../entities/citizen.entity';
+import { CitizenRepository } from '../../borders/citizen.repository';
 
 export class SaveCitizenInteractor {
   constructor(private readonly citizenRepository: CitizenRepository) {}

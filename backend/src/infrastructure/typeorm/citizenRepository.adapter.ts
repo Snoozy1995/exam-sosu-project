@@ -20,10 +20,22 @@ export class CitizenRepositoryAdapter implements CitizenRepository {
   }
 
   findOne(id: number): Promise<Citizen> {
-    return this.citizenRepo.findOne({
-      where: {
-        id: { id: id },
-      },
+    return this.citizenRepo.findOne(id);
+  }
+
+  search(query: string): Promise<Citizen[]> {
+    return this.citizenRepo.find({
+      where: [{ firstName: query }, { lastName: query }],
     });
+  }
+
+  async delete(id: number): Promise<boolean> {
+    const res = await this.citizenRepo.delete(id);
+    return Promise.resolve(Boolean(res.affected));
+  }
+
+  newVersion(citizen: Citizen): Promise<Citizen> {
+    citizen.id = undefined;
+    return this.citizenRepo.save(citizen);
   }
 }
