@@ -34,6 +34,9 @@ pipeline{
             }
         }
         stage("Unit test"){
+            when {
+                changeset "backend/**"
+            }
             steps{
                 dir("backend"){
                     sh "npm run test:cov"
