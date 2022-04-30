@@ -25,6 +25,7 @@ pipeline{
                     }
                     steps {
                         dir("frontend"){
+                            sh "npm install"
                             sh "npm run build"
                         }
                         sh "docker-compose --env-file config/Test.env build health-web"
