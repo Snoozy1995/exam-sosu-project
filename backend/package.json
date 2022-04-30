@@ -67,6 +67,7 @@
       "node_modules",
       "test-config",
       "interfaces",
+      "entities",
       "jestGlobalMocks.ts",
       ".module.ts",
       "main.ts",
