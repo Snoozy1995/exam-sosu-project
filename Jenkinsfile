@@ -33,7 +33,7 @@ pipeline{
                 }
             }
         }
-        stage("Unit test"){
+        stage("Unit test coverage"){
             when {
                 changeset "backend/**"
             }
@@ -61,7 +61,7 @@ pipeline{
                 }
             }
         }
-        stage("Deploy") {
+        stage("Deploy containers") {
             steps {
                 sh "docker-compose --env-file config/Test.env up -d health-web health-api influxdb grafana"
             }
