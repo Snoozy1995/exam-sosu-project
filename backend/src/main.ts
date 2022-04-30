@@ -8,6 +8,7 @@ async function bootstrap() {
     .setTitle('Health Journal')
     .setDescription('The health journal API description')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document);
