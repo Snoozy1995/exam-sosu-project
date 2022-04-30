@@ -1,4 +1,4 @@
-import { CivilStatus } from 'src/enums/civilStatus.enum';
+import { CivilStatus } from '../enums/civilStatus.enum';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
 import { UploadedDocument } from './uploadedDocument.entity';
 @Entity()
