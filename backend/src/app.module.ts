@@ -3,7 +3,6 @@ import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { RolesGuard } from './roles/roles.guard';
-//import { TypeOrmModule } from '@nestjs/typeorm';
 import { CitizensModule } from './citizens/citizens.module';
 
 @Module({
