@@ -7,6 +7,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Address } from './address.entity';
+import { Citizen } from './citizen.entity';
 import { SchoolClass } from './schoolClass.entity';
 import { User } from './user.entity';
 @Entity()
@@ -26,4 +27,7 @@ export class School {
 
   @OneToMany(() => User, (user) => user.school)
   users: User[];
+
+  @OneToMany(() => Citizen, (citizen) => citizen.school)
+  citizens: Citizen[];
 }

@@ -14,6 +14,9 @@ import { Medicine } from './medicine.entity';
 import { Address } from './address.entity';
 import { ContactPerson } from './contactPerson.entity';
 import { CitizenFS3 } from './citizenFS3.entity';
+import { User } from './user.entity';
+import { WorkGroup } from './workGroups.entity';
+import { School } from './school.entity';
 @Entity()
 export class Citizen {
   @PrimaryGeneratedColumn()
@@ -32,7 +35,7 @@ export class Citizen {
   civilStatus: CivilStatus;
 
   @ManyToMany(() => UploadedDocument, (file) => file.citizens)
-  files: File[];
+  files: UploadedDocument[];
 
   @OneToMany(() => Medicine, (medicine) => medicine.citizen)
   medicines: Medicine[];
@@ -40,7 +43,9 @@ export class Citizen {
   @OneToMany(() => ContactPerson, (contact) => contact.citizen)
   contactPersons: ContactPerson[];
 
-  @OneToOne(() => Address)
+  @OneToOne(() => Address, {
+    cascade: true,
+  })
   @JoinColumn()
   address: Address;
 
@@ -52,4 +57,11 @@ export class Citizen {
 
   @OneToMany(() => CitizenFS3, (cfs3) => cfs3.citizen)
   fs3: CitizenFS3[];
+
+  @ManyToOne(() => User, (user) => user.citizens)
+  user: User;
+  @ManyToOne(() => WorkGroup, (group) => group.citizens)
+  group: WorkGroup;
+  @ManyToOne(() => School, (school) => school.citizens)
+  school: School;
 }

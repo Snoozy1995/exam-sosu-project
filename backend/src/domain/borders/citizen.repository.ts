@@ -6,5 +6,4 @@ export interface CitizenRepository {
   findOne(id: number): Promise<Citizen>;
   search(query: string): Promise<Citizen[]>;
   delete(id: number): Promise<boolean>;
-  newVersion(citizen: Citizen): Promise<Citizen>;
 }

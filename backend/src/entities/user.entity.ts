@@ -11,6 +11,7 @@ import {
 import { School } from './school.entity';
 import { SchoolClass } from './schoolClass.entity';
 import { UploadedDocument } from './uploadedDocument.entity';
+import { Citizen } from './citizen.entity';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -38,4 +39,7 @@ export class User {
   @ManyToMany(() => SchoolClass, (schoolClass) => schoolClass.users)
   classes: SchoolClass[];
   //classes
+
+  @OneToMany(() => Citizen, (citizen) => citizen.user)
+  citizens: Citizen[];
 }
