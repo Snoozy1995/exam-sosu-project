@@ -1,28 +1,36 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
+import { FindAllSchoolInteractor } from '../domain/use_cases/findAllSchool.interactor';
+import { FindOneSchoolInteractor } from '../domain/use_cases/findOneSchool.interactor';
+import { SaveSchoolInteractor } from '../domain/use_cases/saveSchool.interactor';
 import { School } from '../entities/school.entity';
 import { Role } from '../enums/role.enum';
 import { Roles } from '../roles/roles.decorator';
-import { SchoolsService } from './schools.service';
 
 @Controller('schools')
 export class SchoolsController {
-  constructor(private schoolsService: SchoolsService) {}
+  constructor(
+    @Inject('SaveSchool') private readonly saveSchool: SaveSchoolInteractor,
+    @Inject('FindOneSchool')
+    private readonly findOneSchool: FindOneSchoolInteractor,
+    @Inject('FindAllSchool')
+    private readonly findAllSchool: FindAllSchoolInteractor,
+  ) {}
 
   @Post()
   @Roles(Role.SuperUser)
-  save(@Body() body: School): School {
-    return this.schoolsService.save(body);
+  save(@Body() body: School): Promise<School> {
+    return this.saveSchool.saveSchool(body);
   }
 
   @Get()
   @Roles(Role.SuperUser)
-  findAll(): School[] {
-    return this.schoolsService.findAll();
+  findAll(): Promise<School[]> {
+    return this.findAllSchool.findAllSchool();
   }
 
   @Get(':id')
   @Roles(Role.Teacher, Role.SuperUser)
-  findOne(@Param() params): School {
-    return this.schoolsService.findOne(params.id);
+  findOne(@Param() params): Promise<School> {
+    return this.findOneSchool.findOneSchool(params.id);
   }
 }
