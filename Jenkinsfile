@@ -23,12 +23,10 @@ pipeline{
                     when {
                         changeset "frontend/**"
                     }
-                    dir("frontend"){
-                        steps {
+                    steps {
+                        dir("frontend"){
                             sh "npm run build"
                         }
-                    }
-                    steps {
                         sh "docker-compose --env-file config/Test.env build health-web"
                     }
                 }
