@@ -9,12 +9,16 @@ pipeline{
         stage("Build project") {
             parallel {
                 stage("Build API"){
-                    when {
-                        anyOf {
-                            changeset "backend/**"
-                        }
-                    }
+                    //when {
+                    //    anyOf {
+                    //        changeset "backend/**"
+                    //    }
+                    //}
                     steps{
+                        dir("backend"){
+                            sh "npm install"
+                            sh "npm run build"
+                        }
                         sh "docker-compose --env-file config/Test.env build health-api"
                     }
                 }
