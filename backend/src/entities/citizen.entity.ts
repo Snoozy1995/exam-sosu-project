@@ -1,6 +1,19 @@
 import { CivilStatus } from '../enums/civilStatus.enum';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToMany,
+  OneToOne,
+  OneToMany,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { UploadedDocument } from './uploadedDocument.entity';
+import { Medicine } from './medicine.entity';
+import { Address } from './address.entity';
+import { ContactPerson } from './contactPerson.entity';
+import { CitizenFS3 } from './citizenFS3.entity';
 @Entity()
 export class Citizen {
   @PrimaryGeneratedColumn()
@@ -18,12 +31,25 @@ export class Citizen {
   @Column()
   civilStatus: CivilStatus;
 
-  @Column({ nullable: true, default: null })
-  copyFrom: Citizen;
-
   @ManyToMany(() => UploadedDocument, (file) => file.citizens)
   files: File[];
 
-  //@Column({ default: true })
-  //isActive: boolean;
+  @OneToMany(() => Medicine, (medicine) => medicine.citizen)
+  medicines: Medicine[];
+
+  @OneToMany(() => ContactPerson, (contact) => contact.citizen)
+  contactPersons: ContactPerson[];
+
+  @OneToOne(() => Address)
+  @JoinColumn()
+  address: Address;
+
+  @ManyToOne(() => Citizen, (citizen) => citizen.children)
+  parent: Citizen;
+
+  @OneToMany(() => Citizen, (citizen) => citizen.parent)
+  children: Citizen[];
+
+  @OneToMany(() => CitizenFS3, (cfs3) => cfs3.citizen)
+  fs3: CitizenFS3[];
 }

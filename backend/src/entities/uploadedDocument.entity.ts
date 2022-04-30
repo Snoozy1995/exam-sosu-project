@@ -4,8 +4,11 @@ import {
   PrimaryGeneratedColumn,
   ManyToMany,
   JoinTable,
+  ManyToOne,
 } from 'typeorm';
+import { Activity } from './activity.entity';
 import { Citizen } from './citizen.entity';
+import { User } from './user.entity';
 @Entity()
 export class UploadedDocument {
   @PrimaryGeneratedColumn()
@@ -14,12 +17,10 @@ export class UploadedDocument {
   @Column()
   location: string;
 
-  @Column()
-  uploader: string;
+  @ManyToOne(() => User, (user) => user.files)
+  uploader: User;
 
-  @Column({
-    default: Date.now(),
-  })
+  @Column()
   timestamp: number;
 
   @ManyToMany(() => Citizen, (citizen) => citizen.files, {
@@ -27,4 +28,10 @@ export class UploadedDocument {
   })
   @JoinTable()
   citizens: Citizen[];
+
+  @ManyToMany(() => Activity, (activity) => activity.files, {
+    cascade: true,
+  })
+  @JoinTable()
+  activities: Activity[];
 }
