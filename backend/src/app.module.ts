@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { RolesGuard } from './roles/roles.guard';
 //import { TypeOrmModule } from '@nestjs/typeorm';
+import { CitizensModule } from './citizens/citizens.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { RolesGuard } from './roles/roles.guard';
       entities: [],
       synchronize: false,
     }),*/
+    CitizensModule,
   ],
   controllers: [AppController],
   providers: [
