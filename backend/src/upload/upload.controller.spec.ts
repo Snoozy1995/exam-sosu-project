@@ -1,17 +1,17 @@
 import { APP_GUARD } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
 import { RolesGuard } from '../roles/roles.guard';
-import { CitizensController } from './citizens.controller';
-import { CitizensService } from './citizens.service';
+import { UploadController } from './upload.controller';
+import { UploadService } from './upload.service';
 
-describe('CitizensController', () => {
-  let controller: CitizensController;
+describe('UploadController', () => {
+  let controller: UploadController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [CitizensController],
+      controllers: [UploadController],
       providers: [
-        CitizensService,
+        UploadService,
         {
           provide: APP_GUARD,
           useClass: RolesGuard,
@@ -19,7 +19,7 @@ describe('CitizensController', () => {
       ],
     }).compile();
 
-    controller = module.get<CitizensController>(CitizensController);
+    controller = module.get<UploadController>(UploadController);
   });
 
   it('should be defined', () => {

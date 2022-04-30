@@ -4,20 +4,16 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { RolesGuard } from './roles/roles.guard';
 import { CitizensModule } from './citizens/citizens.module';
+import { SchoolsModule } from './schools/schools.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
-    /* TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'root',
-      database: process.env.MYSQL_DB_NAME,
-      entities: [],
-      synchronize: false,
-    }),*/
+    TypeOrmModule.forRoot(),
     CitizensModule,
+    SchoolsModule,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [
