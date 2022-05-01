@@ -13,7 +13,7 @@ import { UploadedDocument } from './uploadedDocument.entity';
 import { Medicine } from './medicine.entity';
 import { Address } from './address.entity';
 import { ContactPerson } from './contactPerson.entity';
-import { CitizenFS3 } from './citizenFS3.entity';
+import { FS3Data } from './FS3Data.entity';
 import { User } from './user.entity';
 import { WorkGroup } from './workGroups.entity';
 import { School } from './school.entity';
@@ -68,9 +68,11 @@ export class Citizen {
   @OneToMany(() => Citizen, (citizen) => citizen.parent)
   children: Citizen[];
 
-  @ApiProperty({ type: [CitizenFS3], required: false })
-  @OneToMany(() => CitizenFS3, (cfs3) => cfs3.citizen)
-  fs3: CitizenFS3[];
+  @ApiProperty({ type: [FS3Data], required: false })
+  @OneToMany(() => FS3Data, (cfs3) => cfs3.citizen, {
+    cascade: true,
+  })
+  fs3: FS3Data[];
 
   @ApiProperty({ type: User, required: false })
   @ManyToOne(() => User, (user) => user.citizens)

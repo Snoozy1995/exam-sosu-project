@@ -30,4 +30,8 @@ export class FS3 {
   @ApiProperty()
   @Column()
   active: boolean;
+
+  @ApiProperty()
+  @Column()
+  enableFunctionalAbility: boolean;
 }

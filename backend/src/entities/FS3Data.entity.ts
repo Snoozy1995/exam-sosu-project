@@ -4,7 +4,7 @@ import { Activity } from './activity.entity';
 import { Citizen } from './citizen.entity';
 import { FS3 } from './fs3.entity';
 @Entity()
-export class CitizenFS3 {
+export class FS3Data {
   @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
@@ -21,17 +21,9 @@ export class CitizenFS3 {
 
   @ApiProperty()
   @Column()
-  description: string;
+  input: string;
 
   @ApiProperty()
-  @Column()
-  extras: string;
-
-  @ApiProperty()
-  @Column()
-  diagnoses: string;
-
-  @ApiProperty()
-  @Column()
-  condition: string;
+  @Column({ nullable: true })
+  functionalAbility: number;
 }
