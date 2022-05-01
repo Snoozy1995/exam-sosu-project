@@ -5,13 +5,14 @@ import { FindAllFS3Interactor } from 'src/domain/use_cases/fs3/findAllFS3.intera
 import { FindOneFS3Interactor } from 'src/domain/use_cases/fs3/findOneFS3.interactor';
 import { SaveFS3Interactor } from 'src/domain/use_cases/fs3/saveFS3.interactor';
 import { FS3 } from 'src/entities/fs3.entity';
+import { FS3Term } from 'src/entities/fs3Term.entity';
 import { FS3RepositoryAdapter } from 'src/infrastructure/typeorm/fs3Repository.adapter';
 import { FS3Controller } from './fs3.controller';
 const repo = 'FS3Repository';
 const inject = { inject: [repo] };
 
 @Module({
-  imports: [TypeOrmModule.forFeature([FS3])],
+  imports: [TypeOrmModule.forFeature([FS3, FS3Term])],
   providers: [
     {
       provide: repo,
