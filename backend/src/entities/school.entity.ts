@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   Entity,
   Column,
@@ -12,22 +13,30 @@ import { SchoolClass } from './schoolClass.entity';
 import { User } from './user.entity';
 @Entity()
 export class School {
+  @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty()
   @Column()
   name: string;
 
-  @OneToOne(() => Address)
+  @ApiProperty()
+  @OneToOne(() => Address, {
+    cascade: true,
+  })
   @JoinColumn()
   address: Address;
 
+  @ApiProperty({ type: [SchoolClass] })
   @OneToMany(() => SchoolClass, (schoolClass) => schoolClass.school)
   classes: SchoolClass[];
 
+  @ApiProperty({ type: [User] })
   @OneToMany(() => User, (user) => user.school)
   users: User[];
 
+  @ApiProperty({ type: [Citizen] })
   @OneToMany(() => Citizen, (citizen) => citizen.school)
   citizens: Citizen[];
 }

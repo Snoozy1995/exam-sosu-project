@@ -7,9 +7,10 @@ export class CloneCitizenForUserInteractor {
   constructor(private readonly citizenRepository: CitizenRepository) {}
 
   public cloneCitizenForUser(citizen: Citizen, user: User): Promise<Citizen> {
-    citizen = new CloneCitizenInteractor().cloneCitizen(citizen);
-    citizen.user = user;
-    user.citizens.push(citizen);
+    if (!citizen) return undefined;
+    const citizen2 = new CloneCitizenInteractor().cloneCitizen(citizen);
+    citizen2.parent = undefined;
+    citizen2.user = user;
     return this.citizenRepository.save(citizen);
   }
 }

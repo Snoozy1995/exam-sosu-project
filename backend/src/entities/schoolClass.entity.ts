@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   Entity,
   Column,
@@ -11,21 +12,23 @@ import { User } from './user.entity';
 import { WorkGroup } from './workGroups.entity';
 @Entity()
 export class SchoolClass {
+  @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty()
   @Column()
   name: string;
 
+  @ApiProperty({ type: () => School })
   @ManyToOne(() => School, (school) => school.classes)
   school: School;
 
+  @ApiProperty({ type: [WorkGroup], required: false })
   @OneToMany(() => WorkGroup, (group) => group.class)
   groups: WorkGroup[];
 
+  @ApiProperty({ type: [User], required: false })
   @ManyToMany(() => User, (user) => user.classes)
   users: User[];
-
-  //@Column({ default: true })
-  //isActive: boolean;
 }

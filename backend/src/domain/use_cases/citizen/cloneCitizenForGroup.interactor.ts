@@ -10,9 +10,10 @@ export class CloneCitizenForGroupInteractor {
     citizen: Citizen,
     group: WorkGroup,
   ): Promise<Citizen> {
-    citizen = new CloneCitizenInteractor().cloneCitizen(citizen);
-    citizen.group = group;
-    group.citizens.push(citizen);
+    if (!citizen) return undefined;
+    const citizen2 = new CloneCitizenInteractor().cloneCitizen(citizen);
+    citizen2.parent = undefined;
+    citizen2.group = group;
     return this.citizenRepository.save(citizen);
   }
 }
