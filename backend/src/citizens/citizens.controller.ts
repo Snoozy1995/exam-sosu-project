@@ -7,7 +7,8 @@ import {
   Param,
   Post,
 } from '@nestjs/common';
-import { DeleteCitizenInteractor } from 'src/domain/use_cases/citizen/deleteCitizen.interactor';
+import { NewVersionCitizenInteractor } from 'src/domain/use_cases/citizen/newVersionCitizen.interactor';
+import { DeleteCitizenInteractor } from '../domain/use_cases/citizen/deleteCitizen.interactor';
 import { FindAllCitizenInteractor } from '../domain/use_cases/citizen/findAllCitizen.interactor';
 import { FindOneCitizenInteractor } from '../domain/use_cases/citizen/findOneCitizen.interactor';
 import { SaveCitizenInteractor } from '../domain/use_cases/citizen/saveCitizen.interactor';
@@ -25,6 +26,8 @@ export class CitizensController {
     private readonly findAllCitizen: FindAllCitizenInteractor,
     @Inject('DeleteCitizen')
     private readonly deleteCitizen: DeleteCitizenInteractor,
+    @Inject('NewVersionCitizen')
+    private readonly newVersionCitizen: NewVersionCitizenInteractor,
   ) {}
 
   @Post()
@@ -47,5 +50,11 @@ export class CitizensController {
   @Roles(Role.Teacher)
   delete(@Param() params): Promise<boolean> {
     return this.deleteCitizen.deleteCitizen(params.id);
+  }
+
+  @Get('version/:id')
+  @Roles(Role.Teacher)
+  version(@Param() params) {
+    return this.newVersionCitizen.newVersionCitizen(params.id);
   }
 }

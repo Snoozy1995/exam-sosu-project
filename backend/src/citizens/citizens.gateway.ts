@@ -7,7 +7,7 @@ import {
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 import { SearchCitizenInteractor } from '../domain/use_cases/citizen/searchCitizens.interactor';
-import { Citizen } from 'src/entities/citizen.entity';
+import { Citizen } from '../entities/citizen.entity';
 
 @WebSocketGateway({
   cors: {

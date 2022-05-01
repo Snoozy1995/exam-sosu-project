@@ -20,7 +20,19 @@ export class CitizenRepositoryAdapter implements CitizenRepository {
   }
 
   findOne(id: number): Promise<Citizen> {
-    return this.citizenRepo.findOne(id);
+    return this.citizenRepo.findOne(id, {
+      relations: [
+        'address',
+        'children',
+        'parent',
+        'medicines',
+        'files',
+        'fs3',
+        'user',
+        'group',
+        'school',
+      ],
+    });
   }
 
   search(query: string): Promise<Citizen[]> {
@@ -34,8 +46,8 @@ export class CitizenRepositoryAdapter implements CitizenRepository {
     return Promise.resolve(Boolean(res.affected));
   }
 
-  newVersion(citizen: Citizen): Promise<Citizen> {
+  /*newVersion(citizen: Citizen): Promise<Citizen> {
     citizen.id = undefined;
     return this.citizenRepo.save(citizen);
-  }
+  }*/
 }
