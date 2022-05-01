@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { FS3Child } from './fs3Child.entity';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { FS3 } from './fs3.entity';
 @Entity()
-export class FS3 {
+export class FS3Child {
   @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
@@ -23,7 +23,7 @@ export class FS3 {
   @Column()
   synonyms: string;
 
-  @ApiProperty({ type: () => [FS3Child], required: false })
-  @OneToMany(() => FS3Child, (fs3) => fs3.parent)
-  children: FS3Child[];
+  //@ApiProperty({ type: () => FS3, required: false })
+  @ManyToOne(() => FS3, (fs3) => fs3.children)
+  parent: FS3;
 }
