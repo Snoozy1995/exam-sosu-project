@@ -1,5 +1,5 @@
 export enum CivilStatus {
-  Single = 0,
-  InARelationship = 1,
-  Married = 2,
+  Single = 'single',
+  InARelationship = 'in a relationship',
+  Married = 'married',
 }
