@@ -1,20 +1,15 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  ManyToOne,
-  OneToMany,
-  ManyToMany,
-} from 'typeorm';
+import { ApiProperty } from '@nestjs/swagger';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Activity } from './activity.entity';
 import { Citizen } from './citizen.entity';
 import { FS3Data } from './fs3Data.entity';
-import { UploadedDocument } from './uploadedDocument.entity';
 @Entity()
 export class CitizenFS3 {
+  @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty()
   @ManyToOne(() => FS3Data)
   fs3: FS3Data;
 
@@ -24,27 +19,19 @@ export class CitizenFS3 {
   @ManyToOne(() => Activity, (activity) => activity.fs3)
   activity: Activity;
 
-  @Column()
-  title: string;
-
+  @ApiProperty()
   @Column()
   description: string;
 
+  @ApiProperty()
   @Column()
-  organisation: string;
+  extras: string;
 
+  @ApiProperty()
   @Column()
-  startDate: number;
+  diagnoses: string;
 
-  @Column({ nullable: true, default: null })
-  endDate: number;
-
-  @ManyToMany(() => UploadedDocument, (file) => file.activities)
-  files: File[];
-
-  @ManyToOne(() => Activity, (activity) => activity.children)
-  parent: Activity;
-
-  @OneToMany(() => Activity, (activity) => activity.parent)
-  children: Activity[];
+  @ApiProperty()
+  @Column()
+  condition: string;
 }
