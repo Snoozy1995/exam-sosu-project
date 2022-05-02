@@ -61,6 +61,10 @@ export class Citizen {
   contactPersons: ContactPerson[];
 
   @ApiProperty({ type: () => Citizen, required: false })
+  @ManyToOne(() => Citizen)
+  copyOf: Citizen;
+
+  @ApiProperty({ type: () => Citizen, required: false })
   @ManyToOne(() => Citizen, (citizen) => citizen.children)
   parent: Citizen;
 

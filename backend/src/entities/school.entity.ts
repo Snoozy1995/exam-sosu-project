@@ -5,6 +5,8 @@ import {
   OneToMany,
   JoinColumn,
   PrimaryColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Address } from './address.entity';
 import { Citizen } from './citizen.entity';
@@ -34,4 +36,10 @@ export class School {
   @ApiProperty({ type: [Citizen] })
   @OneToMany(() => Citizen, (citizen) => citizen.school)
   citizens: Citizen[];
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }

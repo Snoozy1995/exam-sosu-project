@@ -6,6 +6,8 @@ import {
   ManyToMany,
   JoinTable,
   ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Activity } from './activity.entity';
 import { Citizen } from './citizen.entity';
@@ -41,4 +43,10 @@ export class UploadedDocument {
   })
   @JoinTable()
   activities: Activity[];
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }

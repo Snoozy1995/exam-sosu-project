@@ -30,7 +30,6 @@ export class CitizenRepositoryAdapter implements CitizenRepository {
         'fs3',
         'user',
         'group',
-        'school',
       ],
     });
   }

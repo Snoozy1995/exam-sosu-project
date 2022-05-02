@@ -6,8 +6,14 @@ import {
   ManyToOne,
   OneToMany,
   ManyToMany,
+  OneToOne,
+  JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
+import { Address } from './address.entity';
 import { Citizen } from './citizen.entity';
+import { ContactPerson } from './contactPerson.entity';
 import { FS3Data } from './fs3Data.entity';
 import { UploadedDocument } from './uploadedDocument.entity';
 @Entity()
@@ -27,6 +33,13 @@ export class Activity {
   @ApiProperty()
   @Column()
   organisation: string;
+
+  @ApiProperty()
+  @OneToOne(() => Address, {
+    cascade: true,
+  })
+  @JoinColumn()
+  address: Address;
 
   @ApiProperty()
   @Column()
@@ -55,4 +68,14 @@ export class Activity {
   @ApiProperty({ type: () => Citizen })
   @ManyToOne(() => Citizen, (citizen) => citizen.activities)
   citizen: Citizen;
+
+  @ApiProperty({ type: () => ContactPerson })
+  @ManyToOne(() => ContactPerson)
+  contactPerson: ContactPerson;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }
