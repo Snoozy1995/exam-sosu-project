@@ -8,7 +8,7 @@ import {
   ManyToMany,
 } from 'typeorm';
 import { Citizen } from './citizen.entity';
-import { FS3Data } from './FS3Data.entity';
+import { FS3Data } from './fs3Data.entity';
 import { UploadedDocument } from './uploadedDocument.entity';
 @Entity()
 export class Activity {

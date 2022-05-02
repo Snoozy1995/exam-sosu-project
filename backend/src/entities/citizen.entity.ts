@@ -13,7 +13,7 @@ import { UploadedDocument } from './uploadedDocument.entity';
 import { Medicine } from './medicine.entity';
 import { Address } from './address.entity';
 import { ContactPerson } from './contactPerson.entity';
-import { FS3Data } from './FS3Data.entity';
+import { FS3Data } from './fs3Data.entity';
 import { User } from './user.entity';
 import { WorkGroup } from './workGroups.entity';
 import { School } from './school.entity';
