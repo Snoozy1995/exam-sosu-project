@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { FindAllSchoolInteractor } from '../domain/use_cases/school/findAllSchool.interactor';
 import { FindOneSchoolInteractor } from '../domain/use_cases/school/findOneSchool.interactor';
 import { SaveSchoolInteractor } from '../domain/use_cases/school/saveSchool.interactor';
@@ -6,6 +7,7 @@ import { School } from '../entities/school.entity';
 import { Role } from '../enums/role.enum';
 import { Roles } from '../roles/roles.decorator';
 
+@ApiTags('schools')
 @Controller('schools')
 export class SchoolsController {
   constructor(

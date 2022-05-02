@@ -19,10 +19,10 @@ export class FS3RepositoryAdapter implements FS3Repository {
     return this.FS3Repo.find();
   }
 
-  findOne(id: number): Promise<FS3> {
-    return this.FS3Repo.findOne({
+  findFS3ByTerm(term: string): Promise<FS3[]> {
+    return this.FS3Repo.find({
       where: {
-        id: { id: id },
+        term: { term: term },
       },
     });
   }

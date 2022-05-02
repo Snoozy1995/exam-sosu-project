@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { City } from './city.entity';
 @Entity()
 export class Address {
   @ApiProperty()
@@ -12,9 +13,9 @@ export class Address {
 
   @ApiProperty()
   @Column()
-  postCode: number;
+  note: string;
 
-  @ApiProperty()
-  @Column()
-  city: string;
+  @ApiProperty({ type: () => City })
+  @ManyToOne(() => City)
+  city: City;
 }

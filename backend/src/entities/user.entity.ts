@@ -36,7 +36,7 @@ export class User {
   role: Role;
 
   @ApiProperty({ type: [UploadedDocument], required: false })
-  @OneToMany(() => UploadedDocument, (file) => file.uploader)
+  @OneToMany(() => UploadedDocument, (file) => file.uploader, { cascade: true })
   files: File[];
 
   @ApiProperty({ type: () => School, required: false })

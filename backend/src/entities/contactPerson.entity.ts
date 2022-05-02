@@ -24,7 +24,9 @@ export class ContactPerson {
   primaryContact: boolean;
 
   @ApiProperty()
-  @OneToOne(() => Address)
+  @OneToOne(() => Address, {
+    cascade: true,
+  })
   @JoinColumn()
   address: Address;
 

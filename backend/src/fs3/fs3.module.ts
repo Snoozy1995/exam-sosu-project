@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FS3Repository } from 'src/domain/borders/FS3.repository';
 import { FindAllFS3Interactor } from 'src/domain/use_cases/fs3/findAllFS3.interactor';
-import { FindOneFS3Interactor } from 'src/domain/use_cases/fs3/findOneFS3.interactor';
+import { FindFS3ByTermInteractor } from 'src/domain/use_cases/fs3/findFS3ByTerm.interactor';
 import { SaveFS3Interactor } from 'src/domain/use_cases/fs3/saveFS3.interactor';
 import { FS3 } from 'src/entities/fs3.entity';
 import { FS3Term } from 'src/entities/fs3Term.entity';
@@ -25,8 +25,9 @@ const inject = { inject: [repo] };
     },
     {
       ...inject,
-      provide: 'FindOneFS3',
-      useFactory: (FS3Repo: FS3Repository) => new FindOneFS3Interactor(FS3Repo),
+      provide: 'FindFS3ByTerm',
+      useFactory: (FS3Repo: FS3Repository) =>
+        new FindFS3ByTermInteractor(FS3Repo),
     },
     {
       ...inject,

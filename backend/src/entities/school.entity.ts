@@ -1,11 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   Entity,
-  Column,
-  PrimaryGeneratedColumn,
   OneToOne,
   OneToMany,
   JoinColumn,
+  PrimaryColumn,
 } from 'typeorm';
 import { Address } from './address.entity';
 import { Citizen } from './citizen.entity';
@@ -14,11 +13,7 @@ import { User } from './user.entity';
 @Entity()
 export class School {
   @ApiProperty()
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @ApiProperty()
-  @Column()
+  @PrimaryColumn()
   name: string;
 
   @ApiProperty()
