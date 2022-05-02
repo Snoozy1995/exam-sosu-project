@@ -1,11 +1,11 @@
 import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
-import { FindAllFS3Interactor } from 'src/domain/use_cases/fs3/findAllFS3.interactor';
-import { FindFS3ByTermInteractor } from 'src/domain/use_cases/fs3/findFS3ByTerm.interactor';
-import { SaveFS3Interactor } from 'src/domain/use_cases/fs3/saveFS3.interactor';
-import { FS3 } from 'src/entities/fs3.entity';
-import { Role } from 'src/enums/role.enum';
-import { Roles } from 'src/roles/roles.decorator';
+import { FindAllFS3Interactor } from '../domain/use_cases/fs3/findAllFS3.interactor';
+import { FindFS3ByTermInteractor } from '../domain/use_cases/fs3/findFS3ByTerm.interactor';
+import { SaveFS3Interactor } from '../domain/use_cases/fs3/saveFS3.interactor';
+import { FS3 } from '../entities/fs3.entity';
+import { Role } from '../enums/role.enum';
+import { Roles } from '../roles/roles.decorator';
 
 @ApiTags('fs3')
 @Controller('fs3')
