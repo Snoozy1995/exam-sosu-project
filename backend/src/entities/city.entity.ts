@@ -1,24 +1,24 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  Entity,
-  Column,
-  PrimaryColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class City {
   @ApiProperty()
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @ApiProperty()
+  @Column()
+  region: string;
+
+  @ApiProperty()
+  @Column()
+  municipality: string;
+
+  @ApiProperty()
+  @Column()
   name: string;
 
   @ApiProperty()
   @Column()
   postCode: number;
-
-  @CreateDateColumn()
-  created_at: Date;
-
-  @UpdateDateColumn()
-  updated_at: Date;
 }

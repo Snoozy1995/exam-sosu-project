@@ -8,6 +8,8 @@ import {
   OneToMany,
   ManyToOne,
   JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { UploadedDocument } from './uploadedDocument.entity';
 import { Medicine } from './medicine.entity';
@@ -93,4 +95,10 @@ export class Citizen {
   @ApiProperty({ type: () => [Activity], required: false })
   @OneToMany(() => Activity, (activity) => activity.citizen)
   activities: Activity[];
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }
