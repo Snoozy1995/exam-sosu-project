@@ -19,7 +19,7 @@ export class CitizenRepositoryAdapter implements CitizenRepository {
     return this.citizenRepo.find();
   }
 
-  findOne(id: number): Promise<Citizen> {
+  findOne(id: number | string): Promise<Citizen> {
     return this.citizenRepo.findOne(id, {
       relations: [
         'address',
@@ -30,7 +30,6 @@ export class CitizenRepositoryAdapter implements CitizenRepository {
         'fs3',
         'user',
         'group',
-        'school',
       ],
     });
   }

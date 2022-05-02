@@ -1,11 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   Entity,
-  Column,
-  PrimaryGeneratedColumn,
   OneToOne,
   OneToMany,
   JoinColumn,
+  PrimaryColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Address } from './address.entity';
 import { Citizen } from './citizen.entity';
@@ -14,11 +15,7 @@ import { User } from './user.entity';
 @Entity()
 export class School {
   @ApiProperty()
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @ApiProperty()
-  @Column()
+  @PrimaryColumn()
   name: string;
 
   @ApiProperty()
@@ -39,4 +36,10 @@ export class School {
   @ApiProperty({ type: [Citizen] })
   @OneToMany(() => Citizen, (citizen) => citizen.school)
   citizens: Citizen[];
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }

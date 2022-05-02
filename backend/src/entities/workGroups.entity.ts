@@ -5,6 +5,8 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Citizen } from './citizen.entity';
 import { SchoolClass } from './schoolClass.entity';
@@ -25,4 +27,10 @@ export class WorkGroup {
   @ApiProperty({ type: () => [Citizen], required: false })
   @OneToMany(() => Citizen, (citizen) => citizen.group)
   citizens: Citizen[];
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }

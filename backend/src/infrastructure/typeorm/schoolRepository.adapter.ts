@@ -20,10 +20,8 @@ export class SchoolRepositoryAdapter implements SchoolRepository {
   }
 
   findOne(id: number): Promise<School> {
-    return this.schoolRepo.findOne({
-      where: {
-        id: { id: id },
-      },
+    return this.schoolRepo.findOne(id, {
+      relations: ['classes'],
     });
   }
 }

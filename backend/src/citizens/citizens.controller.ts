@@ -7,6 +7,7 @@ import {
   Param,
   Post,
 } from '@nestjs/common';
+import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { NewVersionCitizenInteractor } from 'src/domain/use_cases/citizen/newVersionCitizen.interactor';
 import { DeleteCitizenInteractor } from '../domain/use_cases/citizen/deleteCitizen.interactor';
 import { FindAllCitizenInteractor } from '../domain/use_cases/citizen/findAllCitizen.interactor';
@@ -16,6 +17,7 @@ import { Citizen } from '../entities/citizen.entity';
 import { Role } from '../enums/role.enum';
 import { Roles } from '../roles/roles.decorator';
 
+@ApiTags('citizens')
 @Controller('citizens')
 export class CitizensController {
   constructor(
@@ -41,9 +43,16 @@ export class CitizensController {
     return this.findAllCitizen.findAllCitizen();
   }
 
-  @Get(':id')
-  findOne(@Param() params): Promise<Citizen> {
-    return this.findOneCitizen.findOneCitizen(params.id);
+  @Get('/:identifier')
+  @ApiParam({
+    name: 'identifier',
+    required: true,
+    description:
+      'either an integer for the citizen id or a string for the citizen name',
+    schema: { oneOf: [{ type: 'string' }, { type: 'integer' }] },
+  })
+  findOne(@Param('identifier') params: string | number): Promise<Citizen> {
+    return this.findOneCitizen.findOneCitizen(params);
   }
 
   @Delete(':id')

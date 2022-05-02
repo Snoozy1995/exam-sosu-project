@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Citizen } from './citizen.entity';
 @Entity()
 export class Medicine {
@@ -26,4 +33,10 @@ export class Medicine {
   @ApiProperty()
   @Column({ nullable: true, default: null })
   endDate: number;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }

@@ -5,7 +5,9 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('upload')
 @Controller('upload')
 export class UploadController {
   @Post()

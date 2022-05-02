@@ -6,6 +6,8 @@ import {
   ManyToOne,
   OneToMany,
   ManyToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { School } from './school.entity';
 import { User } from './user.entity';
@@ -31,4 +33,10 @@ export class SchoolClass {
   @ApiProperty({ type: [User], required: false })
   @ManyToMany(() => User, (user) => user.classes)
   users: User[];
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }

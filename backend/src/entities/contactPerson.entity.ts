@@ -6,6 +6,8 @@ import {
   ManyToOne,
   OneToOne,
   JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Address } from './address.entity';
 import { Citizen } from './citizen.entity';
@@ -24,11 +26,19 @@ export class ContactPerson {
   primaryContact: boolean;
 
   @ApiProperty()
-  @OneToOne(() => Address)
+  @OneToOne(() => Address, {
+    cascade: true,
+  })
   @JoinColumn()
   address: Address;
 
   //@ApiProperty({ type: () => Citizen })
   @ManyToOne(() => Citizen, (citizen) => citizen.contactPersons)
   citizen: Citizen;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }
