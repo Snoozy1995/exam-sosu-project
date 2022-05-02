@@ -1,5 +1,5 @@
-import { FS3DataRepository } from 'src/domain/borders/FS3Data.repository';
-import { FS3Data } from 'src/entities/FS3Data.entity';
+import { FS3Data } from '../../../entities/fs3Data.entity';
+import { FS3DataRepository } from '../../borders/fs3Data.repository';
 
 export class DeleteFS3DataInteractor {
   constructor(private readonly FS3DataRepository: FS3DataRepository) {}

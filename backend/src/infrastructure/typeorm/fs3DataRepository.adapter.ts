@@ -1,7 +1,7 @@
 import { EntityManager, Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
-import { FS3DataRepository } from 'src/domain/borders/FS3Data.repository';
-import { FS3Data } from 'src/entities/fs3Data.entity';
+import { FS3DataRepository } from '../../domain/borders/FS3Data.repository';
+import { FS3Data } from '../../entities/fs3Data.entity';
 
 @Injectable()
 export class FS3RepositoryAdapter implements FS3DataRepository {
