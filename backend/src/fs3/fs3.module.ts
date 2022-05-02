@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { FS3Repository } from '../domain/borders/FS3.repository';
+import { FS3Repository } from '../domain/borders/fs3.repository';
 import { FindAllFS3Interactor } from '../domain/use_cases/fs3/findAllFS3.interactor';
 import { FindFS3ByTermInteractor } from '../domain/use_cases/fs3/findFS3ByTerm.interactor';
 import { SaveFS3Interactor } from '../domain/use_cases/fs3/saveFS3.interactor';
