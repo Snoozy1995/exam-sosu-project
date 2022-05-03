@@ -1,15 +1,31 @@
 <script setup lang="ts">
 import MenuComponent from './components/MenuComponent.vue';
 import Breadcrumb from 'primevue/breadcrumb';
+import Dropdown from 'primevue/dropdown';
 </script>
 <script lang="ts">
-function changeTheme(theme: string): void {
+function changeTheme(theme: string,dark:boolean): void {
   let themeElement = document.getElementById("theme-link");
   if (themeElement == null) return;
   themeElement.setAttribute(
     "href",
     "https://unpkg.com/primevue/resources/themes/" + theme + "/theme.css"
   );
+  if(dark){
+    let bg = document.getElementById("app");
+      if (bg == null) return;
+      bg.setAttribute(
+        "style",
+        "background:black;"
+      );
+  }else{
+    let bg = document.getElementById("app");
+  if (bg == null) return;
+  bg.setAttribute(
+    "style",
+    "background:white;"
+  );
+  }
 }
 export default {
   data() {
@@ -25,16 +41,19 @@ export default {
       selectedTheme: {
         name: "Lara light indigo",
         code: "lara-light-indigo",
+        dark: false
       },
       themes: [
-        { name: "Lara light (Default)", code: "lara-light-indigo" },
+        { name: "Lara light (Default)", code: "lara-light-indigo", dark:false },
+        { name: "Lara dark", code: "lara-dark-indigo", dark:true },
         //{ name: "Fluent", code: "fluent-light" },
-        { name: "Bootstrap", code: "bootstrap4-light-blue"},
+        //{ name: "Bootstrap", code: "bootstrap4-light-blue"},
         //{ name: "MD", code: "md-light-indigo" },
-        { name: "Material", code: "mdc-light-indigo" },
-        { name: "Rhea", code: "rhea" },
-        { name: "Tailwind", code: "tailwind-light" },
-        { name: "Nova", code:"nova-vue"}
+        //{ name: "Material", code: "mdc-light-indigo" },
+        //{ name: "Rhea", code: "rhea" },
+        { name: "Arya", code: "arya-orange",dark:true },
+        //{ name: "Tailwind", code: "tailwind-light" },
+        { name: "Nova", code:"nova-vue",dark:false}
       ],
     };
   },
@@ -42,14 +61,16 @@ export default {
     const theme = localStorage.getItem("theme");
     if (theme != null) {
       const themeObject = JSON.parse(theme);
-      //this.selectedTheme = themeObject;
+      this.selectedTheme.name = themeObject.name;
+      this.selectedTheme.code = themeObject.code;
+      this.selectedTheme.dark = themeObject.dark;
     }
   },
   watch: {
     selectedTheme: {
-      handler(oldVal: { code: any; }) {
+      handler(oldVal: { code: any,dark:boolean }) {
         localStorage.setItem("theme", JSON.stringify(oldVal));
-        changeTheme(oldVal.code);
+        changeTheme(oldVal.code,oldVal.dark);
       },
       deep: true,
     },
@@ -58,12 +79,19 @@ export default {
 </script>
 <template>
 <MenuComponent></MenuComponent>
-<Breadcrumb :home="home" :model="items" style="margin-bottom:25px;" />
-<div class="grid">
-  <div class="col-12 lg:col-4">
+<Breadcrumb :home="home" :model="items" style="margin-bottom:25px;border:0;border-radius:0;"  />
+<Dropdown
+    v-model="selectedTheme"
+    :options="themes"
+    optionLabel="name"
+    placeholder="Themes"
+    style="width:200px;position:fixed;bottom:25px; left:10px;"
+  />
+<div class="grid" id="mainGrid">
+  <div class="col-10 col-offset-1 lg:col-4 lg:col-offset-0">
 
   </div>
-  <div class="col-12 lg:col-4">
+  <div class="col-10 col-offset-1 lg:col-4  lg:col-offset-0">
     <RouterView />
   </div>
 </div>
@@ -79,6 +107,8 @@ body {
   padding: 0px;
   margin: 0px;
   font-family: "Quicksand", sans-serif;
-  background: #f1f2f6;
+}
+#mainGrid{
+  margin: 0 !important;
 }
 </style>

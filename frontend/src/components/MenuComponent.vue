@@ -15,23 +15,14 @@ const items = [
 </script>
 
 <template>
-<div class="bg-gray-900" style="padding:5px;">
-  <Menubar class="bg-gray-900 text-gray-400" style="border:0;border-radius:0;" :model="items">
-    <template #start>
-        <router-link to="/"><img src="https://www.pngall.com/wp-content/uploads/5/Lego-Toy-PNG-High-Quality-Image.png" alt="Image" height="50" class="mr-2"></router-link>
-    </template>
-    <template #end>
-        <Button icon="pi pi-sign-out" class="p-button-text" />
-    </template>
-  </Menubar>
-</div>
+<Menubar style="border:0;border-radius:0;" :model="items">
+  <template #start>
+      <router-link to="/"><img src="https://www.pngall.com/wp-content/uploads/5/Lego-Toy-PNG-High-Quality-Image.png" alt="Image" height="50" class="mr-2"></router-link>
+  </template>
+  <template #end>
+  </template>
+</Menubar>
 </template>
 
 <style>
-.p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link .p-menuitem-text{
-  color:var(--gray-400) !important;
-}
-.p-menuitem-link:hover{
-  background:#424242!important;
-}
 </style>
