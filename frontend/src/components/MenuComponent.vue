@@ -17,7 +17,7 @@ const items = [
 <template>
 <Menubar style="border:0;border-radius:0;" :model="items">
   <template #start>
-      <router-link to="/"><img src="https://www.pngall.com/wp-content/uploads/5/Lego-Toy-PNG-High-Quality-Image.png" alt="Image" height="50" class="mr-2"></router-link>
+      <router-link to="/" class="text-900 font-bold mb-1">Health Journal</router-link>
   </template>
   <template #end>
   </template>
