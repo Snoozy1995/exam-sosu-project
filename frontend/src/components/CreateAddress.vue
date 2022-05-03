@@ -29,6 +29,12 @@ function test2(event: AutoCompleteItemSelectEvent){
   })
 }
 
+function test3(event: AutoCompleteItemSelectEvent){
+  store.street=event.value.value;
+  store.postCode=event.value.postCode;
+  test();
+}
+
 function search(){
   new CityService().autoComplete(store.city).then(_city=>{
     store.suggestions=_city;
@@ -44,7 +50,7 @@ function searchStreet(){
 </script>
 <template>
   <label for="street" class="block text-900 font-medium mb-2">Vejnavn</label>
-  <AutoComplete v-model="store.street" :suggestions="store.streetsuggestions" field="label" @complete="searchStreet()"/>
+  <AutoComplete v-model="store.street" :suggestions="store.streetsuggestions" field="label" @complete="searchStreet()" @item-select="test3($event)"/>
 
   <div class="grid">
     <div class="col-6">
@@ -61,3 +67,9 @@ function searchStreet(){
     </div>
   </div>
 </template>
+<style>
+.p-autocomplete, .p-autocomplete-input {
+  width: 100%;
+  margin-bottom:8px;
+}
+</style>
