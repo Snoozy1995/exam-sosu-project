@@ -6,8 +6,8 @@ import CreateAddress from './CreateAddress.vue';
 import { CitizenStore } from '../stores/citizenStore';
 const cities=[
     {name: 'Single', code: 'single'},
-    {name: 'In a relationship', code: 'in a relationship'},
-    {name: 'Married', code: 'married'},
+    {name: 'I et forhold', code: 'in a relationship'},
+    {name: 'Gift', code: 'married'},
   ];
 
 const citizen=CitizenStore().citizen;

@@ -4,7 +4,12 @@ export const AddressStore = defineStore({
   id: "addressStore",
   state: ()=>({
     street:'',
+    postCode:'',
+
+
+    municipality:'',
     city:'',
-    postCode:''
+    suggestions:[],
+    streetsuggestions:[],
   })
 });

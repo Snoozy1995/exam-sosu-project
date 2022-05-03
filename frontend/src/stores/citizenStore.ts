@@ -24,7 +24,6 @@ export const CitizenStore = defineStore({
     createCitizen(citizen: Citizen) {
       this.citizen.address.street=AddressStore().street;
       this.citizen.address.postCode=AddressStore().postCode;
-      this.citizen.address.city=AddressStore().city;
       return new Promise((resolve, reject) => {
         citizenService
           .createCitizen(citizen)
