@@ -3,11 +3,9 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { City } from './city.entity';
 @Entity()
 export class Address {
   @ApiProperty()
@@ -22,9 +20,8 @@ export class Address {
   @Column()
   note: string;
 
-  @ApiProperty({ type: () => City })
-  @ManyToOne(() => City)
-  city: City;
+  @ApiProperty()
+  postCode: number;
 
   @CreateDateColumn()
   created_at: Date;

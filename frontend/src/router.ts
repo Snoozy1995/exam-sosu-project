@@ -1,8 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
+import CreateCitizen from './components/CreateCitizen.vue'
 
 const Router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: "/createCitizen",
+      name: "CreateCitizen",
+      component: CreateCitizen,
+    },
     /*{
       path: "/",
       name: "home",
@@ -10,11 +16,6 @@ const Router = createRouter({
       meta: {
         requiresLogin: true,
       },
-    },
-    {
-      path: "/createUser",
-      name: "CreateUser",
-      component: CreateUser,
     },
     {
       path: "/login",
@@ -33,7 +34,7 @@ const Router = createRouter({
 });
 
 /*import { UserStore } from "../stores/userStore";
-router.beforeEach((to, from, next) => {
+Router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresLogin)) {
     if (UserStore().userName.length <= 0) {
       next({ name: "Login" });
