@@ -12,14 +12,14 @@ function changeTheme(theme: string,dark:boolean): void {
     "https://unpkg.com/primevue/resources/themes/" + theme + "/theme.css"
   );
   if(dark){
-    let bg = document.getElementById("app");
+    let bg = document.getElementById("body");
       if (bg == null) return;
       bg.setAttribute(
         "style",
         "background:black;"
       );
   }else{
-    let bg = document.getElementById("app");
+    let bg = document.getElementById("body");
   if (bg == null) return;
   bg.setAttribute(
     "style",
@@ -39,7 +39,7 @@ export default {
           {label: 'Item'}
       ],
       selectedTheme: {
-        name: "Lara light indigo",
+        name: "Lara light",
         code: "lara-light-indigo",
         dark: false
       },
@@ -68,7 +68,7 @@ export default {
   },
   watch: {
     selectedTheme: {
-      handler(oldVal: { code: any,dark:boolean }) {
+      handler(oldVal: { name:string,code: any,dark:boolean }) {
         localStorage.setItem("theme", JSON.stringify(oldVal));
         changeTheme(oldVal.code,oldVal.dark);
       },
@@ -110,5 +110,8 @@ body {
 }
 #mainGrid{
   margin: 0 !important;
+}
+a{
+  text-decoration:none;
 }
 </style>
