@@ -11,6 +11,12 @@ const cities=[
   ];
 
 const citizen=CitizenStore().citizen;
+
+function create(){
+  if(!citizen.firstName.length||!citizen.lastName.length||!citizen.birthDate||!citizen.civilStatus.length) return;
+  if(citizen.address.street.length<4) return;
+  if(citizen.address.postCode.length!=4) return;
+}
 </script>
 <template>
   <label for="firstName" class="block text-900 font-medium mb-2">Fornavn</label>
@@ -27,5 +33,5 @@ const citizen=CitizenStore().citizen;
 
   <CreateAddress />
 
-  <Button label="Create" class="w-full mb-3" />
+  <Button label="Create" v-on:click="create()" class="w-full mb-3" />
 </template>

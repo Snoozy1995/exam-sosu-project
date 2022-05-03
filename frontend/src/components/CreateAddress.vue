@@ -7,32 +7,30 @@ import { AddressService } from '../services/address.service';
 
 const store=AddressStore();
 
-function test(){
+function postCodeLookup(){
   if(store.postCode.length!=4) return;
   new CityService().query(store.postCode).then(_city=>{
+    if(!_city.data||!_city.data.length) return;
     _city=_city.data[0];
-    if(!_city) return;
     store.city=_city.navn;
     store.municipality=_city.kommuner[0].navn
-    //
   })
 }
 
-function test2(event: AutoCompleteItemSelectEvent){
+function autoCompleteCity(event: AutoCompleteItemSelectEvent){
   store.city=event.value.value;
   new CityService().query(event.value.value).then(_city=>{
+    if(!_city.data||!_city.data.length) return;
     _city=_city.data[0];
-    if(!_city) return;
     store.postCode=_city.nr;
     store.municipality=_city.kommuner[0].navn
-    //
   })
 }
 
-function test3(event: AutoCompleteItemSelectEvent){
+function autoCompleteAddress(event: AutoCompleteItemSelectEvent){
   store.street=event.value.value;
   store.postCode=event.value.postCode;
-  test();
+  postCodeLookup();
 }
 
 function search(){
@@ -50,16 +48,16 @@ function searchStreet(){
 </script>
 <template>
   <label for="street" class="block text-900 font-medium mb-2">Vejnavn</label>
-  <AutoComplete v-model="store.street" :suggestions="store.streetsuggestions" field="label" @complete="searchStreet()" @item-select="test3($event)"/>
+  <AutoComplete v-model="store.street" :suggestions="store.streetsuggestions" field="label" @complete="searchStreet()" @item-select="autoCompleteAddress($event)"/>
 
   <div class="grid">
     <div class="col-6">
       <label for="city" class="block text-900 font-medium mb-2">By</label>
-      <AutoComplete v-model="store.city" :suggestions="store.suggestions" field="label" @complete="search()" @item-select="test2($event)"/>
+      <AutoComplete v-model="store.city" :suggestions="store.suggestions" field="label" @complete="search()" @item-select="autoCompleteCity($event)"/>
     </div>
     <div class="col-6">
       <label for="postCode" class="block text-900 font-medium mb-2">Postnr</label>
-    <InputText class="w-full mb-3" type="number" v-on:keyup="test()" v-model="store.postCode" />
+    <InputText class="w-full mb-3" type="number" v-on:keyup="postCodeLookup()" v-model="store.postCode" />
     </div>
     <div class="col-12">
       <label for="municipality" class="block text-900 font-medium mb-2">Kommune</label>

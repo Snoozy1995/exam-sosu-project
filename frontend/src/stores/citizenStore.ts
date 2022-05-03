@@ -11,7 +11,7 @@ export const CitizenStore = defineStore({
     citizen:{
       firstName:'',
       lastName:'',
-      birthDate:'',
+      birthDate:undefined,
       civilStatus:'',
       address:{
         street:'',

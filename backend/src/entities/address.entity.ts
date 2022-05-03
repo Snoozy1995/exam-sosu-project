@@ -18,11 +18,11 @@ export class Address {
 
   @ApiProperty()
   @Column()
-  note: string;
-
-  @ApiProperty()
-  @Column()
   postCode: number;
+
+  @ApiProperty({ required: false })
+  @Column()
+  note: string;
 
   @CreateDateColumn()
   created_at: Date;
