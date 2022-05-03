@@ -2,7 +2,7 @@
 import InputText from 'primevue/inputtext';
 import Dropdown from 'primevue/dropdown';
 import Button from 'primevue/button';
-import CreateAddress from './CreateAddress.vue';
+import CreateAddress from './CreateAddressComponent.vue';
 import { CitizenStore } from '../stores/citizenStore';
 import { AddressStore } from '../stores/addressStore';
 const cities=[
