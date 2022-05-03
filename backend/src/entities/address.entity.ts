@@ -21,6 +21,7 @@ export class Address {
   note: string;
 
   @ApiProperty()
+  @Column()
   postCode: number;
 
   @CreateDateColumn()
