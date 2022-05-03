@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios";
-import { Citizen } from "@/models/citizen";
+import { Citizen } from "../models/citizen";
 import httpClient from "./http.client";
 
 export class CitizenService {
