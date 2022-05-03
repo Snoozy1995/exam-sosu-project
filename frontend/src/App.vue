@@ -2,6 +2,12 @@
 import MenuComponent from './components/MenuComponent.vue';
 import Breadcrumb from 'primevue/breadcrumb';
 import Dropdown from 'primevue/dropdown';
+
+const selectedTheme={
+        name: "Lara light indigo",
+        code: "lara-light-indigo",
+        dark: false
+      };
 </script>
 <script lang="ts">
 function changeTheme(theme: string,dark:boolean): void {
@@ -38,11 +44,6 @@ export default {
           {label: 'Backpacks'},
           {label: 'Item'}
       ],
-      selectedTheme: {
-        name: "Lara light",
-        code: "lara-light-indigo",
-        dark: false
-      },
       themes: [
         { name: "Lara light (Default)", code: "lara-light-indigo", dark:false },
         { name: "Lara dark", code: "lara-dark-indigo", dark:true },
@@ -61,9 +62,9 @@ export default {
     const theme = localStorage.getItem("theme");
     if (theme != null) {
       const themeObject = JSON.parse(theme);
-      this.selectedTheme.name = themeObject.name;
-      this.selectedTheme.code = themeObject.code;
-      this.selectedTheme.dark = themeObject.dark;
+      selectedTheme.name = themeObject.name;
+      selectedTheme.code = themeObject.code;
+      selectedTheme.dark = themeObject.dark;
     }
   },
   watch: {
@@ -81,12 +82,12 @@ export default {
 <MenuComponent></MenuComponent>
 <Breadcrumb :home="home" :model="items" style="margin-bottom:25px;border:0;border-radius:0;"  />
 <Dropdown
-    v-model="selectedTheme"
-    :options="themes"
-    optionLabel="name"
-    placeholder="Themes"
-    style="width:200px;position:fixed;bottom:25px; left:10px;"
-  />
+  v-model="selectedTheme"
+  :options="themes"
+  optionLabel="name"
+  placeholder="Themes"
+  style="width:200px;position:fixed;bottom:25px; left:10px;"
+/>
 <div class="grid" id="mainGrid">
   <div class="col-10 col-offset-1 lg:col-4 lg:col-offset-0">
 
