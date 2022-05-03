@@ -37,7 +37,7 @@ export class Citizen {
 
   @ApiProperty()
   @Column()
-  birthday: number;
+  birthday: string;
 
   @ApiProperty()
   @Column()

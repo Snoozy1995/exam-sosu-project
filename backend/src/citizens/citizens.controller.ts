@@ -33,7 +33,7 @@ export class CitizensController {
   ) {}
 
   @Post()
-  @Roles(Role.Teacher)
+  //@Roles(Role.Teacher)
   save(@Body() body: Citizen): Promise<Citizen> {
     return this.saveCitizen.saveCitizen(body);
   }

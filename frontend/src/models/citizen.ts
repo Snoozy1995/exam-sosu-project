@@ -8,7 +8,7 @@ export interface Citizen {
   id: number;
   firstName: string;
   lastName: string;
-  birthday: number;
+  birthday: Date;
   civilStatus: string;
   address: Address;
   files: UploadedDocument[];

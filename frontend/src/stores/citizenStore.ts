@@ -11,7 +11,7 @@ export const CitizenStore = defineStore({
     citizen:{
       firstName:'',
       lastName:'',
-      birthDate:undefined,
+      birthday:'',
       civilStatus:'',
       address:{
         street:'',
@@ -21,19 +21,14 @@ export const CitizenStore = defineStore({
     }
   }),
   actions: {
-    createCitizen(citizen: Citizen) {
+    createCitizen() {
       this.citizen.address.street=AddressStore().street;
       this.citizen.address.postCode=AddressStore().postCode;
       return new Promise((resolve, reject) => {
         citizenService
-          .createCitizen(citizen)
-          //.then((user) => {
-          //  this.loggedInUser = user;
-          //  resolve(true);
-          //})
-          //.catch((err) => {
-          //  reject(err);
-          //});
+          .createCitizen(this.citizen).then(res=>{
+            resolve(res);
+          })
       });
     },
   },
