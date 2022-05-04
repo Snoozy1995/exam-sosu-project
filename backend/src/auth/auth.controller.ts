@@ -41,10 +41,6 @@ export class AuthController {
 
   @Post('/create')
   async createUser(@Body() body: CreateUserDto): Promise<User> {
-    if (body.school) {
-      body.school = await this.findSchool.findOneSchool(<string>body.school);
-    }
-    console.log(body.school);
     return this.create.createUser(body);
   }
 

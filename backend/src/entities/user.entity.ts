@@ -9,6 +9,7 @@ import {
   Index,
   CreateDateColumn,
   UpdateDateColumn,
+  JoinColumn,
 } from 'typeorm';
 import { School } from './school.entity';
 import { SchoolClass } from './schoolClass.entity';
@@ -41,8 +42,12 @@ export class User {
   @OneToMany(() => UploadedDocument, (file) => file.uploader, { cascade: true })
   files: UploadedDocument[];
 
+  @Column({ nullable: true })
+  schoolName: string;
+
   @ApiProperty({ type: () => School, required: false })
   @ManyToOne(() => School, (school) => school.users)
+  @JoinColumn({ name: 'schoolName' })
   school: School;
 
   @ApiProperty({ type: [SchoolClass], required: false })

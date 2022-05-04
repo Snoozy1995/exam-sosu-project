@@ -13,5 +13,5 @@ export class CreateUserDto {
   role: Role;
 
   @ApiProperty()
-  school: string | School;
+  schoolName: string;
 }
