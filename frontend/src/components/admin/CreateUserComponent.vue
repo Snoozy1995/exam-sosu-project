@@ -39,7 +39,7 @@ function autocomplete(){
   <Dropdown id="civil" v-model="role" :options=cv_choices class="w-full mb-3" placeholder="" />
 
   <label for="school" class="block text-900 font-medium mb-2">Skole (If applicable)</label>
-  <AutoComplete v-model="school" :suggestions="store.suggestions" field="label" @complete="autocomplete()" style="margin-bottom:25px;"/>
+  <AutoComplete v-model="school" :forceSelection="true" :suggestions="store.suggestions" field="label" @complete="autocomplete()" style="margin-bottom:25px;"/>
 
   <Button label="Lav bruger" v-on:click="create()" class="w-full mb-3" />
 </template>

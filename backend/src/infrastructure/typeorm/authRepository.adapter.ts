@@ -5,7 +5,6 @@ import { User } from 'src/entities/user.entity';
 import { AuthDto } from 'src/auth/dto/auth.dto';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from 'src/auth/dto/createuser.dto';
-import { UserDto } from 'src/auth/dto/user.dto';
 
 @Injectable()
 export class AuthRepositoryAdapter implements AuthRepository {
@@ -39,6 +38,7 @@ export class AuthRepositoryAdapter implements AuthRepository {
       salt: salt,
       role: auth.role,
       password: hash,
+      schoolName: auth.schoolName,
     });
   }
 }
