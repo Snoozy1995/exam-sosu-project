@@ -1,19 +1,15 @@
 <script lang="ts">
 import Router from "../../router";
-import { AuthStore } from "../../stores/AuthStore";
+import { AuthStore } from "../../stores/authStore";
 export default {
-    data(){
-      return {
-        timer:0
-      }
-    },
+    timer:0,
     beforeUnmount(){
       clearInterval(this.timer)
     },
     mounted(){
       this.timer=setInterval(()=>{
               let authStore=AuthStore();
-              authStore.getProfile().then(res=>{
+              authStore.getProfile().then(()=>{
                 Router.push('/')
               });
           },15000)
