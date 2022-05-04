@@ -20,7 +20,7 @@ function login(){
 <template>
   <div class="surface-card p-4 shadow-2 border-round w-full" style="margin-top:125px;">
       <h2 class="text-900 text-center mb-5">
-          Login til Sundhedsjournal
+          Login til Sundhedsjournalen
       </h2>
 
       <div>
