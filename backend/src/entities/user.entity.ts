@@ -39,7 +39,7 @@ export class User {
 
   @ApiProperty({ type: [UploadedDocument], required: false })
   @OneToMany(() => UploadedDocument, (file) => file.uploader, { cascade: true })
-  files: File[];
+  files: UploadedDocument[];
 
   @ApiProperty({ type: () => School, required: false })
   @ManyToOne(() => School, (school) => school.users)

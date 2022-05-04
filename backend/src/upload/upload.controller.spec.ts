@@ -1,6 +1,6 @@
 import { APP_GUARD } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
-import { RolesGuard } from '../roles/roles.guard';
+import { RolesGuard } from '../auth/roles/roles.guard';
 import { UploadController } from './upload.controller';
 
 describe('UploadController', () => {

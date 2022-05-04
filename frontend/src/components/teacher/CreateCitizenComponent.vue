@@ -1,18 +1,17 @@
 <script setup lang="ts">
-import InputText from 'primevue/inputtext';
 import Dropdown from 'primevue/dropdown';
 import Button from 'primevue/button';
-import CreateAddress from './CreateAddressComponent.vue';
-import { CitizenStore } from '../stores/citizenStore';
-import { AddressStore } from '../stores/addressStore';
-const cities=[
+import CreateAddress from '../misc/CreateAddressComponent.vue';
+import { CitizenStore } from '../../stores/citizenStore';
+import { AddressStore } from '../../stores/addressStore';
+const cv_choices=[
 'Single',
 'I et forhold',
 'Gift'];
 
 const citizen=CitizenStore().citizen;
 
-function create(){
+function create(){ //@todo
   if(!citizen.firstName.length||!citizen.lastName.length) return console.log("hmp1");
   if(!citizen.birthday.length) return;
   if(!citizen.civilStatus.length) return console.log("hmpf");
@@ -24,6 +23,7 @@ function create(){
 }
 </script>
 <template>
+  <h2>Ny borger</h2>
   <label for="firstName" class="block text-900 font-medium mb-2">Fornavn</label>
   <InputText id="firstName" v-model="citizen.firstName" type="text" class="w-full mb-3" />
 
@@ -34,7 +34,7 @@ function create(){
   <InputText id="birth" type="date" v-model="citizen.birthday" class="w-full mb-3" />
 
   <label for="civil" class="block text-900 font-medium mb-2">Civilstatus</label>
-  <Dropdown id="civil" v-model="citizen.civilStatus" :options=cities class="w-full mb-3" placeholder="" />
+  <Dropdown id="civil" v-model="citizen.civilStatus" :options=cv_choices class="w-full mb-3" placeholder="" />
 
   <CreateAddress />
 

@@ -6,6 +6,7 @@ import {
   Inject,
   Param,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { NewVersionCitizenInteractor } from 'src/domain/use_cases/citizen/newVersionCitizen.interactor';
@@ -15,10 +16,12 @@ import { FindOneCitizenInteractor } from '../domain/use_cases/citizen/findOneCit
 import { SaveCitizenInteractor } from '../domain/use_cases/citizen/saveCitizen.interactor';
 import { Citizen } from '../entities/citizen.entity';
 import { Role } from '../enums/role.enum';
-import { Roles } from '../roles/roles.decorator';
+import { Roles } from '../auth/roles/roles.decorator';
+import { AuthenticatedGuard } from 'src/auth/guards/authenticated.guard';
 
 @ApiTags('citizens')
 @Controller('citizens')
+@UseGuards(AuthenticatedGuard)
 export class CitizensController {
   constructor(
     @Inject('SaveCitizen') private readonly saveCitizen: SaveCitizenInteractor,
