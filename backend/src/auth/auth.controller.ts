@@ -7,6 +7,7 @@ import { CreateUserInteractor } from 'src/domain/use_cases/user/createUser.inter
 import { CreateUserDto } from './dto/createuser.dto';
 import { GetMyUserInteractor } from 'src/domain/use_cases/user/getMyUser.interactor';
 import { UserDto } from './dto/user.dto';
+import { FindOneSchoolInteractor } from 'src/domain/use_cases/school/findOneSchool.interactor';
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
@@ -14,6 +15,8 @@ export class AuthController {
     @Inject('Login') private readonly login: ValidateUserInteractor,
     @Inject('CreateUser') private readonly create: CreateUserInteractor,
     @Inject('GetMyUser') private readonly get: GetMyUserInteractor,
+    @Inject('FindOneSchool')
+    private readonly findSchool: FindOneSchoolInteractor,
   ) {}
 
   @Post()
@@ -37,7 +40,11 @@ export class AuthController {
   }
 
   @Post('/create')
-  createUser(@Body() body: CreateUserDto): Promise<User> {
+  async createUser(@Body() body: CreateUserDto): Promise<User> {
+    if (body.school) {
+      body.school = await this.findSchool.findOneSchool(<string>body.school);
+    }
+    console.log(body.school);
     return this.create.createUser(body);
   }
 

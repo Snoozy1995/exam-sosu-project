@@ -3,6 +3,9 @@ import Dropdown from 'primevue/dropdown';
 import Button from 'primevue/button';
 import { ref } from 'pinia/node_modules/vue-demi';
 import { AuthStore } from '../../stores/authStore';
+import { SchoolService } from '../../services/school.service';
+import { SchoolStore } from '../../stores/schoolStore';
+const store=SchoolStore();
 const cv_choices=[
 'Superuser',
 'Teacher',
@@ -11,12 +14,17 @@ const cv_choices=[
 const username=ref('');
 const password=ref('')
 const role=ref('');
-
+const school=ref('');
 function create(){
-  AuthStore().createUser(username.value,password.value,role.value.toLowerCase()).then(res=>{
+  AuthStore().createUser(username.value,password.value,role.value.toLowerCase(),school.value).then(res=>{
     //@todo
   });
   //@todo
+}
+function autocomplete(){
+  new SchoolService().autocomplete(school.value).then(_city=>{
+    store.suggestions=_city;
+  });
 }
 </script>
 <template>
@@ -30,7 +38,8 @@ function create(){
   <label for="civil" class="block text-900 font-medium mb-2">Rolle</label>
   <Dropdown id="civil" v-model="role" :options=cv_choices class="w-full mb-3" placeholder="" />
 
-  Du kan tilføje flere detaljer til brugeren bagefter dette...<br><br>
+  <label for="school" class="block text-900 font-medium mb-2">Skole (If applicable)</label>
+  <AutoComplete v-model="school" :suggestions="store.suggestions" field="label" @complete="autocomplete()" style="margin-bottom:25px;"/>
 
   <Button label="Lav bruger" v-on:click="create()" class="w-full mb-3" />
 </template>

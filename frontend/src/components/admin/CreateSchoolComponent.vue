@@ -1,26 +1,23 @@
 <script setup lang="ts">
-import Dropdown from 'primevue/dropdown';
 import Button from 'primevue/button';
-import { CitizenStore } from '../../stores/citizenStore';
-import { ref } from 'pinia/node_modules/vue-demi';
 import CreateAddressComponent from '../misc/CreateAddressComponent.vue';
-const cv_choices=[
-'Superuser',
-'Teacher',
-'Student'];
+import { SchoolStore } from '../../stores/schoolStore';
+import { AddressStore } from '../../stores/addressStore';
 
-const role=ref('');
-
-const citizen=CitizenStore().citizen;
+const store=SchoolStore();
 
 function create(){
+  if(!store.school.name.length) return;
+  if(AddressStore().street.length<4) return console.log("hmpf2");
+  if(AddressStore().postCode.length!=4) return console.log("hmpf3");
+  store.createSchool();
   //@todo
 }
 </script>
 <template>
   <h2>Ny skole</h2>
   <label for="username" class="block text-900 font-medium mb-2">Skole</label>
-  <InputText id="username" type="text" class="w-full mb-3" />
+  <InputText id="username" v-model="store.school.name" type="text" class="w-full mb-3" />
 
   <CreateAddressComponent />
 

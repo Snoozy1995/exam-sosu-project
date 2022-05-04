@@ -6,8 +6,9 @@ export class AuthService {
     return httpClient.post("/auth",{username:username,password:password});
   }
 
-  createUser(username: string,password: string,role: string) {
-    return httpClient.post("/auth/create",{username:username,password:password,role:role});
+  createUser(username: string,password: string,role: string,school:string) {
+    console.log(school);
+    return httpClient.post("/auth/create",{username:username,password:password,role:role,school:school});
   }
 
   getProfile(){

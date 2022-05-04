@@ -15,6 +15,7 @@ import { School } from '../entities/school.entity';
 import { Role } from '../enums/role.enum';
 import { Roles } from '../auth/roles/roles.decorator';
 import { AuthenticatedGuard } from 'src/auth/guards/authenticated.guard';
+import { AutocompleteSchoolInteractor } from 'src/domain/use_cases/school/autocompleteSchool.interactor';
 
 @ApiTags('schools')
 @Controller('schools')
@@ -26,6 +27,8 @@ export class SchoolsController {
     private readonly findOneSchool: FindOneSchoolInteractor,
     @Inject('FindAllSchool')
     private readonly findAllSchool: FindAllSchoolInteractor,
+    @Inject('AutocompleteSchool')
+    private readonly autoCompleteSchool: AutocompleteSchoolInteractor,
   ) {}
 
   @Post()
@@ -44,5 +47,12 @@ export class SchoolsController {
   @Roles(Role.Teacher, Role.SuperUser)
   findOne(@Param() params): Promise<School> {
     return this.findOneSchool.findOneSchool(params.id);
+  }
+
+  @Get('autocomplete/:query')
+  @Roles(Role.SuperUser)
+  autocomplete(@Param('query') query): Promise<School[]> {
+    console.log(query);
+    return this.autoCompleteSchool.autocompleteSchool(query);
   }
 }

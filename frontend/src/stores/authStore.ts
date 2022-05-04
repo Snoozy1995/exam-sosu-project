@@ -17,8 +17,9 @@ export const AuthStore = defineStore({
     },
   }),
   actions:{
-    async createUser(username:string,password:string,role:string){
-      let res=await authService.createUser(username,password,role);
+    async createUser(username:string,password:string,role:string,school:any){
+      school=school.value.name;
+      let res=await authService.createUser(username,password,role,school);
       return new Promise((resolve)=>{
         //@todo
       })
