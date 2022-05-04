@@ -97,7 +97,7 @@ const Router = createRouter({
   ],
 });
 
-import { AuthStore } from "./stores/AuthStore";
+import { AuthStore } from "./stores/authStore";
 import { BreadcrumbStore } from "./stores/breadcrumbStore";
 Router.beforeEach((to, from, next) => {
   if(!Router.getRoutes().some((route)=>route.path==to.path)){
@@ -114,7 +114,7 @@ Router.beforeEach((to, from, next) => {
     next();
     return;
   }
-  authStore.getProfile().then(res=>{
+  authStore.getProfile().then(()=>{
     if (to.matched.some((record) => record.meta.requiresLogin)) {
       if (!authStore.user||authStore.user.username.length <= 0) {
         next({ name: "Login" });
