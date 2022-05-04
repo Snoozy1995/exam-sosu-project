@@ -19,6 +19,10 @@ export class SchoolRepositoryAdapter implements SchoolRepository {
     return this.schoolRepo.find();
   }
 
+  autocomplete(query: string): Promise<School[]> {
+    return this.schoolRepo.find({ name: query });
+  }
+
   findOne(id: number): Promise<School> {
     return this.schoolRepo.findOne(id, {
       relations: ['classes'],

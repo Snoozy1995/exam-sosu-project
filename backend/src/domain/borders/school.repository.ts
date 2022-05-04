@@ -4,4 +4,5 @@ export interface SchoolRepository {
   save(school: School): Promise<School>;
   findAll(): Promise<School[]>;
   findOne(id: number): Promise<School>;
+  autocomplete(query: string): Promise<School[]>;
 }
