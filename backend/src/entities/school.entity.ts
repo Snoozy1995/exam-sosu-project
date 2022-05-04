@@ -7,6 +7,7 @@ import {
   PrimaryColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  Index,
 } from 'typeorm';
 import { Address } from './address.entity';
 import { Citizen } from './citizen.entity';
@@ -15,6 +16,7 @@ import { User } from './user.entity';
 @Entity()
 export class School {
   @ApiProperty()
+  @Index({ fulltext: true })
   @PrimaryColumn()
   name: string;
 

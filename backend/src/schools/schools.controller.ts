@@ -52,6 +52,7 @@ export class SchoolsController {
   @Get('autocomplete/:query')
   @Roles(Role.SuperUser)
   autocomplete(@Param('query') query): Promise<School[]> {
+    console.log(query);
     return this.autoCompleteSchool.autocompleteSchool(query);
   }
 }

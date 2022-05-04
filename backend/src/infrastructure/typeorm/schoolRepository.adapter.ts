@@ -1,4 +1,4 @@
-import { EntityManager, Repository } from 'typeorm';
+import { EntityManager, ILike, Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { School } from '../../entities/school.entity';
 import { SchoolRepository } from '../../domain/borders/school.repository';
@@ -20,10 +20,10 @@ export class SchoolRepositoryAdapter implements SchoolRepository {
   }
 
   autocomplete(query: string): Promise<School[]> {
-    return this.schoolRepo.find({ name: query });
+    return this.schoolRepo.find({ name: ILike(`%${query}%`) });
   }
 
-  findOne(id: number): Promise<School> {
+  findOne(id: string): Promise<School> {
     return this.schoolRepo.findOne(id, {
       relations: ['classes'],
     });

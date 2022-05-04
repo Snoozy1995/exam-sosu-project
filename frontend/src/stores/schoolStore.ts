@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { SchoolService } from "../services/school.service";
+import { AddressStore } from "./addressStore";
 const schoolService: SchoolService = new SchoolService();
 export const SchoolStore = defineStore({
   id: "schoolStore",
@@ -15,11 +16,10 @@ export const SchoolStore = defineStore({
     suggestions:[]
   }),
   actions:{
-    async createSchool(){
-      //let res=await authService.createUser(username,password,role);
-      return new Promise((resolve)=>{
-        //@todo
-      })
+    createSchool(){
+      this.school.address.street=AddressStore().street;
+      this.school.address.postCode=AddressStore().postCode;
+      return schoolService.save(this.school);
     },
   }
 });

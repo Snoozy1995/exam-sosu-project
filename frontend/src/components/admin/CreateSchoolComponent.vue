@@ -1,25 +1,23 @@
 <script setup lang="ts">
 import Button from 'primevue/button';
 import CreateAddressComponent from '../misc/CreateAddressComponent.vue';
-import { SchoolService } from '../../services/school.service'; //@todo move to store
 import { SchoolStore } from '../../stores/schoolStore';
+import { AddressStore } from '../../stores/addressStore';
 
 const store=SchoolStore();
 
 function create(){
+  if(!store.school.name.length) return;
+  if(AddressStore().street.length<4) return console.log("hmpf2");
+  if(AddressStore().postCode.length!=4) return console.log("hmpf3");
+  store.createSchool();
   //@todo
-}
-function autocomplete(){
-  new SchoolService().autocomplete(store.school.name).then(_city=>{
-    store.suggestions=_city;
-  });
 }
 </script>
 <template>
   <h2>Ny skole</h2>
   <label for="username" class="block text-900 font-medium mb-2">Skole</label>
-  <InputText id="username" type="text" class="w-full mb-3" />
-  <AutoComplete v-model="store.school.name" :suggestions="store.suggestions" field="label" @complete="autocomplete()"/>
+  <InputText id="username" v-model="store.school.name" type="text" class="w-full mb-3" />
 
   <CreateAddressComponent />
 
