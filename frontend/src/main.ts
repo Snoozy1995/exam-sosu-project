@@ -2,12 +2,21 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import { createPinia } from 'pinia'
 import Router from './router';
+
 import PrimeVue from 'primevue/config';
+import 'primevue/resources/primevue.min.css';
+import 'primeicons/primeicons.css';
+
+
+import InputText from 'primevue/inputtext';
+import Button from 'primevue/button';
+import Menubar from 'primevue/menubar';
+
 const app=createApp(App);
 
-import Tooltip from 'primevue/tooltip';
-
-app.directive('tooltip', Tooltip);
+app.component('InputText',InputText);
+app.component('Button',Button);
+app.component('Menubar',Menubar);
 
 app.use(createPinia())
 app.use(Router);

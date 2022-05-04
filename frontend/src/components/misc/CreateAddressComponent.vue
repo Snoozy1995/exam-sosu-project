@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import AutoComplete, { AutoCompleteItemSelectEvent } from 'primevue/autocomplete';
-import InputText from 'primevue/inputtext';
-import { AddressStore } from '../stores/addressStore';
-import { CityService } from '../services/city.service';
-import { AddressService } from '../services/address.service';
+import { AddressStore } from '../../stores/addressStore';
+import { CityService } from '../../services/city.service'; //@todo move to store
+import { AddressService } from '../../services/address.service'; //@todo move to store
 
 const store=AddressStore();
 
@@ -41,7 +40,6 @@ function search(){
 
 function searchStreet(){
   new AddressService().autoComplete(store.street).then(_city=>{
-    console.log(_city);
     store.streetsuggestions=_city;
   });
 }

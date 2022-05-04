@@ -1,101 +1,37 @@
 <script setup lang="ts">
-import MenuComponent from './components/MenuComponent.vue';
+import AdminMenuComponent from './components/admin/AdminMenuComponent.vue';
 import Breadcrumb from 'primevue/breadcrumb';
-import Dropdown from 'primevue/dropdown';
-
-const selectedTheme={
-        name: "Lara light indigo",
-        code: "lara-light-indigo",
-        dark: false
-      };
-</script>
-<script lang="ts">
-function changeTheme(theme: string,dark:boolean): void {
-  let themeElement = document.getElementById("theme-link");
-  if (themeElement == null) return;
-  themeElement.setAttribute(
-    "href",
-    "https://unpkg.com/primevue/resources/themes/" + theme + "/theme.css"
-  );
-  if(dark){
-    let bg = document.getElementById("body");
-      if (bg == null) return;
-      bg.setAttribute(
-        "style",
-        "background:black;"
-      );
-  }else{
-    let bg = document.getElementById("body");
-  if (bg == null) return;
-  bg.setAttribute(
-    "style",
-    "background:white;"
-  );
-  }
-}
-export default {
-  data() {
-    return {
-      home: {icon: 'pi pi-home', to: '/'},
-      items: [
-          {label: 'Computer'},
-          {label: 'Notebook'},
-          {label: 'Accessories'},
-          {label: 'Backpacks'},
-          {label: 'Item'}
-      ],
-      themes: [
-        { name: "Lara light (Default)", code: "lara-light-indigo", dark:false },
-        { name: "Lara dark", code: "lara-dark-indigo", dark:true },
-        //{ name: "Fluent", code: "fluent-light" },
-        //{ name: "Bootstrap", code: "bootstrap4-light-blue"},
-        //{ name: "MD", code: "md-light-indigo" },
-        //{ name: "Material", code: "mdc-light-indigo" },
-        //{ name: "Rhea", code: "rhea" },
-        { name: "Arya", code: "arya-orange",dark:true },
-        //{ name: "Tailwind", code: "tailwind-light" },
-        { name: "Nova", code:"nova-vue",dark:false}
-      ],
-    };
-  },
-  created() {
-    const theme = localStorage.getItem("theme");
-    if (theme != null) {
-      const themeObject = JSON.parse(theme);
-      selectedTheme.name = themeObject.name;
-      selectedTheme.code = themeObject.code;
-      selectedTheme.dark = themeObject.dark;
-    }
-  },
-  watch: {
-    selectedTheme: {
-      handler(oldVal: { name:string,code: any,dark:boolean }) {
-        localStorage.setItem("theme", JSON.stringify(oldVal));
-        changeTheme(oldVal.code,oldVal.dark);
-      },
-      deep: true,
-    },
-  },
-};
+import { AuthStore } from './stores/authStore';
+import { BreadcrumbStore } from './stores/breadcrumbStore';
+import ThemeComponent from './components/misc/ThemeComponent.vue';
+import AdminLeftSideView from './components/admin/AdminLeftSideView.vue';
+const authStore=AuthStore();
 </script>
 <template>
-<MenuComponent></MenuComponent>
-<Breadcrumb :home="home" :model="items" style="margin-bottom:25px;border:0;border-radius:0;"  />
-<Dropdown
-  v-model="selectedTheme"
-  :options="themes"
-  optionLabel="name"
-  placeholder="Themes"
-  style="width:200px;position:fixed;bottom:25px; left:10px;"
-/>
+<div v-if="authStore.user&&authStore.user.username.length">
+  <div v-if="authStore.user.role=='superuser'">
+    <AdminMenuComponent />
+  </div>
+  <div v-if="authStore.user&&authStore.user.role=='teacher'">
+    <AdminMenuComponent />
+  </div>
+  <div v-if="authStore.user&&authStore.user.role=='student'">
+    <AdminMenuComponent />
+  </div>
+  <Breadcrumb :home="{icon: 'pi pi-home', to: '/'}" :model="BreadcrumbStore().$state.breadcrumb" style="margin-bottom:25px;border:0;border-radius:0;"  />
+</div>
 <div class="grid" id="mainGrid">
   <div class="col-10 col-offset-1 lg:col-4 lg:col-offset-0">
-
+    <div v-if="authStore.user.role=='superuser'">
+      <h4 class="text-700">Quicklinks</h4>
+      <AdminLeftSideView />
+    </div>
   </div>
   <div class="col-10 col-offset-1 lg:col-4  lg:col-offset-0">
     <RouterView />
   </div>
 </div>
+<ThemeComponent />
 </template>
 
 <style>
