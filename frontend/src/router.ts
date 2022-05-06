@@ -125,27 +125,19 @@ const Router = createRouter({
       name: "Login",
       component: LoginComponent,
     },
-    {
-      path: "/connectivity",
-      name: "FailedConnection",
-      component: ConnectionFailedComponent,
-    },
-    {
+    /*{
       path: "/:catchAll(.*)",
       name: "404",
       component: ConnectionFailedComponent, //Change this.
-    },
+    },*/
   ],
 });
 
 import { AuthStore } from "./stores/authStore";
 import { BreadcrumbStore } from "./stores/breadcrumbStore";
 Router.beforeEach((to, from, next) => {
+  if(to.name=="Login"&&from.name=="Login"){ next(); return; }
   BreadcrumbStore().set(to.meta.breadcrumb);
-  if(to.name=="FailedConnection"){
-    next();
-    return;
-  }
   let authStore=AuthStore();
   if(authStore.user&&authStore.user.username.length){
     next();
@@ -161,9 +153,7 @@ Router.beforeEach((to, from, next) => {
     } else {
       next();
     }
-  }).catch(()=>{
-    next({name:"FailedConnection"})
-  });
+  }).catch(()=>{ });
 });
 
 export default Router;
