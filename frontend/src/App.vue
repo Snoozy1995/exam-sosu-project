@@ -7,19 +7,12 @@ import { AuthStore } from './stores/authStore';
 import { BreadcrumbStore } from './stores/breadcrumbStore';
 import ThemeComponent from './components/misc/ThemeComponent.vue';
 import AdminLeftSideView from './components/admin/AdminLeftSideView.vue';
-import { SocketStore } from './stores/socketStore';
-import Router from "./router";
+import ConnectionStatusComponent from './components/misc/ConnectionStatusComponent.vue';
 const authStore=AuthStore();
-const socketStore=SocketStore();
-socketStore.socket.on('connect_error',()=>{
-  Router.push('/connectivity');
-});
-socketStore.socket.on('reconnect_error',()=>{
-  Router.push('/connectivity');
-});
 </script>
 <template>
-<div v-if="authStore.user&&authStore.user.username.length&&!socketStore.socket.disconnected">
+<ConnectionStatusComponent />
+<div v-if="authStore.user&&authStore.user.username.length">
   <div v-if="authStore.user.role=='superuser'">
     <AdminMenuComponent />
   </div>
@@ -33,7 +26,7 @@ socketStore.socket.on('reconnect_error',()=>{
 </div>
 <div class="grid" id="mainGrid">
   <div class="col-10 col-offset-1 lg:col-4 lg:col-offset-0">
-    <div v-if="authStore.user.role=='superuser'&&!socketStore.socket.disconnected">
+    <div v-if="authStore.user.role=='superuser'">
       <h4 class="text-700">Quicklinks</h4>
       <AdminLeftSideView />
     </div>

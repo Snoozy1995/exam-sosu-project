@@ -52,6 +52,6 @@ if (theme != null) {
     optionLabel="name"
     placeholder="Themes"
     @change="changeTheme(selectedTheme.code,selectedTheme.dark)"
-    style="width:200px;position:fixed;bottom:25px; left:10px;"
+    style="width:200px;position:fixed;bottom:25px; left:10px;z-index:9999;"
   />
 </template>
