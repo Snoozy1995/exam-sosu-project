@@ -36,7 +36,7 @@ export default {
                   items:[
                       { to: "/school/create", label: "Ny", icon: "pi pi-fw pi-user-plus" },
                       {
-                        to:'/school/search',
+                        to:'/school/list',
                         label:'Søg',
                         icon:'pi pi-fw pi-users',
                       }
