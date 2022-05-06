@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
 import CreateCitizen from './components/teacher/CreateCitizenComponent.vue';
-import ConnectionFailedComponent from './components/misc/ConnectionFailedComponent.vue';
 import ModuleView from './components/misc/ModuleView.vue';
 import LoginComponent from './components/LoginComponent.vue';
 import HomeComponent from './components/HomeComponent.vue';
 import ViewCitizenComponent from './components/ViewCitizenComponent.vue';
 import CreateUserComponent from './components/admin/CreateUserComponent.vue';
 import CreateSchoolComponent from './components/admin/CreateSchoolComponent.vue';
+import AllSchoolsListComponent from './components/admin/AllSchoolsListComponent.vue';
 import UserSearchComponent from './components/admin/UserSearchComponent.vue';
 import CreateCaseComponent from './components/teacher/CreateCaseComponent.vue';
 import ViewCaseComponent from './components/shared/ViewCaseComponent.vue';
@@ -35,6 +35,15 @@ const Router = createRouter({
           meta: {
             requiresLogin: true,
             breadcrumb:[{label: 'Ny skole', to: '/school/create'}]
+          },
+        },
+        {
+          path: "list",
+          name: "ListSchool",
+          component: AllSchoolsListComponent,
+          meta: {
+            requiresLogin: true,
+            breadcrumb:[{label: 'Alle skoler', to: '/school/list'}]
           },
         },
       ],
