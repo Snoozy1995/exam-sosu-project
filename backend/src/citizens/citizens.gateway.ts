@@ -13,7 +13,6 @@ import { Citizen } from '../entities/citizen.entity';
   cors: {
     origin: '*',
   },
-  namespace: 'citizens',
 })
 export class CitizensGateway {
   constructor(

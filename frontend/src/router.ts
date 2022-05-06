@@ -7,6 +7,9 @@ import HomeComponent from './components/HomeComponent.vue';
 import ViewCitizenComponent from './components/ViewCitizenComponent.vue';
 import CreateUserComponent from './components/admin/CreateUserComponent.vue';
 import CreateSchoolComponent from './components/admin/CreateSchoolComponent.vue';
+import UserSearchComponent from './components/admin/UserSearchComponent.vue';
+import CreateCaseComponent from './components/teacher/CreateCaseComponent.vue';
+import ViewCaseComponent from './components/shared/ViewCaseComponent.vue';
 const Router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -23,7 +26,6 @@ const Router = createRouter({
       component:ModuleView,
       meta: {
         requiresLogin: true,
-        breadcrumb:[{label: 'Borger', to: '/citizen/'}]
       },
       children:[
         {
@@ -42,7 +44,6 @@ const Router = createRouter({
       component:ModuleView,
       meta: {
         requiresLogin: true,
-        breadcrumb:[{label: 'Borger', to: '/citizen/'}]
       },
       children:[
         {
@@ -54,6 +55,15 @@ const Router = createRouter({
             breadcrumb:[{label: 'Ny bruger', to: '/user/create'}]
           },
         },
+        {
+          path: "search",
+          name: "SearchUser",
+          component: UserSearchComponent,
+          meta: {
+            requiresLogin: true,
+            breadcrumb:[{label: 'Søg bruger', to: '/user/search'}]
+          },
+        }
       ],
     },
     {
@@ -61,7 +71,6 @@ const Router = createRouter({
       component:ModuleView,
       meta: {
         requiresLogin: true,
-        breadcrumb:[{label: 'Borger', to: '/citizen/'}]
       },
       children:[
         {
@@ -85,14 +94,46 @@ const Router = createRouter({
       ],
     },
     {
+      path:'/case/',
+      component:ModuleView,
+      meta: {
+        requiresLogin: true,
+      },
+      children:[
+        {
+          path: "create",
+          name: "CreateCase",
+          component: CreateCaseComponent,
+          meta: {
+            requiresLogin: true,
+            breadcrumb:[{label: 'Ny case', to: '/case/create'}]
+          },
+        },
+        {
+          path: ":id",
+          name: "ViewCase",
+          component:  ViewCaseComponent,
+          meta: {
+            requiresLogin: true,
+            breadcrumb:[{label: 'Case', to: '/case/'}]
+          },
+        },
+      ],
+    },
+    {
       path: "/login",
       name: "Login",
       component: LoginComponent,
     },
     {
-      path: "/con404",
+      path: "/connectivity",
       name: "FailedConnection",
       component: ConnectionFailedComponent,
+    },
+    {
+      path: "/:catchAll(.*)",
+      name: "404",
+      component: ConnectionFailedComponent, //Change this.
     },
   ],
 });
@@ -100,10 +141,6 @@ const Router = createRouter({
 import { AuthStore } from "./stores/authStore";
 import { BreadcrumbStore } from "./stores/breadcrumbStore";
 Router.beforeEach((to, from, next) => {
-  if(!Router.getRoutes().some((route)=>route.path==to.path)){
-    next("/");
-    return;
-  }
   BreadcrumbStore().set(to.meta.breadcrumb);
   if(to.name=="FailedConnection"){
     next();
