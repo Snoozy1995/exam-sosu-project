@@ -13,7 +13,6 @@ socketStore.socket.on("connect",()=>{
   if(firstConnect.value==false){
     authStore.getProfile().then((user)=>{
       if(!user.username){
-        console.log("yo");
         Router.push('/login');
       }
     }).catch(()=>{ });
@@ -27,16 +26,7 @@ socketStore.socket.on('disconnect',()=>{
   show.value=true;
 });
 </script>
-
 <template>
-<Sidebar style='opacity:0.98;' v-model:visible=firstConnect position="full" :showCloseIcon="false" >
-  <div class="text-700 text-center" style="margin-top:150px;">
-    <div class="col-10 col-offset-1 lg:col-4 lg:col-offset-4">
-      <h1 class="text-blue-600 font-bold mb-3">Skaber forbindelse...</h1>
-      <i class="pi pi-spin pi-spinner" style="font-size: 4rem; margin-top:25px;"></i><br><br><br>
-    </div>
-  </div>
-</Sidebar>
 <Sidebar style='opacity:0.98;' v-model:visible=show position="full" :showCloseIcon="false" >
   <div class="text-700 text-center" style="margin-top:125px;">
     <div class="col-10 col-offset-1 lg:col-4 lg:col-offset-4">
