@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { User } from "../models/user";
+import Router from "../router";
 import { AuthService } from "../services/auth.service";
 const authService: AuthService = new AuthService();
 export const AuthStore = defineStore({
@@ -24,14 +25,12 @@ export const AuthStore = defineStore({
         //@todo
       })
     },
-    async login(username:string,password:string): Promise<User> {
+    async login(username:string,password:string) {
       let res=await authService.login(username,password);
-      return new Promise((resolve)=>{
-        this.user=res.data;
-        resolve(this.user)
-      })
+      this.user=res.data;
+      return this.user;
     },
-    async getProfile(){
+    async getProfile() {
       let res=await authService.getProfile();
       this.user=res.data;
       return this.user;
@@ -48,6 +47,7 @@ export const AuthStore = defineStore({
         classes: [],
         citizens: [],
       };
+      Router.push('/login');
     }
   }
 });

@@ -8,9 +8,14 @@ const selectedTheme=ref({
       });
 const themes= [
         { name: "Lara light (Default)", code: "lara-light-indigo", dark:false },
-        { name: "Lara dark", code: "lara-dark-indigo", dark:true },
+        //{ name: "Lara dark", code: "lara-dark-indigo", dark:true },
+        { name: "Fluent", code: 'fluent-light',dark:false },
+        { name: "Material light", code:'mdc-light-deeppurple',dark:false },
+        { name: "Material dark", code:'mdc-dark-deeppurple',dark:true },
+        { name: "Luna", code: 'luna-green',dark:true },
         { name: "Arya", code: "arya-orange",dark:true },
-        { name: "Nova", code:"nova-vue",dark:false}
+        { name: "Nova", code:"nova-vue",dark:false},
+        { name: "Vela", code:"vela-blue",dark:true},
       ];
 function changeTheme(theme: string,dark:boolean): void {
   localStorage.setItem("theme", JSON.stringify(selectedTheme.value));
