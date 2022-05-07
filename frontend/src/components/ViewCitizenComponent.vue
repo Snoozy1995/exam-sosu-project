@@ -106,7 +106,7 @@ onMounted(() => {
     <Button label="Opret" icon="pi pi-check" @click="onCreate" autofocus/>
   </Dialog>
 
-  <Dialog header="Helbreds-tilstande" v-model:visible="displayResponsive" :breakpoints="{'960px': '75vw'} "
+  <Dialog header="Helbredstilstande" v-model:visible="displayResponsive" :breakpoints="{'960px': '75vw'} "
           :style="{width: '50vw'}">
     <Listbox v-model="selectedRoom" :options="rooms" :multiple="false" :filter="false" optionLabel="name"
              listStyle="max-height:250px" style="width:30rem" filterPlaceholder="Search">
@@ -115,7 +115,7 @@ onMounted(() => {
     <Button label="Opret" icon="pi pi-check" @click="onCreate" autofocus/>
   </Dialog>
 
-  <Dialog header="Funktionsevne-tilstande" v-model:visible="displayResponsive" :breakpoints="{'960px': '75vw'} "
+  <Dialog header="Funktionsevnetilstande" v-model:visible="displayResponsive" :breakpoints="{'960px': '75vw'} "
           :style="{width: '50vw'}">
     <Listbox v-model="selectedRoom" :options="rooms" :multiple="false" :filter="false" optionLabel="name"
              listStyle="max-height:250px" style="width:30rem" filterPlaceholder="Search">

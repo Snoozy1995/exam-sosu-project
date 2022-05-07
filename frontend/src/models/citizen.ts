@@ -2,7 +2,9 @@ import { Address } from "./address";
 import { ContactPerson } from "./contactPerson";
 import { FS3Data } from "./fs3Data";
 import { Medicine } from "./medicine";
+import { School } from "./school";
 import { UploadedDocument } from "./uploadedDocument";
+import { User } from "./user";
 
 export interface Citizen {
   id: number;
@@ -18,9 +20,9 @@ export interface Citizen {
   parent: Citizen;
   children: Citizen[];
   fs3: FS3Data[];
-  //user: User;
+  user: User;
   //group: WorkGroup;
-  //school: School;
+  school: School;
   //activities: Activity[];
   created_at: Date;
   updated_at: Date;

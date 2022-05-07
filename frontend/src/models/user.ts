@@ -1,4 +1,5 @@
 import { Citizen } from "./citizen";
+import { School } from "./school";
 import { UploadedDocument } from "./uploadedDocument";
 
 export interface User {
@@ -7,7 +8,7 @@ export interface User {
   created_at: string;
   updated_at: string;
   files: UploadedDocument[];
-  //school: School;
+  school: School;
   //classes: SchoolClass[];
   citizens: Citizen[];
 }

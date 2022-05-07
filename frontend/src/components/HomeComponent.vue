@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AdminHome from "./admin/AdminHome.vue";
+import AdminHomeComponent from "./admin/AdminHomeComponent.vue";
 import TeacherHome from "./teacher/TeacherHome.vue";
 import StudentHome from "./student/StudentHome.vue";
 import { AuthStore } from '../stores/authStore';
@@ -8,7 +8,7 @@ const authStore=AuthStore();
 </script>
 <template>
   <div v-if="authStore.user&&authStore.user.role=='superuser'">
-    <AdminHome />
+    <AdminHomeComponent />
   </div>
   <div v-if="authStore.user&&authStore.user.role=='teacher'">
     <TeacherHome />
