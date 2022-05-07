@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import { User } from "../models/user";
 import Router from "../router";
 import { AuthService } from "../services/auth.service";
 const authService: AuthService = new AuthService();
