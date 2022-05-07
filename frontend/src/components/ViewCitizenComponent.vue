@@ -16,33 +16,7 @@ const closeCreateRoomModal = () => {
 let fs3Terms = ref<FS3Term[]>([
 
 ]);
-const fs3Types = ref([
-  {
-    term: 'Generelle oplysninger',
 
-  },
-  {
-    term: 'Helbredstilstande'
-  },
-  {
-    term: 'Funktionsevne tilstande'
-  },
-])
-
-const rooms = ref([
-  {
-    uuid: '1',
-    name: 'room1',
-  },
-  {
-    uuid: '2',
-    name: 'room2',
-  },
-  {
-    uuid: '3',
-    name: 'room3',
-  },
-]);
 
 function onCreate() {
   if (!inputQuery.value) return;
