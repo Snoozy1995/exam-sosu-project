@@ -13,7 +13,7 @@ const openCreateRoomModal = () => {
 const closeCreateRoomModal = () => {
   displayResponsive.value = false;
 };
-let fs3Terms = ([
+let fs3Terms = ref<FS3Term[]>([
 
 ]);
 const fs3Types = ref([
@@ -52,8 +52,9 @@ function onCreate() {
 }
 function getFS3Terms() {
   fs3TermsService.getFS3Terms()
-      .then((result) => fs3Terms = result as FS3Term[])
+      .then((result) => fs3Terms.value = result.data as FS3Term[])
       .catch((error) => console.log("error: " + error))
+
 }
 onMounted(() => {
   getFS3Terms();
@@ -111,7 +112,7 @@ onMounted(() => {
 
       </li>
       <Accordion>
-        <AccordionTab v-for="type in fs3Types" :key="type.term" :header="type.term">
+        <AccordionTab v-for="type in fs3Terms" :key="type" :header="type.term">
           <p>{{ type.term }}</p>
 
           <Button class="m-1" @click="openCreateRoomModal" label="Ny" icon="pi pi-external-link"/>
