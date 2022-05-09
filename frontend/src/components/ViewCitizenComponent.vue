@@ -11,6 +11,12 @@ import { Citizen } from "../models/citizen";
 import Inplace from 'primevue/inplace';
 import { onBeforeRouteUpdate } from 'vue-router';
 import axios from 'axios';
+import dayjs from 'dayjs';
+import RelativeTime from 'dayjs/plugin/relativeTime' // import plugin
+import 'dayjs/locale/da';
+dayjs.extend(RelativeTime);
+dayjs.locale('da');
+
 const citizenService=new CitizenService();
 const citizen:Ref<Citizen|undefined>=ref(undefined); //Edit this citizen to save
 let paramId:any; // the current id visiting /citizen/paramId
@@ -106,13 +112,13 @@ export default {
     </Button>
   </router-link>
   <div class="surface-section" style="padding:15px;" v-if="citizen">
-    <div class="text-center py-4"><span class="p-buttonset"><Button class="p-button-sm p-button-info">Brug til opgave/Giv til student</Button><Button class="p-button-sm p-button-help" v-on:click="cloneConfirm($event)">Lav en kopi af denne borger</Button></span></div>
+    <div class="text-center py-4"><span class="p-buttonset"><Button class="p-button-sm p-button-info">Brug til opgave/student</Button><Button class="p-button-sm p-button-help" v-on:click="cloneConfirm($event)">Nyt template fra denne borger</Button></span></div>
     <div class="font-medium text-3xl text-900 mb-3">Borger information:</div>
     <div class="text-500 mb-5">Her kan du lave ændringer på borger.</div>
     <ul class="list-none p-0 m-0 min-w-full">
       <!--Firstname-->
       <li class="border-top-1 surface-border px-2">
-        <Inplace :closable="true">
+        <Inplace :closable="true" @close="save()">
           <template #display>
               <div class="flex align-items-center flex-wrap">
                 <div class="text-500 w-6 md:w-2 font-medium">Fornavn</div>
@@ -130,7 +136,7 @@ export default {
       </li>
       <!--Lastname-->
       <li class="border-top-1 surface-border px-2">
-        <Inplace :closable="true">
+        <Inplace :closable="true" @close="save()">
           <template #display>
               <div class="flex align-items-center flex-wrap">
                 <div class="text-500 w-6 md:w-2 font-medium">Efternavn</div>
@@ -182,10 +188,9 @@ export default {
       </Accordion>
     </ul>
     <Button style="margin-top:20px;" v-on:click="()=>{showUploadFilesDialog=true}">Upload dokumenter</Button>
-    <Button class="w-full" v-on:click="save()" style="margin-top:25px;">Gem ændrede oplysninger</Button>
   </div>
-  <div v-if="citizen" class="text-center">
-    <Tag severity="info" style='margin-top:25px;margin-bottom:10px;'>Sidst redigeret: {{new Date(citizen.updated_at).toLocaleDateString()}} - {{new Date(citizen.updated_at).toLocaleTimeString()}} </Tag>
+  <div v-if="citizen" style="position:absolute;top:100px;right:75px;">
+    <Tag severity="info" style='margin-top:25px;margin-bottom:10px;'>Sidst gemt: {{dayjs(citizen.updated_at).fromNow()}} </Tag>
   </div>
 
 
