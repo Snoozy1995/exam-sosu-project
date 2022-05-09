@@ -19,9 +19,17 @@ import AccordionTab from "primevue/accordiontab";
 import Dialog from "primevue/dialog";
 import Listbox from "primevue/listbox";
 import Tag from "primevue/tag";
+import axios from 'axios';
 
 const app=createApp(App);
 
+axios.get("/config/api-url.txt").then((result)=>{
+  if(result.status&&result.status==200){
+      axios.defaults.baseURL=result.data;
+  }
+}).catch(()=>{});
+axios.defaults.baseURL="http://localhost:3000/";
+axios.defaults.withCredentials=true;
 
 app.component('InputText',InputText);
 app.component('Button',Button);

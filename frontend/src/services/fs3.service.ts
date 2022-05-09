@@ -1,13 +1,13 @@
-import httpClient from "./http.client";
+import axios from "axios";
 
 export class Fs3Service{
     save(school:any){
-        return httpClient.post("/fs3",school);
+        return axios.post("/fs3",school);
     }
 
     autocomplete(query: string): Promise<any> {
         return new Promise(async (resolve)=>{
-            let res=await httpClient.get("/schools/autocomplete/"+query);
+            let res=await axios.get("/schools/autocomplete/"+query);
             let data=[];
             for(let dt of res.data){
                 data.push({label:dt.name,value:dt});

@@ -1,20 +1,20 @@
-import httpClient from "./http.client";
+import axios from "axios";
 
 export class AuthService {
 
   login(username: string,password: string) {
-    return httpClient.post("/auth",{username:username,password:password});
+    return axios.post("/auth",{username:username,password:password});
   }
 
   createUser(username: string,password: string,role: string,school:string) {
-    return httpClient.post("/auth/create",{username:username,password:password,role:role,schoolName:school});
+    return axios.post("/auth/create",{username:username,password:password,role:role,schoolName:school});
   }
 
   getProfile(){
-    return httpClient.get("/auth");
+    return axios.get("/auth");
   }
 
   logout(){
-    httpClient.get('/auth/logout');
+    axios.get('/auth/logout');
   }
 }
