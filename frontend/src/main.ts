@@ -25,10 +25,15 @@ const app=createApp(App);
 
 axios.get("/config/api-url.txt").then((result)=>{
   if(result.status&&result.status==200){
-      axios.defaults.baseURL=result.data;
+    axios.defaults.baseURL=result.data;
+  }else{
+    axios.defaults.baseURL="http://localhost:3000/";
   }
-}).catch(()=>{});
-axios.defaults.baseURL="http://localhost:3000/";
+  host();
+}).catch(()=>{
+  axios.defaults.baseURL="http://localhost:3000/";
+  host()
+});
 axios.defaults.withCredentials=true;
 
 app.component('InputText',InputText);
@@ -41,9 +46,11 @@ app.component("Dialog", Dialog);
 app.component("Listbox", Listbox);
 app.component("Tag",Tag);
 app.directive('tooltip', Tooltip);
-app.use(createPinia())
+
+function host(){
+  app.use(createPinia())
 app.use(Router);
 app.use(PrimeVue);
 app.use(ConfirmationService);
-
-app.mount('#app');
+  app.mount("#app");
+}
