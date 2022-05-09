@@ -15,4 +15,8 @@ export class Fs3Service{
             resolve(data);
         });
     }
+
+    getFS3sByTerm(query: string):Promise<any>{
+        return axios.get("/fs3/"+query);
+    }
 }
