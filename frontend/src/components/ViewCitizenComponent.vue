@@ -4,50 +4,89 @@ import { Ref, ref} from "vue";
 import {onMounted} from "vue";
 import FileUpload from 'primevue/fileupload';
 import {CitizenService} from '../services/citizen.service';
-import {FS3TermService} from "../services/fs3Term.service";
-import {FS3Term} from "../models/fs3Term";
 import Router from "../router";
 import { Citizen } from "../models/citizen";
 import Inplace from 'primevue/inplace';
 import { onBeforeRouteUpdate } from 'vue-router';
 import axios from 'axios';
+import FilterCitizenComponent from "./teacher/FilterCitizenComponent.vue";
+import {Fs3Service} from "../services/fs3.service";
+import {FS3} from "../models/fs3";
 const citizenService=new CitizenService();
 const citizen:Ref<Citizen|undefined>=ref(undefined); //Edit this citizen to save
 let paramId:any; // the current id visiting /citizen/paramId
 const showUploadFilesDialog=ref(false);
-const fs3TermsService: FS3TermService = new FS3TermService();
-const displayResponsive = ref(false);
+const fs3Service: Fs3Service = new Fs3Service();
+const displayGeneral = ref(false);
+const displayHealth = ref(false);
+const displayFunctionality = ref(false);
+const displayFS3Data = ref(false);
 const inputQuery = ref("");
-const openCreateRoomModal = () => {
-  displayResponsive.value = true;
+
+const FS3TextareaData = ref('');
+
+const openFunctionalityModal = () => {
+  displayFunctionality.value = true;
 };
-const closeCreateRoomModal = () => {
-  displayResponsive.value = false;
+const closeFunctionalityModal = () => {
+  displayFunctionality.value = false;
 };
-let fs3Terms = ref<FS3Term[]>([
+const openHealthModal = () => {
+  displayHealth.value = true;
+};
+const closeHealthModal = () => {
+  displayHealth.value = false;
+};
+const openGeneralModal = () => {
+  displayGeneral.value = true;
+};
+const closeGeneralModal = () => {
+  displayGeneral.value = false;
+};
+// Create FS3Data
+const openCreateFS3DataModal = () => {
+  displayFS3Data.value = true;
+};
+const closeCreateFS3DataModal = () => {
+  displayFS3Data.value = false;
+};
+let fs3s = ref<FS3[]>([
 
 ]);
 
-const rooms=ref([]); //Added to fix build error
-const selectedRoom=ref(); //Added to fix build error
+const selectedTerm=ref<FS3>();
 
-function onCreate() {
-  if (!inputQuery.value) return;
-  //chatStore.setRoom(inputQuery.value, userStore.loggedInUser); //Commented to fix build error
-  //roomStore.createRoom(inputQuery.value, userStore.loggedInUser.uuid) //Commented to fix build error
-  console.log(inputQuery.value)
+// General
+const generalTerms=ref<FS3[]>([]);
+
+// Functionality
+const functionalTerms=ref<FS3[]>([]);
+// const selectedFunctionalityTerm=ref<FS3>(); //Added to fix build error
+// Health
+const healthTerms=ref<FS3[]>([]);
+// const selectedHealthTerm=ref<FS3>(); //Added to fix build error
+
+function onCreateFS3Data() {
+closeCreateFS3DataModal();
+
 }
-function getFS3Terms() {
-  fs3TermsService.getFS3Terms()
-      .then((result) => fs3Terms.value = result.data as FS3Term[])
+function getFS3s() {
+  fs3Service.getFS3sByTerm('Generelle oplysninger')
+      .then((result) => generalTerms.value = result.data as FS3[])
       .catch((error) => console.log("error: " + error))
-
+  fs3Service.getFS3sByTerm('Funktionsevnetilstande')
+      .then((result) => functionalTerms.value = result.data as FS3[])
+      .catch((error) => console.log("error: " + error))
+  fs3Service.getFS3sByTerm('Helbredstilstande')
+      .then((result) => healthTerms.value = result.data as FS3[])
+      .catch((error) => console.log("error: " + error))
 }
 onMounted(() => {
-  getFS3Terms();
+  getFS3s();
   paramId=Router.currentRoute.value.params.id;
   fetchCitizen();
 })
+
 
 onBeforeRouteUpdate(update=>{
   if(update.name=="ViewCitizen"){
@@ -100,7 +139,9 @@ export default {
 
 
 <template>
+  <FilterCitizenComponent></FilterCitizenComponent>
   <ConfirmPopup></ConfirmPopup>
+
   <router-link :to="{path:'/citizen/'+citizen.parent.id}" v-if="citizen&&citizen.parent">
     <Button v-bind:label=parentLabel icon="pi pi-arrow-up-left" class='p-button-sm'>
     </Button>
@@ -173,13 +214,36 @@ export default {
         </div>
 
       </li>
-      <Accordion>
-        <AccordionTab v-for="type in fs3Terms" :header="type.term">
-          <p>{{ type.term }}</p>
 
-          <Button class="m-1" @click="openCreateRoomModal" label="Ny" icon="pi pi-external-link"/>
-        </AccordionTab>
-      </Accordion>
+      <li>
+        <!--General Information-->
+        <Accordion>
+          <AccordionTab header="Generelle Oplysninger">
+            <p>Generelle Oplysninger</p>
+
+            <Button class="m-1" @click="openGeneralModal" label="Ny" icon="pi pi-external-link"/>
+          </AccordionTab>
+        </Accordion>
+        <!--Health Conditions-->
+        <Accordion>
+          <AccordionTab header="Helbredstilstande">
+            <p>Helbredstilstande</p>
+
+            <Button class="m-1" @click="openHealthModal" label="Ny" icon="pi pi-external-link"/>
+          </AccordionTab>
+        </Accordion>
+        <!--Functionality Conditions-->
+        <Accordion>
+          <AccordionTab header="Funktionsevnetilstande">
+            <p>Funktionsevnetilstande</p>
+
+            <Button class="m-1" @click="openFunctionalityModal" label="Ny" icon="pi pi-external-link"/>
+          </AccordionTab>
+        </Accordion>
+
+
+      </li>
+
     </ul>
     <Button style="margin-top:20px;" v-on:click="()=>{showUploadFilesDialog=true}">Upload dokumenter</Button>
     <Button class="w-full" v-on:click="save()" style="margin-top:25px;">Gem ændrede oplysninger</Button>
@@ -188,32 +252,54 @@ export default {
     <Tag severity="info" style='margin-top:25px;margin-bottom:10px;'>Sidst redigeret: {{new Date(citizen.updated_at).toLocaleDateString()}} - {{new Date(citizen.updated_at).toLocaleTimeString()}} </Tag>
   </div>
 
-
-  <Dialog header="Generelle oplysninger" v-model:visible="displayResponsive" :breakpoints="{'960px': '75vw'} "
+  <!--General Dialog-->
+  <Dialog header="Generelle oplysninger" v-model:visible="displayGeneral" :breakpoints="{'960px': '75vw'} "
           :style="{width: '50vw'}">
-    <Listbox v-model="selectedRoom" :options="rooms" :multiple="false" :filter="false" optionLabel="name"
+    <Listbox v-model="selectedTerm" :options="generalTerms" :multiple="false" :filter="true" optionLabel="definition"
              listStyle="max-height:250px" style="width:30rem" filterPlaceholder="Search">
     </Listbox>
-    <Button label="Annuller" icon="pi pi-times" @click="closeCreateRoomModal" class="p-button-text"/>
-    <Button label="Opret" icon="pi pi-check" @click="onCreate" autofocus/>
+    <Button label="Annuller" icon="pi pi-times" @click="closeGeneralModal" class="p-button-text"  />
+    <Button label="Opret" icon="pi pi-check" @click="openCreateFS3DataModal" autofocus/>
   </Dialog>
-
-  <Dialog header="Helbredstilstande" v-model:visible="displayResponsive" :breakpoints="{'960px': '75vw'} "
+  <!--Health Dialog-->
+  <Dialog header="Helbredstilstande" v-model:visible="displayHealth" :breakpoints="{'960px': '75vw'} "
           :style="{width: '50vw'}">
-    <Listbox v-model="selectedRoom" :options="rooms" :multiple="false" :filter="false" optionLabel="name"
+    <Listbox v-model="selectedTerm" :options="healthTerms" :multiple="false" :filter="false" optionLabel="definition"
              listStyle="max-height:250px" style="width:30rem" filterPlaceholder="Search">
     </Listbox>
-    <Button label="Annuller" icon="pi pi-times" @click="closeCreateRoomModal" class="p-button-text"/>
-    <Button label="Opret" icon="pi pi-check" @click="onCreate" autofocus/>
+    <Button label="Annuller" icon="pi pi-times" @click="closeHealthModal" class="p-button-text"/>
+    <Button label="Opret" icon="pi pi-check" @click="openCreateFS3DataModal" autofocus/>
   </Dialog>
-
-  <Dialog header="Funktionsevnetilstande" v-model:visible="displayResponsive" :breakpoints="{'960px': '75vw'} "
+  <!--Functionality Conditions-->
+  <Dialog header="Funktionsevnetilstande" v-model:visible="displayFunctionality" :breakpoints="{'960px': '75vw'} "
           :style="{width: '50vw'}">
-    <Listbox v-model="selectedRoom" :options="rooms" :multiple="false" :filter="false" optionLabel="name"
+    <Listbox v-model="selectedTerm" :options="functionalTerms" :multiple="false" :filter="false" optionLabel="definition"
              listStyle="max-height:250px" style="width:30rem" filterPlaceholder="Search">
     </Listbox>
-    <Button label="Annuller" icon="pi pi-times" @click="closeCreateRoomModal" class="p-button-text"/>
-    <Button label="Opret" icon="pi pi-check" @click="onCreate" autofocus/>
+    <Button label="Annuller" icon="pi pi-times" @click="closeFunctionalityModal" class="p-button-text"/>
+    <Button label="Opret" icon="pi pi-check" @click="openCreateFS3DataModal" autofocus/>
+  </Dialog>
+  <!--FS3 Data-->
+  <Dialog v-model:visible="displayFS3Data" :breakpoints="{'960px': '75vw'} "
+          :style="{width: '50vw'}" rows="4" cols="30" >
+    <template #header>
+      <div class="flex justify-content-left align-items-center">
+        <h4 class="m-0">{{ selectedTerm.definition }}</h4>
+
+      </div>
+    </template>
+    <Card style="width: 25rem; margin-bottom: 2em">
+<!--      <template #title>-->
+<!--        <h5 class="m-0">{{ selectedTerm.definition }}</h5>-->
+<!--      </template>-->
+      <template #content>
+        <p>{{selectedTerm.options }}</p>
+      </template>
+    </Card>
+    <h4 class="m-0">Beskrivelse</h4>
+    <Textarea v-model="FS3TextareaData" :autoResize="true" rows="5" cols="30" />
+    <Button label="Annuller" icon="pi pi-times" @click="closeFunctionalityModal" class="p-button-text"/>
+    <Button label="Opret" icon="pi pi-check" @click="onCreateFS3Data" autofocus/>
   </Dialog>
 
   <Dialog header="Upload filer" v-model:visible="showUploadFilesDialog">
