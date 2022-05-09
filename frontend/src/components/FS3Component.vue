@@ -6,7 +6,7 @@ const props = defineProps({
 <template>
         <div>
           <div class="content">
-            <h3>{{ fs3Types.term }}</h3>
+          <!--<h3>{{ fs3Types.term }}</h3>-->
 
           </div>
         </div>
