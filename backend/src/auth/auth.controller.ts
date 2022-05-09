@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Inject, Post, Session } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Post,
+  Session,
+} from '@nestjs/common';
 import { ValidateUserInteractor } from 'src/domain/use_cases/user/validateUser.interactor';
 import { ApiTags } from '@nestjs/swagger';
 import { User } from 'src/entities/user.entity';
@@ -25,7 +34,16 @@ export class AuthController {
     @Session() session: Record<string, any>,
   ): Promise<UserDto> {
     const user = await this.login.validateUser(body);
-    if (!user || !user.id) return null;
+    if (!user || !user.id) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error:
+            'User was not found. Please check your credientials and try again.',
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
     session.loggedIn = user;
     return {
       username: user.username,

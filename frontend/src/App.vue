@@ -12,7 +12,7 @@ const authStore=AuthStore();
 </script>
 <template>
 <ConnectionStatusComponent />
-<div v-if="authStore.user&&authStore.user.username.length">
+<div v-if="authStore.user&&authStore.user.username">
   <div v-if="authStore.user.role=='superuser'">
     <AdminMenuComponent />
   </div>
