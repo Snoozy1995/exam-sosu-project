@@ -12,12 +12,11 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import RelativeTime from 'dayjs/plugin/relativeTime' // import plugin
 import 'dayjs/locale/da';
-dayjs.extend(RelativeTime);
-dayjs.locale('da');
-
 import FilterCitizenComponent from "./teacher/FilterCitizenComponent.vue";
 import {Fs3Service} from "../services/fs3.service";
 import {FS3} from "../models/fs3";
+dayjs.extend(RelativeTime);
+dayjs.locale('da');
 const citizenService=new CitizenService();
 const citizen:Ref<Citizen|undefined>=ref(undefined); //Edit this citizen to save
 let paramId:any; // the current id visiting /citizen/paramId
@@ -285,7 +284,7 @@ export default {
     <Button label="Opret" icon="pi pi-check" @click="openCreateFS3DataModal" autofocus/>
   </Dialog>
   <!--FS3 Data-->
-  <Dialog v-model:visible="displayFS3Data" :breakpoints="{'960px': '75vw'} "
+  <Dialog v-if="selectedTerm" v-model:visible="displayFS3Data" :breakpoints="{'960px': '75vw'} "
           :style="{width: '50vw'}" rows="4" cols="30" >
     <template #header>
       <div class="flex justify-content-left align-items-center">
