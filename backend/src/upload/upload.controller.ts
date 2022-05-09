@@ -7,7 +7,6 @@ import {
 } from '@nestjs/common';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
-import * as mime from 'mime';
 import { diskStorage } from 'multer';
 import * as path from 'path';
 import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';
