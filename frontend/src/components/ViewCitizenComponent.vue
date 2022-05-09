@@ -11,6 +11,7 @@ import { Citizen } from "../models/citizen";
 import Inplace from 'primevue/inplace';
 import { onBeforeRouteUpdate } from 'vue-router';
 import axios from 'axios';
+import FilterCitizenComponent from "./teacher/FilterCitizenComponent.vue";
 const citizenService=new CitizenService();
 const citizen:Ref<Citizen|undefined>=ref(undefined); //Edit this citizen to save
 let paramId:any; // the current id visiting /citizen/paramId
@@ -100,7 +101,9 @@ export default {
 
 
 <template>
+  <FilterCitizenComponent></FilterCitizenComponent>
   <ConfirmPopup></ConfirmPopup>
+
   <router-link :to="{path:'/citizen/'+citizen.parent.id}" v-if="citizen&&citizen.parent">
     <Button v-bind:label=parentLabel icon="pi pi-arrow-up-left" class='p-button-sm'>
     </Button>
@@ -173,13 +176,16 @@ export default {
         </div>
 
       </li>
-      <Accordion>
-        <AccordionTab v-for="type in fs3Terms" :header="type.term">
-          <p>{{ type.term }}</p>
+      <li>
+        <Accordion>
+          <AccordionTab v-for="type in fs3Terms" :header="type.term">
+            <p>{{ type.term }}</p>
 
-          <Button class="m-1" @click="openCreateRoomModal" label="Ny" icon="pi pi-external-link"/>
-        </AccordionTab>
-      </Accordion>
+            <Button class="m-1" @click="openCreateRoomModal" label="Ny" icon="pi pi-external-link"/>
+          </AccordionTab>
+        </Accordion>
+      </li>
+
     </ul>
     <Button style="margin-top:20px;" v-on:click="()=>{showUploadFilesDialog=true}">Upload dokumenter</Button>
     <Button class="w-full" v-on:click="save()" style="margin-top:25px;">Gem ændrede oplysninger</Button>

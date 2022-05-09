@@ -20,6 +20,8 @@ import Dialog from "primevue/dialog";
 import Listbox from "primevue/listbox";
 import Tag from "primevue/tag";
 import axios from 'axios';
+import Column from "primevue/column";
+import DataTable from "primevue/datatable";
 
 const app=createApp(App);
 
@@ -45,6 +47,8 @@ app.component('AccordionTab',AccordionTab);
 app.component("Dialog", Dialog);
 app.component("Listbox", Listbox);
 app.component("Tag",Tag);
+app.component("Column",Column);
+app.component("DataTable",DataTable);
 app.directive('tooltip', Tooltip);
 
 function host(){
