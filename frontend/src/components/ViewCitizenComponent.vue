@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import ConfirmPopup from 'primevue/confirmpopup';
-import Tag from 'primevue/tag';
 import { Ref, ref} from "vue";
 import {onMounted} from "vue";
 import {CitizenService} from '../services/citizen.service';
