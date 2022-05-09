@@ -2,6 +2,7 @@
 import ConfirmPopup from 'primevue/confirmpopup';
 import { Ref, ref} from "vue";
 import {onMounted} from "vue";
+import FileUpload from 'primevue/fileupload';
 import {CitizenService} from '../services/citizen.service';
 import {FS3TermService} from "../services/fs3Term.service";
 import {FS3Term} from "../models/fs3Term";
@@ -9,9 +10,11 @@ import Router from "../router";
 import { Citizen } from "../models/citizen";
 import Inplace from 'primevue/inplace';
 import { onBeforeRouteUpdate } from 'vue-router';
+import httpClient from '../services/http.client';
 const citizenService=new CitizenService();
 const citizen:Ref<Citizen|undefined>=ref(undefined); //Edit this citizen to save
 let paramId:any; // the current id visiting /citizen/paramId
+const showUploadFilesDialog=ref(false);
 const fs3TermsService: FS3TermService = new FS3TermService();
 const displayResponsive = ref(false);
 const inputQuery = ref("");
@@ -67,6 +70,15 @@ function save(){
     citizen.value=req.data;
   });
 }
+function myUploader(event:any){
+  var formData = new FormData();
+  for(let file of event.files){ formData.append('file',file); }
+  httpClient.post('/upload',formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}
 </script>
 <script lang="ts">
 export default {
@@ -95,7 +107,7 @@ export default {
     <Button v-bind:label=parentLabel icon="pi pi-arrow-up-left" class='p-button-sm'>
     </Button>
   </router-link>
-  <div class="surface-section w-30rem" v-if="citizen">
+  <div class="surface-section" style="padding:15px;" v-if="citizen">
     <div class="text-center py-4"><span class="p-buttonset"><Button class="p-button-sm p-button-info">Brug til opgave/Giv til student</Button><Button class="p-button-sm p-button-help" v-on:click="cloneConfirm($event)">Lav en kopi af denne borger</Button></span></div>
     <div class="font-medium text-3xl text-900 mb-3">Borger information:</div>
     <div class="text-500 mb-5">Her kan du lave ændringer på borger.</div>
@@ -171,10 +183,11 @@ export default {
         </AccordionTab>
       </Accordion>
     </ul>
-    <div class="text-center">
-      <Button class="w-full" v-on:click="save()" style="margin-top:25px;">Gem ændrede oplysninger</Button>
-      <Tag severity="info" style='margin-top:25px;margin-bottom:10px;'>Sidst redigeret: {{new Date(citizen.updated_at).toLocaleDateString()}} - {{new Date(citizen.updated_at).toLocaleTimeString()}} </Tag>
-    </div>
+    <Button style="margin-top:20px;" v-on:click="()=>{showUploadFilesDialog=true}">Upload dokumenter</Button>
+    <Button class="w-full" v-on:click="save()" style="margin-top:25px;">Gem ændrede oplysninger</Button>
+  </div>
+  <div v-if="citizen" class="text-center">
+    <Tag severity="info" style='margin-top:25px;margin-bottom:10px;'>Sidst redigeret: {{new Date(citizen.updated_at).toLocaleDateString()}} - {{new Date(citizen.updated_at).toLocaleTimeString()}} </Tag>
   </div>
 
 
@@ -205,6 +218,9 @@ export default {
     <Button label="Opret" icon="pi pi-check" @click="onCreate" autofocus/>
   </Dialog>
 
+  <Dialog header="Upload filer" v-model:visible="showUploadFilesDialog">
+    <FileUpload :customUpload="true" :maxFileSize="10000000" @uploader="myUploader" :multiple="true" />
+  </Dialog>
 </template>
 <style>
 .p-inplace-content{
