@@ -66,7 +66,14 @@ export class AuthController {
   async getMyUser(@Session() session: Record<string, any>): Promise<UserDto> {
     if (!session.loggedIn || !session.loggedIn.id) return null;
     const user = await this.get.getMyUser(session.loggedIn.id);
-    if (!user || !user.id) return null;
+    if (!user || !user.id)
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'Session was not found. Please login again.',
+        },
+        HttpStatus.NOT_FOUND,
+      );
     return {
       username: user.username,
       role: user.role,
@@ -81,7 +88,9 @@ export class AuthController {
 
   @Get('/logout')
   logout(@Session() session: Record<string, any>) {
-    if (!session.loggedIn || !session.loggedIn.id) return null;
+    if (!session.loggedIn || !session.loggedIn.id)
+      return HttpStatus.BAD_REQUEST;
     session.loggedIn = undefined;
+    return HttpStatus.ACCEPTED;
   }
 }
