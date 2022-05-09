@@ -22,6 +22,8 @@ services:
     container_name: "${API_CONT_NAME}"
     ports:
       - "${API_PORT}:3000"
+    volumes:
+      - ./ormconfig.json:~/ormconfig.json
 # K6 stuff below here
   influxdb:
     container_name: "${INFLUXDB_CONT_NAME}"
