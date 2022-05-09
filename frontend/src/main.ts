@@ -20,6 +20,10 @@ import Dialog from "primevue/dialog";
 import Listbox from "primevue/listbox";
 import Tag from "primevue/tag";
 import axios from 'axios';
+import Column from "primevue/column";
+import DataTable from "primevue/datatable";
+import Textarea from "primevue/textarea";
+import Card from "primevue/card";
 
 const app=createApp(App);
 
@@ -45,13 +49,16 @@ app.component('AccordionTab',AccordionTab);
 app.component("Dialog", Dialog);
 app.component("Listbox", Listbox);
 app.component("Tag",Tag);
+app.component("Column",Column);
+app.component("DataTable",DataTable);
+app.component("Textarea",Textarea);
+app.component("Card",Card);
 app.directive('tooltip', Tooltip);
 
 function host(){
   app.use(createPinia())
-  app.use(Router);
-  app.use(PrimeVue);
-  app.use(ConfirmationService);
+app.use(Router);
+app.use(PrimeVue);
+app.use(ConfirmationService);
   app.mount("#app");
-  console.log(axios.defaults.baseURL);
 }
