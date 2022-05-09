@@ -23,7 +23,7 @@ services:
     ports:
       - "${API_PORT}:3000"
     volumes:
-      - ./ormconfig.json:/typeorm_config/ormconfig.json
+      - /typeorm_config/ormconfig.json:/ormconfig.json
 # K6 stuff below here
   influxdb:
     container_name: "${INFLUXDB_CONT_NAME}"
