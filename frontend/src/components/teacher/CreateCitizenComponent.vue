@@ -23,7 +23,7 @@ function create(){ //@todo
 }
 </script>
 <template>
-  <h2>Ny borger</h2>
+  <h2>Nyt borger template</h2>
   <label for="firstName" class="block text-900 font-medium mb-2">Fornavn</label>
   <InputText id="firstName" v-model="citizen.firstName" type="text" class="w-full mb-3" />
 

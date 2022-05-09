@@ -6,5 +6,6 @@ export const SocketStore = defineStore({
     socket: io("http://localhost:3000")
   }),
   actions:{
+    
   }
 });

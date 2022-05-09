@@ -63,10 +63,6 @@ export class Citizen {
   contactPersons: ContactPerson[];
 
   @ApiProperty({ type: () => Citizen, required: false })
-  @ManyToOne(() => Citizen)
-  copyOf: Citizen;
-
-  @ApiProperty({ type: () => Citizen, required: false })
   @ManyToOne(() => Citizen, (citizen) => citizen.children)
   parent: Citizen;
 
@@ -88,8 +84,11 @@ export class Citizen {
   @ManyToOne(() => WorkGroup, (group) => group.citizens)
   group: WorkGroup;
 
+  @Column({ nullable: true })
+  schoolName: string;
   @ApiProperty({ type: () => School, required: false })
   @ManyToOne(() => School, (school) => school.citizens)
+  @JoinColumn({ name: 'schoolName' })
   school: School;
 
   @ApiProperty({ type: () => [Activity], required: false })

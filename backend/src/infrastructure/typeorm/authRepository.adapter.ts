@@ -15,7 +15,7 @@ export class AuthRepositoryAdapter implements AuthRepository {
   }
 
   getUser(id: number): Promise<User> {
-    return this.userRepo.findOne({ id: id });
+    return this.userRepo.findOne({ id: id }, { relations: ['citizens'] });
   }
 
   async validateUser(auth: AuthDto): Promise<User> {

@@ -30,6 +30,9 @@ const authStore=AuthStore();
       <h4 class="text-700">Quicklinks</h4>
       <AdminLeftSideView />
     </div>
+    <div v-if="authStore.user.role=='teacher'">
+    
+    </div>
   </div>
   <div class="col-10 col-offset-1 lg:col-4  lg:col-offset-0">
     <RouterView />

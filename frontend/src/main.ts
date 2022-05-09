@@ -7,6 +7,7 @@ import Router from './router';
 import PrimeVue from 'primevue/config';
 import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css';
+import ConfirmationService from 'primevue/confirmationservice';
 
 
 import InputText from 'primevue/inputtext';
@@ -32,5 +33,6 @@ app.component("Listbox", Listbox);
 app.use(createPinia())
 app.use(Router);
 app.use(PrimeVue);
+app.use(ConfirmationService);
 
 app.mount('#app');
