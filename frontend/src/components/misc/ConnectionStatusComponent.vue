@@ -20,10 +20,10 @@ socketStore.socket.on("connect",()=>{
   firstConnect.value=false;
 });
 socketStore.socket.on('connect_error',()=>{
-  show.value=true;
+  //show.value=true;
 })
 socketStore.socket.on('disconnect',()=>{
-  show.value=true;
+  //show.value=true;
 });
 </script>
 <template>

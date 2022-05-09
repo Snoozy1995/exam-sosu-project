@@ -33,7 +33,7 @@ pipeline{
                 }
             }
         }
-        stage("Unit test coverage"){
+        /*stage("Unit test coverage"){
             when {
                 changeset "backend/**"
             }
@@ -50,7 +50,7 @@ pipeline{
                     )
                 }
             }
-        }
+        }*/
         stage("Clean containers") {
             steps {
                 script {
