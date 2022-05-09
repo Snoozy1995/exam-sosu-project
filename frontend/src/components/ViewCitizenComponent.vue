@@ -1,9 +1,18 @@
 <script setup lang="ts">
-import {ref} from "vue";
+import ConfirmPopup from 'primevue/confirmpopup';
+import Tag from 'primevue/tag';
+import { Ref, ref} from "vue";
 import {onMounted} from "vue";
+import {CitizenService} from '../services/citizen.service';
 import {FS3TermService} from "../services/fs3Term.service";
 import {FS3Term} from "../models/fs3Term";
-
+import Router from "../router";
+import { Citizen } from "../models/citizen";
+import Inplace from 'primevue/inplace';
+import { onBeforeRouteUpdate } from 'vue-router';
+const citizenService=new CitizenService();
+const citizen:Ref<Citizen|undefined>=ref(undefined); //Edit this citizen to save
+let paramId:any; // the current id visiting /citizen/paramId
 const fs3TermsService: FS3TermService = new FS3TermService();
 const displayResponsive = ref(false);
 const inputQuery = ref("");
@@ -32,41 +41,111 @@ function getFS3Terms() {
 }
 onMounted(() => {
   getFS3Terms();
+  paramId=Router.currentRoute.value.params.id;
+  fetchCitizen();
 })
+
+onBeforeRouteUpdate(update=>{
+  if(update.name=="ViewCitizen"){
+    paramId=update.params.id;
+    fetchCitizen();
+  }
+});
+
+const parentLabel=ref('');
+function fetchCitizen(){
+  citizenService.getCitizen(paramId).then(_citizen=>{
+    if(!_citizen||!_citizen.data) return; // Something went wrong, most likely a citizen with said id doesnt exist, or permission denied, we should probably redirect either way. @todo
+    citizen.value=_citizen.data;
+    if(citizen.value){
+      parentLabel.value="Kopieret fra borger template [ID: "+citizen.value.parent.id+"]";
+    }
+  });
+}
+function save(){
+  citizenService.saveCitizen(citizen.value).then((req)=>{
+    if(req.status!=201) return;
+    citizen.value=req.data;
+  });
+}
+</script>
+<script lang="ts">
+export default {
+	methods: {
+    cloneConfirm(event:any) {
+      this.$confirm.require({
+        target: event.currentTarget,
+        message: 'Er du sikker på du vil kopier denne borger?',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          new CitizenService().cloneCitizen(Router.currentRoute.value.params.id).then((res)=>{
+            if(res.status!=200) return; // hmpf
+            Router.push('/citizen/'+res.data.id);
+          })
+        },
+      });
+    },
+  }
+}
 </script>
 
 
 <template>
-  <div class="surface-section w-30rem">
+  <ConfirmPopup></ConfirmPopup>
+  <router-link :to="{path:'/citizen/'+citizen.parent.id}" v-if="citizen&&citizen.parent">
+    <Button v-bind:label=parentLabel icon="pi pi-arrow-up-left" class='p-button-sm'>
+    </Button>
+  </router-link>
+  <div class="surface-section w-30rem" v-if="citizen">
+    <div class="text-center py-4"><span class="p-buttonset"><Button class="p-button-sm p-button-info">Brug til opgave/Giv til student</Button><Button class="p-button-sm p-button-help" v-on:click="cloneConfirm($event)">Lav en kopi af denne borger</Button></span></div>
     <div class="font-medium text-3xl text-900 mb-3">Borger information:</div>
     <div class="text-500 mb-5">Her kan du lave ændringer på borger.</div>
     <ul class="list-none p-0 m-0 min-w-full">
-      <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
-        <div class="text-500 w-6 md:w-2 font-medium">Fornavn</div>
-        <div class="p-5 text-900 w-full md:w-8 md:flex-order-10 flex-order-0 p-2">Nicolai</div>
-        <div class="w-6 md:w-2 flex justify-content-end">
-          <Button label="Edit" icon="pi pi-pencil" class="p-button-text"></Button>
-        </div>
+      <!--Firstname-->
+      <li class="border-top-1 surface-border px-2">
+        <Inplace :closable="true">
+          <template #display>
+              <div class="flex align-items-center flex-wrap">
+                <div class="text-500 w-6 md:w-2 font-medium">Fornavn</div>
+                <div class="text-900 w-full md:w-8 md:flex-order-10 flex-order-0 p-2">{{citizen.firstName}}</div>
+                <div class="w-6 md:w-2 flex justify-content-end">
+                  <Button label="Edit" icon="pi pi-pencil" class="p-button-text"></Button>
+                </div>
+              </div>
+          </template>
+          <template #content>
+            <span class="text-500 font-medium" style="margin-right:25px;">Fornavn</span>
+            <InputText type="text" v-model="citizen.firstName"></InputText>
+          </template>
+        </Inplace>
       </li>
-      <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
-        <div class="text-500 w-6 md:w-2 font-medium">Efternavn</div>
-        <div class="p-5 text-900 w-full md:w-8 md:flex-order-10 flex-order-0 p-2">Hansen</div>
-        <!--            <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">-->
-        <!--                <Chip label="Crime" class="mr-2">dsadas</Chip>-->
-        <!--                <Chip label="Drama" class="mr-2">dsadas</Chip>-->
-        <!--                <Chip label="Thriller"></Chip>-->
-        <!--            </div>-->
-        <div class="w-6 md:w-2 flex justify-content-end">
-          <Button label="Edit" icon="pi pi-pencil" class="p-button-text"></Button>
-        </div>
+      <!--Lastname-->
+      <li class="border-top-1 surface-border px-2">
+        <Inplace :closable="true">
+          <template #display>
+              <div class="flex align-items-center flex-wrap">
+                <div class="text-500 w-6 md:w-2 font-medium">Efternavn</div>
+                <div class="text-900 w-full md:w-8 md:flex-order-10 flex-order-0 p-2">{{citizen.lastName}}</div>
+                <div class="w-6 md:w-2 flex justify-content-end">
+                  <Button label="Edit" icon="pi pi-pencil" class="p-button-text"></Button>
+                </div>
+              </div>
+          </template>
+          <template #content>
+            <span class="text-500 font-medium" style="margin-right:25px;">Efternavn</span>
+            <InputText type="text" v-model="citizen.lastName"></InputText>
+          </template>
+        </Inplace>
       </li>
+      <!--Birthday-->
       <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
         <div class="text-500 w-6 md:w-2 font-meditext-centerum">Fødselsdag</div>
-        <div class="p-5 text-900 w-full md:w-8 md:flex-order-0 flex-order-1 p-2">Michael Mann</div>
+        <div class="p-5 text-900 w-full md:w-8 md:flex-order-0 flex-order-1 p-2">{{citizen.birthday}}</div>
         <div class="w-6 md:w-2 flex justify-content-end">
           <Button label="Edit" icon="pi pi-pencil" class="p-button-text"></Button>
         </div>
       </li>
+      <!--Medicin-->
       <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
         <div class="text-500 w-6 md:w-2 font-medium">Medicin</div>
         <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">Robert De Niro, Al Pacino</div>
@@ -93,10 +172,13 @@ onMounted(() => {
         </AccordionTab>
       </Accordion>
     </ul>
+    <div class="text-center">
+      <Button class="w-full" v-on:click="save()" style="margin-top:25px;">Gem ændrede oplysninger</Button>
+      <Tag severity="info" style='margin-top:25px;margin-bottom:10px;'>Sidst redigeret: {{new Date(citizen.updated_at).toLocaleDateString()}} - {{new Date(citizen.updated_at).toLocaleTimeString()}} </Tag>
+    </div>
   </div>
-<div>
 
-</div>
+
   <Dialog header="Generelle oplysninger" v-model:visible="displayResponsive" :breakpoints="{'960px': '75vw'} "
           :style="{width: '50vw'}">
     <Listbox v-model="selectedRoom" :options="rooms" :multiple="false" :filter="false" optionLabel="name"
@@ -125,3 +207,12 @@ onMounted(() => {
   </Dialog>
 
 </template>
+<style>
+.p-inplace-content{
+  display:inline-block !important;
+  padding-top:1rem;padding-bottom:1rem;
+}
+.p-inplace .p-inplace-display:not(.p-disabled):hover{
+  background:none;
+}
+</style>

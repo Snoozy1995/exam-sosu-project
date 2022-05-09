@@ -6,6 +6,7 @@ import {
   Inject,
   Param,
   Post,
+  Session,
   UseGuards,
 } from '@nestjs/common';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
@@ -37,7 +38,12 @@ export class CitizensController {
 
   @Post()
   //@Roles(Role.Teacher)
-  save(@Body() body: Citizen): Promise<Citizen> {
+  save(
+    @Body() body: Citizen,
+    @Session() session: Record<string, any>,
+  ): Promise<Citizen> {
+    body.user = session.loggedIn;
+    body.schoolName = body.user.schoolName;
     return this.saveCitizen.saveCitizen(body);
   }
 

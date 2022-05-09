@@ -1,4 +1,7 @@
 import { defineStore } from "pinia";
+import { Citizen } from "../models/citizen";
+import { School } from "../models/school";
+import { UploadedDocument } from "../models/uploadedDocument";
 import Router from "../router";
 import { AuthService } from "../services/auth.service";
 const authService: AuthService = new AuthService();
@@ -10,10 +13,10 @@ export const AuthStore = defineStore({
       role:'',
       created_at:'',
       updated_at:'',
-      files: [],
-      school: {},
+      files: [] as UploadedDocument[],
+      school: {} as School|{},
       classes: [],
-      citizens: [],
+      citizens: [] as Citizen[],
     },
   }),
   actions:{
@@ -32,6 +35,12 @@ export const AuthStore = defineStore({
     async getProfile() {
       let res=await authService.getProfile();
       this.user=res.data;
+      if(this.user.citizens&&this.user.citizens.length){
+        this.user.citizens.sort((a,b)=>{
+          return (new Date(b.updated_at).getTime()-new Date(a.updated_at).getTime());
+        });
+      }
+      //Filter children
       return this.user;
     },
     logout(){

@@ -17,23 +17,16 @@ const Router = createRouter({
       path: "/",
       name: "home",
       component: HomeComponent,
-      meta: {
-        requiresLogin: true,
-      },
     },
     {
       path:'/school/',
       component:ModuleView,
-      meta: {
-        requiresLogin: true,
-      },
       children:[
         {
           path: "create",
           name: "CreateSchool",
           component: CreateSchoolComponent,
           meta: {
-            requiresLogin: true,
             breadcrumb:[{label: 'Ny skole', to: '/school/create'}]
           },
         },
@@ -42,7 +35,6 @@ const Router = createRouter({
           name: "ListSchool",
           component: AllSchoolsListComponent,
           meta: {
-            requiresLogin: true,
             breadcrumb:[{label: 'Alle skoler', to: '/school/list'}]
           },
         },
@@ -51,16 +43,12 @@ const Router = createRouter({
     {
       path:'/user/',
       component:ModuleView,
-      meta: {
-        requiresLogin: true,
-      },
       children:[
         {
           path: "create",
           name: "CreateUser",
           component: CreateUserComponent,
           meta: {
-            requiresLogin: true,
             breadcrumb:[{label: 'Ny bruger', to: '/user/create'}]
           },
         },
@@ -69,7 +57,6 @@ const Router = createRouter({
           name: "SearchUser",
           component: UserSearchComponent,
           meta: {
-            requiresLogin: true,
             breadcrumb:[{label: 'Søg bruger', to: '/user/search'}]
           },
         }
@@ -78,16 +65,12 @@ const Router = createRouter({
     {
       path:'/citizen/',
       component:ModuleView,
-      meta: {
-        requiresLogin: true,
-      },
       children:[
         {
           path: "create",
           name: "CreateCitizen",
           component: CreateCitizen,
           meta: {
-            requiresLogin: true,
             breadcrumb:[{label: 'Ny borger', to: '/citizen/create'}]
           },
         },
@@ -95,26 +78,18 @@ const Router = createRouter({
           path: ":id",
           name: "ViewCitizen",
           component:ViewCitizenComponent,
-          meta: {
-            requiresLogin: true,
-            breadcrumb:[{label: 'Borger', to: '/citizen/'}]
-          },
         },
       ],
     },
     {
       path:'/case/',
       component:ModuleView,
-      meta: {
-        requiresLogin: true,
-      },
       children:[
         {
           path: "create",
           name: "CreateCase",
           component: CreateCaseComponent,
           meta: {
-            requiresLogin: true,
             breadcrumb:[{label: 'Ny case', to: '/case/create'}]
           },
         },
@@ -123,7 +98,6 @@ const Router = createRouter({
           name: "ViewCase",
           component:  ViewCaseComponent,
           meta: {
-            requiresLogin: true,
             breadcrumb:[{label: 'Case', to: '/case/'}]
           },
         },
@@ -132,6 +106,7 @@ const Router = createRouter({
     {
       path: "/login",
       name: "Login",
+      meta: {public:true},
       component: LoginComponent,
     },
     /*{
@@ -147,22 +122,26 @@ import { BreadcrumbStore } from "./stores/breadcrumbStore";
 Router.beforeEach((to, from, next) => {
   if(to.name=="Login"&&from.name=="Login"){ next(); return; }
   BreadcrumbStore().set(to.meta.breadcrumb);
-  let authStore=AuthStore();
-  if(authStore.user&&authStore.user.username.length){
-    next();
-    return;
+  
+  if(to.name=="ViewCitizen"){
+    BreadcrumbStore().set([{label:'Borger '+to.params.id,to:'/citizen/'+to.params.id}]);
   }
-  authStore.getProfile().then(()=>{
-    if (to.matched.some((record) => record.meta.requiresLogin)) {
+  let authStore=AuthStore();
+  //if(authStore.user&&authStore.user.username.length){
+  //  next();
+  //  return;
+  //}
+  if (!to.matched.some((record) => record.meta.public)) {
+    authStore.getProfile().then(()=>{
       if (!authStore.user||authStore.user.username.length <= 0) {
         next({ name: "Login" });
       } else {
         next();
       }
-    } else {
-      next();
-    }
-  }).catch(()=>{ });
+    }).catch((e)=>{ console.log(e); });
+  }else{
+    next();
+  }
 });
 
 export default Router;

@@ -5,10 +5,11 @@ import { CityService } from '../../services/city.service'; //@todo move to store
 import { AddressService } from '../../services/address.service'; //@todo move to store
 
 const store=AddressStore();
+const cityService=new CityService();
 
 function postCodeLookup(){
   if(store.postCode.length!=4) return;
-  new CityService().query(store.postCode).then(_city=>{
+  cityService.query(store.postCode).then(_city=>{
     if(!_city.data||!_city.data.length) return;
     _city=_city.data[0];
     store.city=_city.navn;
@@ -18,7 +19,7 @@ function postCodeLookup(){
 
 function autoCompleteCity(event: AutoCompleteItemSelectEvent){
   store.city=event.value.value;
-  new CityService().query(event.value.value).then(_city=>{
+  cityService.query(event.value.value).then(_city=>{
     if(!_city.data||!_city.data.length) return;
     _city=_city.data[0];
     store.postCode=_city.nr;
@@ -32,16 +33,12 @@ function autoCompleteAddress(event: AutoCompleteItemSelectEvent){
   postCodeLookup();
 }
 
-function search(){
-  new CityService().autoComplete(store.city).then(_city=>{
-    store.suggestions=_city;
-  });
+async function search(){
+  store.suggestions=await cityService.autoComplete(store.city);
 }
 
-function searchStreet(){
-  new AddressService().autoComplete(store.street).then(_city=>{
-    store.streetsuggestions=_city;
-  });
+async function searchStreet(){
+  store.streetsuggestions=await new AddressService().autoComplete(store.street);
 }
 </script>
 <template>

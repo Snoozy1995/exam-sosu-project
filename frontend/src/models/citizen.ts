@@ -10,7 +10,7 @@ export interface Citizen {
   id: number;
   firstName: string;
   lastName: string;
-  birthday: Date;
+  birthday: string;
   civilStatus: string;
   address: Address;
   files: UploadedDocument[];
@@ -24,6 +24,6 @@ export interface Citizen {
   //group: WorkGroup;
   school: School;
   //activities: Activity[];
-  created_at: Date;
-  updated_at: Date;
+  created_at: string;
+  updated_at: string;
 }
