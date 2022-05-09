@@ -39,7 +39,7 @@ pipeline{
             }
             steps{
                 dir("backend"){
-                    sh "npm run test:cov"
+                    sh "npm run test:cov --passWithNoTests"
                     clover(cloverReportDir: 'coverage', cloverReportFileName: 'clover.xml',
                         // optional, default is: method=70, conditional=80, statement=80
                         healthyTarget: [methodCoverage: 70, conditionalCoverage: 80, statementCoverage: 80],
