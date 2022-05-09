@@ -4,22 +4,55 @@ import {FilterMatchMode,FilterService} from 'primevue/api';
 import {onMounted} from "vue";
 import {CitizenService} from "../../services/citizen.service";
 import {Citizen} from "../../models/citizen";
-const selectedItem = ref();
 
 
 const EQUALS_FILTER = ref('Fornavn');
-// const LASTNAME_FILTER = ref('Efternavn');
+
 let citizens = ref<Citizen[]>([
 
 ]);
+
+let selectedCitizen = ref<Citizen>();
 const citizenService = ref(new CitizenService());
 const filters = ref({
-  'firstName': {value: null, matchMode: EQUALS_FILTER.value},
-  'lastName': {value: null, matchMode: EQUALS_FILTER.value},
+  // 'firstName': {value: null, matchMode: EQUALS_FILTER.value},
+  // 'lastName': {value: null, matchMode: EQUALS_FILTER.value},
+
+  global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  firstName: {
+
+    constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }],
+  },
+});
+const filters = ref({
+  global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  name: {
+    operator: FilterOperator.AND,
+    constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }],
+  },
+  "country.name": {
+    operator: FilterOperator.AND,
+    constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }],
+  },
+  representative: { value: null, matchMode: FilterMatchMode.IN },
+  date: {
+    operator: FilterOperator.AND,
+    constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }],
+  },
+  balance: {
+    operator: FilterOperator.AND,
+    constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }],
+  },
+  status: {
+    operator: FilterOperator.OR,
+    constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }],
+  },
+  activity: { value: null, matchMode: FilterMatchMode.BETWEEN },
+  verified: { value: null, matchMode: FilterMatchMode.EQUALS },
 });
 const matchModeOptions = ref([
-  {label: 'Fornavn', value: EQUALS_FILTER.value},
-  {label: 'Efternavn', value: EQUALS_FILTER.value}
+  {label: 'Fornavn', value: FilterMatchMode.EQUALS},
+
 ]);
 const loading = ref(true);
 
@@ -65,22 +98,47 @@ onMounted(() => {
   <div>
     <div>
       <div class="card">
-        <DataTable :value="citizens" :paginator="true" :rows="10" responsiveLayout="scroll"
-                   dataKey="id" v-model:filters="filters" filterDisplay="row" :loading="loading">
+        <DataTable :value="citizens" v-model:selection="selectedCitizen" selectionMode="single" :paginator="true" :rows="10" responsiveLayout="scroll"
+                   dataKey="id" v-model:filters="filters" filterDisplay="row" :loading="loading" class="p-datatable-sm">
           <template #empty>
             Ingen borgere fundet.
           </template>
           <template #loading>
             Indlæser borger data.. Vent venligst.
           </template>
-          <Column field="firstName" header="Find borger:" :filterMatchModeOptions="matchModeOptions">
+          <template #header>
+            <h3 class="m-0">Borgere</h3>
+          </template>
+
+
+<!--          <Column field="name" header="Name" sortable style="min-width: 14rem">-->
+<!--            <template #body="{data}">-->
+<!--              {{data.name}}-->
+<!--            </template>-->
+<!--            <template #filter="{filterModel}">-->
+<!--              <InputText type="text" v-model="filterModel.value" class="p-column-filter" placeholder="Search by name"/>-->
+<!--            </template>-->
+<!--          </Column>-->
+
+
+          <Column field="firstName" header="Fornavn:" sortable :filterMatchModeOptions="matchModeOptions">
             <template #body="{data}">
               {{data.firstName}}
             </template>
             <template #filter="{filterModel,filterCallback}">
-              <InputText type="text" v-model="filterModel.value" @input="filterCallback()" class="p-column-filter" :placeholder="`Søg på: ${filterModel.matchMode}`"/>
+              <InputText type="text" v-model="filterModel.value" @input="filterCallback()" class="p-column-filter" :placeholder="`Fornavn:`"/>
             </template>
           </Column>
+          <Column field="lastName" header="Efternavn:" sortable :filterMatchModeOptions="matchModeOptions">
+            <template #body="{data}">
+              {{data.lastName}}
+            </template>
+            <template #filter="{filterModel,filterCallback}">
+              <InputText type="text" v-model="filterModel.value" @input="filterCallback()" class="p-column-filter" :placeholder="`Efternavn:`"/>
+            </template>
+          </Column>
+
+          <Column field="birthday" header="Fødselsdag:" sortable></Column>
 
         </DataTable>
       </div>
