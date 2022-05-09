@@ -15,7 +15,7 @@ function login(){
   if(!user.username.length){
     fail=true;
     if (bg != null) bg.setAttribute("class","p-inputtext p-component w-full mb-3 p-invalid");
-    failUsername.value="Username is required!";
+    failUsername.value="Brugernavn er påkrævet!";
   }else{
     if (bg != null) bg.setAttribute("class","p-inputtext p-component w-full mb-3");
     failUsername.value="";
@@ -25,7 +25,7 @@ function login(){
   if(!user.password.length){
     fail=true;
     if (bg1 != null) bg1.setAttribute("class","p-inputtext p-component w-full mb-3 p-invalid");
-    failPassword.value="Password is required!";
+    failPassword.value="Adgangskode er påkrævet!";
   }else{
     if (bg1 != null) bg1.setAttribute("class","p-inputtext p-component w-full mb-3");
     failPassword.value="";
