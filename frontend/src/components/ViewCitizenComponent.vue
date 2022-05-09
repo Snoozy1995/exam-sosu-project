@@ -74,7 +74,7 @@ function save(){
 }
 function myUploader(event:any){
   var formData = new FormData();
-  for(let file of event.files){ formData.append('file',file); }
+  for(let file of event.files){ formData.append('file',file); formData.append('citizen',paramId); }
   axios.post('/upload',formData, { headers: { 'Content-Type': 'multipart/form-data' } })
 }
 </script>

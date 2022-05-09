@@ -20,7 +20,7 @@ export class UploadedDocument {
 
   @ApiProperty()
   @Column()
-  location: string;
+  filename: string;
 
   @ApiProperty()
   @ManyToOne(() => User, (user) => user.files)
@@ -28,19 +28,15 @@ export class UploadedDocument {
 
   @ApiProperty()
   @Column()
-  timestamp: number;
+  size: number;
 
   //@ApiProperty({ type: () => [Citizen], required: false })
-  @ManyToMany(() => Citizen, (citizen) => citizen.files, {
-    cascade: true,
-  })
+  @ManyToMany(() => Citizen, (citizen) => citizen.files)
   @JoinTable()
   citizens: Citizen[];
 
   //@ApiProperty({ type: [Activity], required: false })
-  @ManyToMany(() => Activity, (activity) => activity.files, {
-    cascade: true,
-  })
+  @ManyToMany(() => Activity, (activity) => activity.files)
   @JoinTable()
   activities: Activity[];
 

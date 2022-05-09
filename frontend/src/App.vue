@@ -25,7 +25,7 @@ const authStore=AuthStore();
   <Breadcrumb :home="{icon: 'pi pi-home', to: '/'}" :model="BreadcrumbStore().$state.breadcrumb" style="margin-bottom:25px;border:0;border-radius:0;"  />
 </div>
 <div class="grid" id="mainGrid">
-  <div class="col-10 col-offset-1 lg:col-4 lg:col-offset-0">
+  <div class="col-10 col-offset-1 lg:col-3 lg:col-offset-0">
     <div v-if="authStore.user.role=='superuser'">
       <h4 class="text-700">Quicklinks</h4>
       <AdminLeftSideView />
@@ -34,10 +34,10 @@ const authStore=AuthStore();
     
     </div>
   </div>
-  <div class="col-10 col-offset-1 lg:col-4  lg:col-offset-0">
+  <div class="col-10 col-offset-1 lg:col-6  lg:col-offset-0">
     <RouterView />
   </div>
-  <div class="col-10 col-offset-1 lg:col-4  lg:col-offset-0">
+  <div class="col-10 col-offset-1 lg:col-3  lg:col-offset-0">
   </div>
 </div>
 <ThemeComponent />

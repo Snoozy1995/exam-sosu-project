@@ -49,8 +49,9 @@ app.directive('tooltip', Tooltip);
 
 function host(){
   app.use(createPinia())
-app.use(Router);
-app.use(PrimeVue);
-app.use(ConfirmationService);
+  app.use(Router);
+  app.use(PrimeVue);
+  app.use(ConfirmationService);
   app.mount("#app");
+  console.log(axios.defaults.baseURL);
 }
