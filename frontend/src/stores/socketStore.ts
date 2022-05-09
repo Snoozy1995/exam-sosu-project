@@ -4,7 +4,7 @@ import { io } from 'socket.io-client';
 export const SocketStore = defineStore({
   id: "socketStore",
   state: ()=>({
-    socket: io(axios.defaults.baseURL+"",{transports: ["websocket"]})
+    socket: io(axios.defaults.baseURL+"")
   }),
   actions:{
     
