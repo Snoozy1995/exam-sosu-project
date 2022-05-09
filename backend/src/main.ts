@@ -3,6 +3,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import * as session from 'express-session';
 import * as sessionStore from 'express-session-rsdb';
+import { WsAdapter } from '@nestjs/platform-ws';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -28,6 +29,7 @@ async function bootstrap() {
     credentials: true,
     exposedHeaders: ['set-cookie'],
   });
+  app.useWebSocketAdapter(new WsAdapter(app));
   app.use(
     session({
       secret: 'my-secret',
