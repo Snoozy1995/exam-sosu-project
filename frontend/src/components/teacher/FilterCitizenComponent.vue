@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {ref} from "@vue/runtime-dom";
-import {FilterMatchMode,FilterService} from 'primevue/api';
+import {FilterMatchMode, FilterOperator, FilterService} from 'primevue/api';
 import {onMounted} from "vue";
 import {CitizenService} from "../../services/citizen.service";
 import {Citizen} from "../../models/citizen";
@@ -15,16 +15,10 @@ let citizens = ref<Citizen[]>([
 let selectedCitizen = ref<Citizen>();
 const citizenService = ref(new CitizenService());
 const filters = ref({
-  // 'firstName': {value: null, matchMode: EQUALS_FILTER.value},
-  // 'lastName': {value: null, matchMode: EQUALS_FILTER.value},
-
-  global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  firstName: {
-
-    constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }],
-  },
+  'firstName': {value: null, matchMode: EQUALS_FILTER.value},
+  'lastName': {value: null, matchMode: EQUALS_FILTER.value},
 });
-const filters = ref({
+const filters2 = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   name: {
     operator: FilterOperator.AND,
@@ -120,16 +114,24 @@ onMounted(() => {
 <!--            </template>-->
 <!--          </Column>-->
 
+          <Column field="firstName" header="Name" sortable style="min-width: 14rem">
+            <template #body="{data}">
+              {{data.firstName}}
+            </template>
+            <template #filter="{filterModel}">
+              <InputText type="text" v-model="filterModel.value" class="p-column-filter" placeholder="Search by name"/>
+            </template>
+          </Column>
 
           <Column field="firstName" header="Fornavn:" sortable :filterMatchModeOptions="matchModeOptions">
             <template #body="{data}">
               {{data.firstName}}
             </template>
             <template #filter="{filterModel,filterCallback}">
-              <InputText type="text" v-model="filterModel.value" @input="filterCallback()" class="p-column-filter" :placeholder="`Fornavn:`"/>
+              <InputText type="text" v-model="filterModel.value" @input="filterCallback()" class="p-column-filter" :placeholder="`Fornavn: ${filterModel.matchMode}`"/>
             </template>
           </Column>
-          <Column field="lastName" header="Efternavn:" sortable :filterMatchModeOptions="matchModeOptions">
+          <Column field="lastName" header="Efternavn:" sortable :filterMatchModeOptions="matchModeOptions" >
             <template #body="{data}">
               {{data.lastName}}
             </template>
