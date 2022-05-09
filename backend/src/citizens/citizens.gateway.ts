@@ -10,9 +10,7 @@ import { SearchCitizenInteractor } from '../domain/use_cases/citizen/searchCitiz
 import { Citizen } from '../entities/citizen.entity';
 
 @WebSocketGateway({
-  cors: {
-    origin: '*',
-  },
+  cors: true,
 })
 export class CitizensGateway {
   constructor(
