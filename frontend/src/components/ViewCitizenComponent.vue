@@ -146,11 +146,8 @@ export default {
 <template>
   <FilterCitizenComponent></FilterCitizenComponent>
   <ConfirmPopup></ConfirmPopup>
-
-  <router-link :to="{path:'/citizen/'+citizen.parent.id}" v-if="citizen&&citizen.parent">
-    <Button v-bind:label=parentLabel icon="pi pi-arrow-up-left" class='p-button-sm'>
-    </Button>
-  </router-link>
+  
+  <router-link :to="{path:'/citizen/'+citizen.parent.id}" v-if="citizen&&citizen.parent"><Button v-bind:label=parentLabel icon="pi pi-arrow-up-left" class='p-button-sm'></Button></router-link>
   <div class="surface-section" style="padding:15px;" v-if="citizen">
     <div class="text-center py-4"><span class="p-buttonset"><Button class="p-button-sm p-button-info">Brug til opgave/student</Button><Button class="p-button-sm p-button-help" v-on:click="cloneConfirm($event)">Nyt template fra denne borger</Button></span></div>
     <div class="font-medium text-3xl text-900 mb-3">Borger information:</div>
@@ -252,9 +249,7 @@ export default {
     </ul>
     <Button style="margin-top:20px;" v-on:click="()=>{showUploadFilesDialog=true}">Upload dokumenter</Button>
   </div>
-  <div v-if="citizen" style="position:absolute;top:100px;right:75px;">
-    <Tag severity="info" style='margin-top:25px;margin-bottom:10px;'>Sidst gemt: {{dayjs(citizen.updated_at).fromNow()}} </Tag>
-  </div>
+  <Tag v-if="citizen" severity="info" style='position:absolute;top:100px;right:75px;'>Sidst gemt: {{dayjs(citizen.updated_at).fromNow()}} </Tag>
 
   <!--General Dialog-->
   <Dialog header="Generelle oplysninger" v-model:visible="displayGeneral" :breakpoints="{'960px': '75vw'} "
@@ -306,9 +301,7 @@ export default {
     <Button label="Opret" icon="pi pi-check" @click="onCreateFS3Data" autofocus/>
   </Dialog>
 
-  <Dialog header="Upload filer" v-model:visible="showUploadFilesDialog">
-    <FileUpload :customUpload="true" :maxFileSize="10000000" @uploader="myUploader" :multiple="true" />
-  </Dialog>
+  <Dialog header="Upload filer" v-model:visible="showUploadFilesDialog"><FileUpload :customUpload="true" :maxFileSize="10000000" @uploader="myUploader" :multiple="true" /></Dialog>
 </template>
 <style>
 .p-inplace-content{
