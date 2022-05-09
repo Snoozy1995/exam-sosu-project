@@ -22,6 +22,8 @@ async function bootstrap() {
       'http://185.196.21.189:3091',
       'http://185.196.21.189:4090',
       'http://185.196.21.189:4091',
+      'ws://185.196.21.189:3091',
+      'ws://185.196.21.189:4091',
     ],
     credentials: true,
     exposedHeaders: ['set-cookie'],
