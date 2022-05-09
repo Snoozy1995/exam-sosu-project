@@ -9,7 +9,9 @@ import { Server } from 'socket.io';
 import { SearchCitizenInteractor } from '../domain/use_cases/citizen/searchCitizens.interactor';
 import { Citizen } from '../entities/citizen.entity';
 
-@WebSocketGateway()
+@WebSocketGateway({
+  cors: true,
+})
 export class CitizensGateway {
   constructor(
     @Inject('SearchCitizen')
