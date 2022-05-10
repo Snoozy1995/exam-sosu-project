@@ -23,6 +23,10 @@ export class UploadedDocument {
   filename: string;
 
   @ApiProperty()
+  @Column()
+  originalname: string;
+
+  @ApiProperty()
   @ManyToOne(() => User, (user) => user.files)
   uploader: User;
 

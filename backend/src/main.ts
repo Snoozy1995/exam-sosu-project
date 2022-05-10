@@ -4,9 +4,11 @@ import { AppModule } from './app.module';
 import * as session from 'express-session';
 import * as sessionStore from 'express-session-rsdb';
 import { IoAdapter } from '@nestjs/platform-socket.io';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const config = new DocumentBuilder()
     .setTitle('Health Journal')
     .setDescription('The health journal API description')
@@ -26,6 +28,9 @@ async function bootstrap() {
     exposedHeaders: ['set-cookie'],
   });
   app.useWebSocketAdapter(new IoAdapter(app));
+  app.useStaticAssets(join(__dirname, '..', 'uploads'), {
+    prefix: '/public/',
+  });
   app.use(
     session({
       secret: 'my-secret',

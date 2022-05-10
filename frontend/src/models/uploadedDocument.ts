@@ -3,8 +3,10 @@ import { User } from "./user";
 
 export interface UploadedDocument {
   id: number;
-  location: string;
+  filename: string;
+  size: number;
   uploader: User;
+  originalname: string;
   timestamp: number;
   citizens: Citizen[];
   //activities: Activity[];
