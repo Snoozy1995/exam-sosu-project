@@ -21,9 +21,9 @@ pipeline{
                 }
 
                 stage('Build Frontend') {
-                    when {
-                        changeset "frontend/**"
-                    }
+                    //when {
+                    //    changeset "frontend/**"
+                    //}
                     steps {
                         dir("frontend"){
                             sh "npm install"
