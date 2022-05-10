@@ -65,13 +65,13 @@ export class UploadController {
     files.forEach((file) => {
       const fileReponse = {
         filename: file.filename,
+        originalname: file.originalname,
         uploader: session.loggedIn,
         citizens: [{ id: body.citizen }],
         size: file.size,
       };
       response.push(fileReponse as UploadedDocument);
     });
-    this.saveFiles.saveFiles(response);
-    return response;
+    return this.saveFiles.saveFiles(response);
   }
 }

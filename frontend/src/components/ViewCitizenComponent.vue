@@ -105,7 +105,7 @@ function fetchCitizen(){
   citizenService.getCitizen(paramId).then(_citizen=>{
     if(!_citizen||!_citizen.data) return; // Something went wrong, most likely a citizen with said id doesnt exist, or permission denied, we should probably redirect either way. @todo
     citizen.value=_citizen.data;
-    if(citizen.value){
+    if(citizen.value&&citizen.value.parent){
       parentLabel.value="Kopieret fra borger template [ID: "+citizen.value.parent.id+"]";
     }
   });
@@ -119,7 +119,10 @@ function save(){
 function myUploader(event:any){
   var formData = new FormData();
   for(let file of event.files){ formData.append('file',file); formData.append('citizen',paramId); }
-  axios.post('/upload',formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+  axios.post('/upload',formData, { headers: { 'Content-Type': 'multipart/form-data' } }).then(()=>{
+    fetchCitizen();
+    showUploadFilesDialog.value=false;
+  })
 }
 </script>
 <script lang="ts">
@@ -216,6 +219,19 @@ export default {
         </div>
 
       </li>
+      <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+        <div class="text-500 w-6 md:w-2 font-medium">Dokumenter</div>
+        <div class="text-900 w-full md:w-8 md:flex-order-10 flex-order-0 p-2"><ul class="list-none p-0 m-0 min-w-full">
+          <li style='padding:5px;' v-for="item in citizen.files">
+            <a :href="axios.defaults.baseURL+'public/'+item.filename" >
+              <i class="pi pi-file"></i> {{item.originalname}}
+            </a>
+          </li>
+        </ul></div>
+        <div class="w-6 md:w-2 flex justify-content-end">
+          <Button v-tooltip.top="'Upload dokumenter'" class='p-button-text' v-on:click="()=>{showUploadFilesDialog=true}"><i style="font-size: 1.5rem" class="pi pi-upload"></i></Button>
+        </div>
+      </li>
 
       <li>
         <!--General Information-->
@@ -247,7 +263,7 @@ export default {
       </li>
 
     </ul>
-    <Button style="margin-top:20px;" v-on:click="()=>{showUploadFilesDialog=true}">Upload dokumenter</Button>
+    
   </div>
   <Tag v-if="citizen" severity="info" style='position:absolute;top:100px;right:75px;'>Sidst gemt: {{dayjs(citizen.updated_at).fromNow()}} </Tag>
 
@@ -300,7 +316,6 @@ export default {
     <Button label="Annuller" icon="pi pi-times" @click="closeFunctionalityModal" class="p-button-text"/>
     <Button label="Opret" icon="pi pi-check" @click="onCreateFS3Data" autofocus/>
   </Dialog>
-
   <Dialog header="Upload filer" v-model:visible="showUploadFilesDialog"><FileUpload :customUpload="true" :maxFileSize="10000000" @uploader="myUploader" :multiple="true" /></Dialog>
 </template>
 <style>
