@@ -9,9 +9,9 @@ pipeline{
         stage("Build project") {
             parallel {
                 stage("Build API"){
-                    when {
-                        changeset "backend/**"
-                    }
+                    //when {
+                    //    changeset "backend/**"
+                    //}
                     steps{
                         dir("backend"){
                             sh "npm install"
