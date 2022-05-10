@@ -154,7 +154,7 @@ export default {
 }
 </script>
 <template>
-  <FilterCitizenComponent></FilterCitizenComponent>
+  <!--<FilterCitizenComponent></FilterCitizenComponent>-->
   <ConfirmPopup></ConfirmPopup>
   <Tag v-if="citizen" severity="info" style='position:absolute;top:100px;right:75px;'>Sidst gemt: {{dayjs(citizen.updated_at).fromNow()}} </Tag>
   <router-link :to="{path:'/citizen/'+citizen.parent.id}" v-if="citizen&&citizen.parent"><Button v-bind:label=parentLabel icon="pi pi-arrow-up-left" class='p-button-sm'></Button></router-link>

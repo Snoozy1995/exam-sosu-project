@@ -7,7 +7,7 @@ const authStore=AuthStore();
 
 <template>
   <div class="text-center">
-    <h2 class="text-700">Dine klasser</h2>
+    <!--<h2 class="text-700">Dine klasser</h2>
     <div class="text-700">
 
       <Avatar style="margin:5px;" label="SP" size="xlarge" />
@@ -33,7 +33,7 @@ const authStore=AuthStore();
     </Panel>
 
     <br>
-    <br>
+    <br>-->
 
     <Panel header="Dine borger templates"  :toggleable="true" class="teacherhomecitizen">
         <template #icons>
