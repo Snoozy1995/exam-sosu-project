@@ -159,7 +159,7 @@ export default {
   <Tag v-if="citizen" severity="info" style='position:absolute;top:100px;right:75px;'>Sidst gemt: {{dayjs(citizen.updated_at).fromNow()}} </Tag>
   <router-link :to="{path:'/citizen/'+citizen.parent.id}" v-if="citizen&&citizen.parent"><Button v-bind:label=parentLabel icon="pi pi-arrow-up-left" class='p-button-sm'></Button></router-link>
   <div class="surface-section" style="padding:15px;" v-if="citizen">
-    <div class="text-center py-4"><span class="p-buttonset"><Button class="p-button-sm p-button-info">Brug til opgave/student</Button><Button class="p-button-sm p-button-help" v-on:click="cloneConfirm($event)">Nyt template fra denne borger</Button></span></div>
+    <div class="text-center py-4"><span class="p-buttonset"><!--<Button class="p-button-sm p-button-info">Brug til opgave/student</Button>--><Button class="p-button-sm p-button-help" v-on:click="cloneConfirm($event)">Nyt template fra denne borger</Button></span></div>
     <div class="font-medium text-3xl text-900 mb-3">Borger information:</div>
     <div class="text-500 mb-5">Her kan du lave ændringer på borger.</div>
     <ul class="list-none p-0 m-0 min-w-full">
