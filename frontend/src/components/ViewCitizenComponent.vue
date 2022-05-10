@@ -75,10 +75,10 @@ const fs3Iterate=ref([
     click:openGeneralModal,
     terms:generalTerms,
     close:closeGeneralModal,
-    dialog:displayGeneral
+    visible:displayGeneral
   },
-  {label:'Helbredstilstande',click:openHealthModal,terms:healthTerms,close:closeHealthModal,dialog:displayHealth},
-  {label:'Funktionsevnetilstande',click:openFunctionalityModal,terms:functionalTerms,close:closeFunctionalityModal,dialog:displayFunctionality},
+  {label:'Helbredstilstande',click:openHealthModal,terms:healthTerms,close:closeHealthModal,visible:displayHealth},
+  {label:'Funktionsevnetilstande',click:openFunctionalityModal,terms:functionalTerms,close:closeFunctionalityModal,visible:displayFunctionality},
 ]);
 
 function onCreateFS3Data() {
@@ -217,7 +217,7 @@ export default {
             <Button class="m-1" @click=item.click label="Ny" icon="pi pi-external-link"/>
           </AccordionTab>
         </Accordion>
-        <Dialog :header=item.label v-model:visible=item.dialog :breakpoints="{'960px': '75vw'} " :style="{width: '50vw'}">
+        <Dialog :header=item.label v-model:visible=item.visible :breakpoints="{'960px': '75vw'} " :style="{width: '50vw'}">
           <Listbox v-model="selectedTerm" :options=item.terms :multiple="false" :filter="true" optionLabel="definition"
                   listStyle="max-height:250px" style="width:30rem" filterPlaceholder="Search">
           </Listbox>
