@@ -8,7 +8,7 @@ export class CloneCitizenInteractor {
     citizen.id = undefined;
     citizen.group = undefined;
     citizen.children = undefined;
-    const whatToReset = ['medicines', 'files', 'contactPersons', 'fs3'];
+    const whatToReset = ['medicines', 'contactPersons', 'fs3'];
     for (const x of whatToReset) {
       if (!citizen[x]) continue;
       else if (Array.isArray(citizen[x])) {
