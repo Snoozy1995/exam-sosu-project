@@ -6,11 +6,6 @@ pipeline{
     }
                 
     stages{
-        stage("Clean"){
-            steps{
-                cleanWs()
-            }
-        }
         stage("Build project") {
             parallel {
                 stage("Build API"){
@@ -26,9 +21,9 @@ pipeline{
                 }
 
                 stage('Build Frontend') {
-                    when {
-                        changeset "frontend/**"
-                    }
+                    //when {
+                    //    changeset "frontend/**"
+                    //}
                     steps {
                         dir("frontend"){
                             sh "npm install"
