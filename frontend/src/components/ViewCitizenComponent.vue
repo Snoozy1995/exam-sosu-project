@@ -26,10 +26,7 @@ const displayGeneral = ref(false);
 const displayHealth = ref(false);
 const displayFunctionality = ref(false);
 const displayFS3Data = ref(false);
-const inputQuery = ref("");
-
 const FS3TextareaData = ref('');
-
 const openFunctionalityModal = () => {
   displayFunctionality.value = true;
 };
@@ -58,22 +55,34 @@ const closeCreateFS3DataModal = () => {
 let fs3s = ref<FS3[]>([
 
 ]);
-
 const selectedTerm=ref<FS3>();
-
 // General
 const generalTerms=ref<FS3[]>([]);
-
 // Functionality
 const functionalTerms=ref<FS3[]>([]);
 // const selectedFunctionalityTerm=ref<FS3>(); //Added to fix build error
 // Health
 const healthTerms=ref<FS3[]>([]);
 // const selectedHealthTerm=ref<FS3>(); //Added to fix build error
+const toIterate=ref([
+  {label:"Fornavn",target:'firstName',type:'text'},
+  {label:"Efternavn",target:'lastName',type:'text'},
+  {label:'Fødselsdato',target:'birthday',type:'date'}
+]);
+const fs3Iterate=ref([
+  {
+    label:'Generelle oplysninger',
+    click:openGeneralModal,
+    terms:generalTerms,
+    close:closeGeneralModal,
+    dialog:displayGeneral
+  },
+  {label:'Helbredstilstande',click:openHealthModal,terms:healthTerms,close:closeHealthModal,dialog:displayHealth},
+  {label:'Funktionsevnetilstande',click:openFunctionalityModal,terms:functionalTerms,close:closeFunctionalityModal,dialog:displayFunctionality},
+]);
 
 function onCreateFS3Data() {
-closeCreateFS3DataModal();
-
+  closeCreateFS3DataModal();
 }
 function getFS3s() {
   fs3Service.getFS3sByTerm('Generelle oplysninger')
@@ -144,61 +153,40 @@ export default {
   }
 }
 </script>
-
-
 <template>
   <FilterCitizenComponent></FilterCitizenComponent>
   <ConfirmPopup></ConfirmPopup>
-  
+  <Tag v-if="citizen" severity="info" style='position:absolute;top:100px;right:75px;'>Sidst gemt: {{dayjs(citizen.updated_at).fromNow()}} </Tag>
   <router-link :to="{path:'/citizen/'+citizen.parent.id}" v-if="citizen&&citizen.parent"><Button v-bind:label=parentLabel icon="pi pi-arrow-up-left" class='p-button-sm'></Button></router-link>
   <div class="surface-section" style="padding:15px;" v-if="citizen">
     <div class="text-center py-4"><span class="p-buttonset"><Button class="p-button-sm p-button-info">Brug til opgave/student</Button><Button class="p-button-sm p-button-help" v-on:click="cloneConfirm($event)">Nyt template fra denne borger</Button></span></div>
     <div class="font-medium text-3xl text-900 mb-3">Borger information:</div>
     <div class="text-500 mb-5">Her kan du lave ændringer på borger.</div>
     <ul class="list-none p-0 m-0 min-w-full">
-      <!--Firstname-->
-      <li class="border-top-1 surface-border px-2">
+      <!--Firstname/Lastname/Birthday-->
+      <li v-for="item in toIterate" class="border-top-1 surface-border px-2">
         <Inplace :closable="true" @close="save()">
           <template #display>
               <div class="flex align-items-center flex-wrap">
-                <div class="text-500 w-6 md:w-2 font-medium">Fornavn</div>
-                <div class="text-900 w-full md:w-8 md:flex-order-10 flex-order-0 p-2">{{citizen.firstName}}</div>
-                <div class="w-6 md:w-2 flex justify-content-end">
+                <div class="text-500 w-6 md:w-2 font-medium">{{item.label}}</div>
+                <div class="text-900 w-6 md:w-8 md:flex-order-10 flex-order-0 p-2">
+                  <div v-if="item.type=='date'">
+                    {{dayjs(Date.now()).diff(citizen[item.target],'year')}} år - {{new Date(citizen[item.target]).toLocaleDateString()}}
+                  </div>
+                  <div v-if="item.type!='date'">
+                    {{citizen[item.target]}}
+                  </div>
+                </div>
+                <div class="w-7 md:w-2 flex justify-content-end">
                   <Button label="Edit" icon="pi pi-pencil" class="p-button-text"></Button>
                 </div>
               </div>
           </template>
           <template #content>
-            <span class="text-500 font-medium" style="margin-right:25px;">Fornavn</span>
-            <InputText type="text" v-model="citizen.firstName"></InputText>
+            <span class="text-500 font-medium" style="margin-right:25px;">{{item.label}}</span>
+            <InputText :type=item.type v-model=citizen[item.target] style="margin-right:auto;"/>
           </template>
         </Inplace>
-      </li>
-      <!--Lastname-->
-      <li class="border-top-1 surface-border px-2">
-        <Inplace :closable="true" @close="save()">
-          <template #display>
-              <div class="flex align-items-center flex-wrap">
-                <div class="text-500 w-6 md:w-2 font-medium">Efternavn</div>
-                <div class="text-900 w-full md:w-8 md:flex-order-10 flex-order-0 p-2">{{citizen.lastName}}</div>
-                <div class="w-6 md:w-2 flex justify-content-end">
-                  <Button label="Edit" icon="pi pi-pencil" class="p-button-text"></Button>
-                </div>
-              </div>
-          </template>
-          <template #content>
-            <span class="text-500 font-medium" style="margin-right:25px;">Efternavn</span>
-            <InputText type="text" v-model="citizen.lastName"></InputText>
-          </template>
-        </Inplace>
-      </li>
-      <!--Birthday-->
-      <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
-        <div class="text-500 w-6 md:w-2 font-meditext-centerum">Fødselsdag</div>
-        <div class="p-5 text-900 w-full md:w-8 md:flex-order-0 flex-order-1 p-2">{{citizen.birthday}}</div>
-        <div class="w-6 md:w-2 flex justify-content-end">
-          <Button label="Edit" icon="pi pi-pencil" class="p-button-text"></Button>
-        </div>
       </li>
       <!--Medicin-->
       <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
@@ -207,17 +195,6 @@ export default {
         <div class="w-6 md:w-2 flex justify-content-end">
           <Button label="Edit" icon="pi pi-pencil" class="p-button-text"></Button>
         </div>
-      </li>
-      <li class="flex align-items-center py-3 px-2 border-top-1 border-bottom-1 surface-border flex-wrap">
-        <div class="text-500 w-6 md:w-2 font-medium">Plot</div>
-        <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1 line-height-3">
-          A group of professional bank robbers start to feel the heat from police
-          when they unknowingly leave a clue at their latest heist.
-        </div>
-        <div class="w-6 md:w-2 flex justify-content-end">
-          <Button label="Edit" icon="pi pi-pencil" class="p-button-text"></Button>
-        </div>
-
       </li>
       <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
         <div class="text-500 w-6 md:w-2 font-medium">Dokumenter</div>
@@ -232,68 +209,24 @@ export default {
           <Button v-tooltip.top="'Upload dokumenter'" class='p-button-text' v-on:click="()=>{showUploadFilesDialog=true}"><i style="font-size: 1.5rem" class="pi pi-upload"></i></Button>
         </div>
       </li>
-
-      <li>
-        <!--General Information-->
+      <li v-for="item in fs3Iterate">
+        <!--Loop version, general/health/functionality-->
         <Accordion>
-          <AccordionTab header="Generelle Oplysninger">
-            <p>Generelle Oplysninger</p>
-
-            <Button class="m-1" @click="openGeneralModal" label="Ny" icon="pi pi-external-link"/>
+          <AccordionTab :header=item.label>
+            <p>{{item.label}}</p>
+            <Button class="m-1" @click=item.click label="Ny" icon="pi pi-external-link"/>
           </AccordionTab>
         </Accordion>
-        <!--Health Conditions-->
-        <Accordion>
-          <AccordionTab header="Helbredstilstande">
-            <p>Helbredstilstande</p>
-
-            <Button class="m-1" @click="openHealthModal" label="Ny" icon="pi pi-external-link"/>
-          </AccordionTab>
-        </Accordion>
-        <!--Functionality Conditions-->
-        <Accordion>
-          <AccordionTab header="Funktionsevnetilstande">
-            <p>Funktionsevnetilstande</p>
-
-            <Button class="m-1" @click="openFunctionalityModal" label="Ny" icon="pi pi-external-link"/>
-          </AccordionTab>
-        </Accordion>
-
-
+        <Dialog :header=item.label v-model:visible=item.dialog :breakpoints="{'960px': '75vw'} " :style="{width: '50vw'}">
+          <Listbox v-model="selectedTerm" :options=item.terms :multiple="false" :filter="true" optionLabel="definition"
+                  listStyle="max-height:250px" style="width:30rem" filterPlaceholder="Search">
+          </Listbox>
+          <Button label="Annuller" icon="pi pi-times" @click=item.close class="p-button-text"  />
+          <Button label="Opret" icon="pi pi-check" @click="openCreateFS3DataModal()" autofocus/>
+        </Dialog>
       </li>
-
     </ul>
-    
   </div>
-  <Tag v-if="citizen" severity="info" style='position:absolute;top:100px;right:75px;'>Sidst gemt: {{dayjs(citizen.updated_at).fromNow()}} </Tag>
-
-  <!--General Dialog-->
-  <Dialog header="Generelle oplysninger" v-model:visible="displayGeneral" :breakpoints="{'960px': '75vw'} "
-          :style="{width: '50vw'}">
-    <Listbox v-model="selectedTerm" :options="generalTerms" :multiple="false" :filter="true" optionLabel="definition"
-             listStyle="max-height:250px" style="width:30rem" filterPlaceholder="Search">
-    </Listbox>
-    <Button label="Annuller" icon="pi pi-times" @click="closeGeneralModal" class="p-button-text"  />
-    <Button label="Opret" icon="pi pi-check" @click="openCreateFS3DataModal" autofocus/>
-  </Dialog>
-  <!--Health Dialog-->
-  <Dialog header="Helbredstilstande" v-model:visible="displayHealth" :breakpoints="{'960px': '75vw'} "
-          :style="{width: '50vw'}">
-    <Listbox v-model="selectedTerm" :options="healthTerms" :multiple="false" :filter="false" optionLabel="definition"
-             listStyle="max-height:250px" style="width:30rem" filterPlaceholder="Search">
-    </Listbox>
-    <Button label="Annuller" icon="pi pi-times" @click="closeHealthModal" class="p-button-text"/>
-    <Button label="Opret" icon="pi pi-check" @click="openCreateFS3DataModal" autofocus/>
-  </Dialog>
-  <!--Functionality Conditions-->
-  <Dialog header="Funktionsevnetilstande" v-model:visible="displayFunctionality" :breakpoints="{'960px': '75vw'} "
-          :style="{width: '50vw'}">
-    <Listbox v-model="selectedTerm" :options="functionalTerms" :multiple="false" :filter="false" optionLabel="definition"
-             listStyle="max-height:250px" style="width:30rem" filterPlaceholder="Search">
-    </Listbox>
-    <Button label="Annuller" icon="pi pi-times" @click="closeFunctionalityModal" class="p-button-text"/>
-    <Button label="Opret" icon="pi pi-check" @click="openCreateFS3DataModal" autofocus/>
-  </Dialog>
   <!--FS3 Data-->
   <Dialog v-if="selectedTerm" v-model:visible="displayFS3Data" :breakpoints="{'960px': '75vw'} "
           :style="{width: '50vw'}" rows="4" cols="30" >
@@ -304,9 +237,9 @@ export default {
       </div>
     </template>
     <Card style="width: 25rem; margin-bottom: 2em">
-<!--      <template #title>-->
-<!--        <h5 class="m-0">{{ selectedTerm.definition }}</h5>-->
-<!--      </template>-->
+      <template #title>
+        <h5 class="m-0">{{ selectedTerm.definition }}</h5>
+      </template>
       <template #content>
         <p>{{selectedTerm.options }}</p>
       </template>
@@ -325,5 +258,8 @@ export default {
 }
 .p-inplace .p-inplace-display:not(.p-disabled):hover{
   background:none;
+}
+.p-inplace .p-inplace-display:focus{
+  box-shadow:none;
 }
 </style>
