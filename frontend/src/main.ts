@@ -3,7 +3,6 @@ import App from './App.vue'
 import { createPinia } from 'pinia'
 import Router from './router';
 
-
 import PrimeVue from 'primevue/config';
 import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css';
@@ -24,6 +23,7 @@ import Column from "primevue/column";
 import DataTable from "primevue/datatable";
 import Textarea from "primevue/textarea";
 import Card from "primevue/card";
+import Panel from 'primevue/panel';
 
 const app=createApp(App);
 
@@ -31,11 +31,11 @@ axios.get("/config/api-url.txt").then((result)=>{
   if(result.status&&result.status==200){
     axios.defaults.baseURL=result.data;
   }else{
-    axios.defaults.baseURL="http://localhost:3000/";
+    axios.defaults.baseURL="http://localhost:3000";
   }
   host();
 }).catch(()=>{
-  axios.defaults.baseURL="http://localhost:3000/";
+  axios.defaults.baseURL="http://localhost:3000";
   host()
 });
 axios.defaults.withCredentials=true;
@@ -53,6 +53,7 @@ app.component("Column",Column);
 app.component("DataTable",DataTable);
 app.component("Textarea",Textarea);
 app.component("Card",Card);
+app.component("Panel",Panel);
 app.directive('tooltip', Tooltip);
 
 function host(){
