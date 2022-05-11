@@ -9,6 +9,7 @@ let authStore=AuthStore();
 let show=ref(false);
 let firstConnect=ref(true);
 socket.on("connect",()=>{
+  console.log("connected");
   show.value=false;
   if(firstConnect.value==false){
     authStore.getProfile().then((user)=>{
