@@ -11,7 +11,7 @@ import UserSearchComponent from './components/admin/UserSearchComponent.vue';
 import CreateCaseComponent from './components/teacher/CreateCaseComponent.vue';
 import ViewCaseComponent from './components/shared/ViewCaseComponent.vue';
 const Router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(),
   routes: [
     {
       path: "/",
