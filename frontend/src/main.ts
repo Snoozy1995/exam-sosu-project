@@ -64,7 +64,7 @@ function host(){
   app.use(PrimeVue);
   app.use(ConfirmationService);
   app.use(Socketio, {
-    connection:retrieved?window.location.host:axios.defaults.baseURL,
+    connection:axios.defaults.baseURL,
     options: {
       autoConnect: false, //Turn off automatic connection
       // ... Other options
