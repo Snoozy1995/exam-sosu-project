@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { SocketStore } from '../../stores/socketStore';
 import { AuthStore } from "../../stores/authStore";
 import Sidebar from 'primevue/sidebar';
-import { ref } from 'vue';
+import { inject, onMounted, ref } from 'vue';
 import Router from '../../router';
-const socketStore=SocketStore();
+import { Socket } from "socket.io-client";
+const socket = inject('socket') as Socket;
 let authStore=AuthStore();
 let show=ref(false);
 let firstConnect=ref(true);
-socketStore.socket.on("connect",()=>{
+socket.on("connect",()=>{
   show.value=false;
   if(firstConnect.value==false){
     authStore.getProfile().then((user)=>{
@@ -19,11 +19,14 @@ socketStore.socket.on("connect",()=>{
   }
   firstConnect.value=false;
 });
-socketStore.socket.on('connect_error',()=>{
+socket.on('connect_error',()=>{
   //show.value=true;
 })
-socketStore.socket.on('disconnect',()=>{
+socket.on('disconnect',()=>{
   //show.value=true;
+});
+onMounted(() => {
+  socket.connect(); //Connect to socket server
 });
 </script>
 <template>

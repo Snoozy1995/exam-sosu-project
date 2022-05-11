@@ -24,6 +24,7 @@ import DataTable from "primevue/datatable";
 import Textarea from "primevue/textarea";
 import Card from "primevue/card";
 import Panel from 'primevue/panel';
+import Socketio from "./plugins/Socket.io";
 
 const app=createApp(App);
 
@@ -61,5 +62,12 @@ function host(){
   app.use(Router);
   app.use(PrimeVue);
   app.use(ConfirmationService);
+  app.use(Socketio, {
+    connection:axios.defaults.baseURL,
+    options: {
+      autoConnect: false, //Turn off automatic connection
+      // ... Other options
+    },
+  });  
   app.mount("#app");
 }
