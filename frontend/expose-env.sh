@@ -1,2 +1,2 @@
-mkdir /app/config/
-echo "${API_URL}" > /app/config/api-url.txt
+mkdir /config/
+echo "${API_URL}" > /config/api-url.txt
