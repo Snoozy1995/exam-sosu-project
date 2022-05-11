@@ -27,9 +27,10 @@ import Panel from 'primevue/panel';
 import Socketio from "./plugins/socket.io";
 
 const app=createApp(App);
-
+let retrieved=false;
 axios.get("/config/api-url.txt").then((result)=>{
   if(result.status&&result.status==200){
+    retrieved=true;
     axios.defaults.baseURL=result.data;
   }else{
     axios.defaults.baseURL="http://localhost:3000";
@@ -63,7 +64,7 @@ function host(){
   app.use(PrimeVue);
   app.use(ConfirmationService);
   app.use(Socketio, {
-    connection:axios.defaults.baseURL?axios.defaults.baseURL:window.location.host,
+    connection:retrieved?window.location.host:axios.defaults.baseURL,
     options: {
       autoConnect: false, //Turn off automatic connection
       // ... Other options
