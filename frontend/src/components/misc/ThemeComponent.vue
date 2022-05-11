@@ -2,22 +2,22 @@
 import { ref } from '@vue/runtime-dom';
 import Dropdown from 'primevue/dropdown';
 const selectedTheme=ref({
-        name: "Lara light indigo",
-        code: "lara-light-indigo",
-        dark: false
+        name: "Material light",
+        code: "mdc-light-deeppurple"
       });
 const themes= [
-        { name: "Lara light (Default)", code: "lara-light-indigo", dark:false },
-        //{ name: "Lara dark", code: "lara-dark-indigo", dark:true },
-        { name: "Fluent", code: 'fluent-light',dark:false },
-        { name: "Material light", code:'mdc-light-deeppurple',dark:false },
-        { name: "Material dark", code:'mdc-dark-deeppurple',dark:true },
-        { name: "Luna", code: 'luna-green',dark:true },
-        { name: "Arya", code: "arya-orange",dark:true },
-        { name: "Nova", code:"nova-vue",dark:false},
-        { name: "Vela", code:"vela-blue",dark:true},
+        { name: "Material light (Default)", code:'mdc-light-deeppurple' },
+        { name: "Fluent", code: 'fluent-light' },
+        { name: "Material dark", code:'mdc-dark-indigo' },
+        { name: "Luna", code: 'luna-amber' },
+        { name: "Arya", code: "arya-green" },
+        { name:"Bootstrap", code: "bootstrap4-light-blue"},
+        { name: "Nova", code:"nova-alt"},
+        { name: "Vela", code:"vela-blue"},
+        { name: "Tailwind", code:"tailwind-light" },
+        { name: "Lara dark", code:"lara-dark-indigo"}
       ];
-function changeTheme(theme: string,dark:boolean): void {
+function changeTheme(theme: string): void {
   localStorage.setItem("theme", JSON.stringify(selectedTheme.value));
   let themeElement = document.getElementById("theme-link");
   if (themeElement == null) return;
@@ -25,15 +25,6 @@ function changeTheme(theme: string,dark:boolean): void {
     "href",
     "https://unpkg.com/primevue/resources/themes/" + theme + "/theme.css"
   );
-  if(dark){
-    let bg = document.getElementById("body");
-    if (bg == null) return;
-    bg.setAttribute("style","background:black;");
-  }else{
-    let bg = document.getElementById("body");
-    if (bg == null) return;
-    bg.setAttribute("style","background:white;");
-  }
 }
 
 const theme = localStorage.getItem("theme");
@@ -41,8 +32,7 @@ if (theme != null) {
   const themeObject = JSON.parse(theme);
   selectedTheme.value.name = themeObject.name;
   selectedTheme.value.code = themeObject.code;
-  selectedTheme.value.dark = themeObject.dark;
-  changeTheme(selectedTheme.value.code,selectedTheme.value.dark);
+  changeTheme(selectedTheme.value.code);
 }
 </script>
 <template>
@@ -51,7 +41,12 @@ if (theme != null) {
     :options="themes"
     optionLabel="name"
     placeholder="Themes"
-    @change="changeTheme(selectedTheme.code,selectedTheme.dark)"
+    @change="changeTheme(selectedTheme.code)"
     style="width:200px;position:fixed;bottom:25px; left:10px;z-index:9999;"
   />
 </template>
+<style>
+.p-listbox .p-listbox-list{
+  padding:0px;
+}
+</style>

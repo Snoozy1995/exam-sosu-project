@@ -11,7 +11,8 @@ export class CitizenService {
     return axios.get('/citizens/version/'+id);
   }
 
-  getCitizen(id: any){
+  getCitizen(id: any):Promise<AxiosResponse<Citizen>>{
+    if(!id) return new Promise((res,rej)=>rej({status:400}));
     return axios.get('/citizens/'+id);
   }
 

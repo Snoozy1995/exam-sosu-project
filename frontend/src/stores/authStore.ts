@@ -8,14 +8,12 @@ export const AuthStore = defineStore({
   id: "authStore",
   state: ()=>({
     user:{} as User,
+    loggedIn:false,
   }),
   actions:{
-    async createUser(username:string,password:string,role:string,school:any){
+    createUser(username:string,password:string,role:string,school:any){
       school=school.value.name;
-      let res=await authService.createUser(username,password,role,school);
-      return new Promise((resolve)=>{
-        //@todo
-      })
+      return authService.createUser(username,password,role,school);
     },
     login(username:string,password:string):Promise<User> {
       return new Promise(async (resolve,reject)=>{
@@ -27,11 +25,14 @@ export const AuthStore = defineStore({
           return alert(err.response.data.error);
         }
         this.user=res.data;
+        this.loggedIn=true;
         resolve(this.user);
       });
     },
     async getProfile() {
       let res=await authService.getProfile();
+      if(!res.data) return this.user;
+      this.loggedIn=true;
       this.user=res.data;
       if(this.user.citizens&&this.user.citizens.length){
         //Filter children

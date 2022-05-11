@@ -119,22 +119,20 @@ const Router = createRouter({
 
 import { AuthStore } from "./stores/authStore";
 import { BreadcrumbStore } from "./stores/breadcrumbStore";
-Router.beforeEach((to, from, next) => {
-  if(to.name=="Login"&&from.name=="Login"){ next(); return; }
+
+Router.afterEach((to,from,fail)=>{
   BreadcrumbStore().set(to.meta.breadcrumb);
-  
   if(to.name=="ViewCitizen"){
     BreadcrumbStore().set([{label:'Borger '+to.params.id,to:'/citizen/'+to.params.id}]);
   }
+});
+Router.beforeEach((to, from, next) => {
+  if(to.name=="Login"&&from.name=="Login"){ next(); return; }
   let authStore=AuthStore();
-  //if(authStore.user&&authStore.user.username.length){
-  //  next();
-  //  return;
-  //}
   if (!to.matched.some((record) => record.meta.public)) {
     authStore.getProfile().then(()=>{
-      if (!authStore.user||authStore.user.username.length <= 0) {
-        next({ name: "Login" });
+      if (!authStore.loggedIn) {
+        next({ name: "Login",query:{redirect:to.path} });
       } else {
         next();
       }

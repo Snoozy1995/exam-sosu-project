@@ -34,7 +34,7 @@ function login(){
   if(fail) return;
   store.login(user.username,user.password).then(_user=>{
     if(!_user||!_user.username) return;
-    Router.push('/');
+    Router.push(Router.currentRoute.value.query.redirect as string||'/');
   }).catch(err=>{
     alert(err);
   });
@@ -43,7 +43,7 @@ function login(){
 </script>
 
 <template>
-  <div class="surface-card p-4 shadow-2 border-round w-full" style="margin-top:125px;">
+  <div class="surface-card p-4 shadow-2 border-round col-12 md:col-8 md:col-offset-2" style="margin-top:125px;">
       <h2 class="text-900 text-center mb-5">
           Login til Sundhedsjournalen
       </h2>
