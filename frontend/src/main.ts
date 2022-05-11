@@ -24,7 +24,7 @@ import DataTable from "primevue/datatable";
 import Textarea from "primevue/textarea";
 import Card from "primevue/card";
 import Panel from 'primevue/panel';
-import Socketio from "./plugins/Socket.io";
+import Socketio from "./plugins/socket.io";
 
 const app=createApp(App);
 
