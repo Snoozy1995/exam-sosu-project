@@ -1,18 +1,19 @@
-import { ApiProperty } from '@nestjs/swagger';
+import {ApiProperty} from '@nestjs/swagger';
 import {
-  Entity,
-  OneToOne,
-  OneToMany,
-  JoinColumn,
-  PrimaryColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  Index,
+    CreateDateColumn,
+    Entity,
+    Index,
+    JoinColumn,
+    OneToMany,
+    OneToOne,
+    PrimaryColumn,
+    UpdateDateColumn,
 } from 'typeorm';
-import { Address } from './address.entity';
-import { Citizen } from './citizen.entity';
-import { SchoolClass } from './schoolClass.entity';
-import { User } from './user.entity';
+import {Address} from './address.entity';
+import {Citizen} from './citizen.entity';
+import {SchoolClass} from './schoolClass.entity';
+import {User} from './user.entity';
+
 @Entity()
 export class School {
   @ApiProperty()

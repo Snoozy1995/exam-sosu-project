@@ -1,4 +1,4 @@
-import { UploadedDocument } from 'src/entities/uploadedDocument.entity';
+import {UploadedDocument} from 'src/entities/uploadedDocument.entity';
 
 export interface UploadedDocumentRepository {
   save(document: UploadedDocument): Promise<UploadedDocument>;

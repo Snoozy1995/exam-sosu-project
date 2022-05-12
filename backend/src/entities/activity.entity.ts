@@ -1,21 +1,22 @@
-import { ApiProperty } from '@nestjs/swagger';
+import {ApiProperty} from '@nestjs/swagger';
 import {
-  Entity,
   Column,
-  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToMany,
   ManyToOne,
   OneToMany,
-  ManyToMany,
   OneToOne,
-  JoinColumn,
-  CreateDateColumn,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Address } from './address.entity';
-import { Citizen } from './citizen.entity';
-import { ContactPerson } from './contactPerson.entity';
-import { FS3Data } from './fs3Data.entity';
-import { UploadedDocument } from './uploadedDocument.entity';
+import {Address} from './address.entity';
+import {Citizen} from './citizen.entity';
+import {ContactPerson} from './contactPerson.entity';
+import {FS3Data} from './fs3Data.entity';
+import {UploadedDocument} from './uploadedDocument.entity';
+
 @Entity()
 export class Activity {
   @ApiProperty()

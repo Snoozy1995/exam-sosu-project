@@ -1,5 +1,5 @@
-import { UploadedDocumentRepository } from 'src/domain/borders/uploadedDocument.repository';
-import { UploadedDocument } from 'src/entities/uploadedDocument.entity';
+import {UploadedDocumentRepository} from 'src/domain/borders/uploadedDocument.repository';
+import {UploadedDocument} from 'src/entities/uploadedDocument.entity';
 
 export class SaveFilesInteractor {
   constructor(private readonly uploadRepository: UploadedDocumentRepository) {}

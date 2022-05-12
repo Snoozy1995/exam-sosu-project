@@ -1,13 +1,14 @@
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { FS3Repository } from '../domain/borders/fs3.repository';
-import { FindAllFS3Interactor } from '../domain/use_cases/fs3/findAllFS3.interactor';
-import { FindFS3ByTermInteractor } from '../domain/use_cases/fs3/findFS3ByTerm.interactor';
-import { SaveFS3Interactor } from '../domain/use_cases/fs3/saveFS3.interactor';
-import { FS3 } from '../entities/fs3.entity';
-import { FS3Term } from '../entities/fs3Term.entity';
-import { FS3RepositoryAdapter } from '../infrastructure/typeorm/fs3Repository.adapter';
-import { FS3Controller } from './fs3.controller';
+import {Module} from '@nestjs/common';
+import {TypeOrmModule} from '@nestjs/typeorm';
+import {FS3Repository} from '../domain/borders/fs3.repository';
+import {FindAllFS3Interactor} from '../domain/use_cases/fs3/findAllFS3.interactor';
+import {FindFS3ByTermInteractor} from '../domain/use_cases/fs3/findFS3ByTerm.interactor';
+import {SaveFS3Interactor} from '../domain/use_cases/fs3/saveFS3.interactor';
+import {FS3} from '../entities/fs3.entity';
+import {FS3Term} from '../entities/fs3Term.entity';
+import {FS3RepositoryAdapter} from '../infrastructure/typeorm/fs3Repository.adapter';
+import {FS3Controller} from './fs3.controller';
+
 const repo = 'FS3Repository';
 const inject = { inject: [repo] };
 
