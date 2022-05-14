@@ -4,6 +4,7 @@ import {FS3} from "./fs3.entity";
 
 @Entity()
 export class Fs3Option {
+
     @ApiProperty()
     @PrimaryColumn()
     option: number;
@@ -13,7 +14,7 @@ export class Fs3Option {
     definition: string;
 
     @ApiProperty()
-    @Column()
+    @Column('text')
     description: string;
 
     @ManyToMany(() => FS3)

@@ -16,6 +16,7 @@ import ViewCitizenTeacher from './teacher/ViewCitizenTeacher.vue';
 import { AuthStore } from "../stores/authStore";
 import UploaderComponent from "./shared/UploaderComponent.vue";
 import ViewCitizenStudent from "./student/ViewCitizenStudent.vue";
+import {Fs3SubCategory} from "../../../backend/dist/entities/fs3SubCategory.entity";
 //import {StudentTourService} from '../services/studentTour.service';
 dayjs.extend(RelativeTime);
 dayjs.locale('da');
@@ -33,6 +34,7 @@ const closeFunctionalityModal = () => {
 // Create FS3Data
 const openCreateFS3DataModal = () => {
   displayFS3Data.value = true;
+  console.log(selectedTerm)
 };
 const closeCreateFS3DataModal = () => {
   displayFS3Data.value = false;
@@ -62,6 +64,11 @@ function getFS3s() {
   fs3Service.getFS3sByTerm('Generelle oplysninger')
       .then((result) => generalTerms.value = result.data as FS3[])
       .catch((error) => console.log("error: " + error))
+
+  fs3Service.getFS3sByTerm('Generelle oplysninger')
+      .then((result) => generalTerms.value = result.data as FS3[])
+      .catch((error) => console.log("error: " + error))
+
   fs3Service.getFS3sByTerm('Funktionsevnetilstande')
       .then((result) => functionalTerms.value = result.data as FS3[])
       .catch((error) => console.log("error: " + error))
@@ -69,8 +76,11 @@ function getFS3s() {
       .then((result) => healthTerms.value = result.data as FS3[])
       .catch((error) => console.log("error: " + error))
 }
+
+
 onMounted(() => {
   getFS3s();
+
   fetchCitizen();
 })
 
@@ -99,12 +109,14 @@ function fetchCitizen(id=undefined){
 
   <!--Loop version, general/health/functionality-->
   <Panel v-for="item in fs3Iterate" :id=item.id :header=item.label :toggleable="true" style="margin-bottom:25px;">
-    <Listbox v-model="selectedTerm" :options=item.terms :multiple="false" :filter="true" optionLabel="definition" listStyle="min-height:200px;max-height:200px" filterPlaceholder="Search" />
+    <Listbox v-model="selectedTerm" :options=item.terms :multiple="false" :filter="true" optionLabel="definition" listStyle="min-height:200px;max-height:200px" filterPlaceholder="Filter" />
     <Button label="Vælg" v-tooltip.top="'Vælg '+item.label" class="p-button-sm w-full" @click="openCreateFS3DataModal()" style="border-radius:0px;" autofocus/>
   </Panel>
 
   <!--FS3 Data-->
   <Dialog v-if="selectedTerm" v-model:visible="displayFS3Data" :breakpoints="{'960px': '75vw'} " :style="{width: '50vw'}" rows="4" cols="30" >
+    <Listbox v-if="selectedTerm.fs3Subs.length > 0" :options=selectedTerm.fs3Subs :multiple="false" :filter="true" optionLabel="category" listStyle="min-height:200px;max-height:200px" filterPlaceholder="Filter" />
+
     <template #header>
       <div class="flex justify-content-left align-items-center">
         <h4 class="m-0">{{ selectedTerm.definition }}</h4>

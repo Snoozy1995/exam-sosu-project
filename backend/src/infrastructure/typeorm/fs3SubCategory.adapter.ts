@@ -11,9 +11,12 @@ export class Fs3SubCategoryAdapter implements Fs3SubCategoryRepository {
         this.fs3SubCategoryRepository = em.getRepository(Fs3SubCategory);
     }
 
-    findAll(): Promise<Fs3SubCategory[]> {
-        return this.fs3SubCategoryRepository.find();
+    findAll(id: string): Promise<Fs3SubCategory[]> {
+        return this.fs3SubCategoryRepository.find({
+            where: {
+                fs3Id: { id: parseInt(id) }
+            }
+        });
     }
-
 
 }

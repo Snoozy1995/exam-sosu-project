@@ -1,4 +1,4 @@
-import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, ManyToOne} from "typeorm";
 import {ApiProperty} from "@nestjs/swagger";
 import {FS3} from "./fs3.entity";
 
@@ -10,7 +10,7 @@ export class Fs3SubCategory {
     // id: number;
 
     @ApiProperty()
-    @Column()
+    @Column({primary: true})
     category: string;
 
     @ApiProperty()

@@ -1,10 +1,10 @@
 import {ApiProperty} from '@nestjs/swagger';
-import {Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryColumn} from 'typeorm';
+import {Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn} from 'typeorm';
 import {FS3Term} from './fs3Term.entity';
 import {Fs3SubCategory} from "./fs3SubCategory.entity";
 import {DocumentationPractice} from "./documentationPractice.entity";
 import {HelpQuestion} from "./helpQuestion.entity";
-import {Example} from "./example.entity";
+import {FS3Example} from "./fs3Example.entity";
 
 @Entity()
 export class FS3 {
@@ -50,8 +50,8 @@ export class FS3 {
   helpQuestions: HelpQuestion[];
 
   @ApiProperty()
-  @OneToMany(() => Example, example => example.fs3, {primary: true})
-  examples: Example[];
+  @OneToMany(() => FS3Example, fs3Example => fs3Example.fs3, {primary: true})
+  examples: FS3Example[];
 
   @ApiProperty()
   @OneToMany(() => DocumentationPractice,practice => practice.fs3, {primary: true})

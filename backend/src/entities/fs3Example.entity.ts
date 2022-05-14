@@ -4,18 +4,19 @@ import {FS3} from "./fs3.entity";
 
 
 @Entity()
-export class HelpQuestion {
+export class FS3Example {
     @ApiProperty()
     @PrimaryGeneratedColumn()
-    fs3_id: number;
+    id: number;
 
     @ApiProperty()
-    @Column("text")
-    question: string;
+    @Column("varchar")
+    fs3Example: string;
 
     @ApiProperty()
-    @ManyToOne(() => FS3, fs3 => fs3.helpQuestions, {primary: true})
+    @ManyToOne(() => FS3, fs3 => fs3.examples, {primary: true})
     fs3: FS3;
+
 
 
 }

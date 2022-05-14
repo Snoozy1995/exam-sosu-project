@@ -1,13 +1,13 @@
 import {ApiProperty} from '@nestjs/swagger';
-import {Column, Entity, ManyToOne, PrimaryColumn} from 'typeorm';
+import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
 import {FS3} from "./fs3.entity";
 
 
 @Entity()
 export class DocumentationPractice {
-    // @ApiProperty()
-    // @PrimaryColumn()
-    // fs3_id: number;
+    @ApiProperty()
+    @PrimaryGeneratedColumn()
+    fs3_id: number;
 
     @ApiProperty()
     @Column("text")

@@ -1,5 +1,5 @@
-import {Controller, Get, Inject, UseGuards} from '@nestjs/common';
-import {ApiTags} from '@nestjs/swagger';
+import {Controller, Get, Inject, Param, UseGuards} from '@nestjs/common';
+import {ApiParam, ApiTags} from '@nestjs/swagger';
 import {AuthenticatedGuard} from 'src/auth/guards/authenticated.guard';
 import {FindFS3SubcategoriesInteractor} from "../domain/use_cases/fs3SubCategory/findFS3Subcategories.interactor";
 import {Fs3SubCategory} from "../entities/fs3SubCategory.entity";
@@ -10,11 +10,20 @@ import {Fs3SubCategory} from "../entities/fs3SubCategory.entity";
 export class Fs3SubCategoryController {
     constructor(
         @Inject('FindAllFS3SubCategories')
-        private readonly findAllFS3Terms: FindFS3SubcategoriesInteractor,
+        private readonly findAllSubCategoriesToFS3: FindFS3SubcategoriesInteractor,
     ) {}
 
+    @Get(':id')
+    @ApiParam({
+        name: 'id',
+        required: true,
+        description: 'FS3 subcategory to search by',
+        type: 'string',
+    })
     @Get()
-    findAll(): Promise<Fs3SubCategory[]> {
-        return this.findAllFS3Terms.findAll();
+    findAllSubcategoriesToFS3(@Param('id') id): Promise<Fs3SubCategory[]> {
+        return this.findAllSubCategoriesToFS3.findAll(id);
     }
+
+
 }

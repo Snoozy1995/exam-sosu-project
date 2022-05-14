@@ -19,4 +19,5 @@ export class Fs3Service{
     getFS3sByTerm(query: string):Promise<any>{
         return axios.get("/fs3/"+query);
     }
+
 }
