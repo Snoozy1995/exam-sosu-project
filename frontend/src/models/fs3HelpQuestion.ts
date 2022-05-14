@@ -1,4 +1,4 @@
-export interface Fs3HelpQuestion {
+export interface FS3HelpQuestion {
     fs3Id: number;
     question: string;
 }
