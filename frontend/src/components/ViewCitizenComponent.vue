@@ -145,7 +145,7 @@ function fetchCitizen(id = undefined) {
     <Button label="Hjælpespørgsmål" icon="pi pi-question-circle" @click="openHelpQuestionsModal"/>
 
 
-    <Listbox v-model="selectedSub"  :options=selectedTerm.fs3Subs :multiple="false" :filter="true"
+    <Listbox v-if="selectedTerm.term.term ==='Helbredstilstande'" v-model="selectedSub" :options=selectedTerm.fs3Subs :multiple="false" :filter="true"
              optionLabel="category" listStyle="min-height:200px;max-height:200px" filterPlaceholder="Filter"/>
     <template #header>
       <div class="flex justify-content-left align-items-center">
@@ -158,8 +158,8 @@ function fetchCitizen(id = undefined) {
             v-for="(subCatPractice) in selectedTerm.documentationPractices">
           <li>{{ subCatPractice.practice }}</li>
         </ul>
-        <ul v-if="selectedSub" >
-          <li>{{ selectedSub.subCatDocPractice.practice}}</li>
+        <ul v-if="selectedSub" v-for="(subCatPractice) in selectedSub.subCatDocPractices" >
+          <li>{{ subCatPractice.practice}}</li>
         </ul>
 
       </template>

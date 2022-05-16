@@ -1,5 +1,6 @@
 import {ApiProperty} from '@nestjs/swagger';
-import {Column, Entity, PrimaryColumn} from 'typeorm';
+import {Column, Entity, ManyToOne, PrimaryColumn} from 'typeorm';
+import {Fs3SubCategory} from "./fs3SubCategory.entity";
 
 @Entity()
 export class Fs3SubCatDocPrac {
@@ -11,4 +12,6 @@ export class Fs3SubCatDocPrac {
     @Column("text")
     practice: string;
 
+    @ManyToOne(() => Fs3SubCategory, fs3SubCat => fs3SubCat.subCatDocPractices)
+    category: Fs3SubCategory;
 }
