@@ -24,7 +24,7 @@ export class FS3RepositoryAdapter implements FS3Repository {
             where: {
                 term: {term: term},
             },
-            relations: ["fs3Subs", "fs3Subs.subCatDocPractices", "helpQuestions","examples", "documentationPractices"]
+            relations: ["fs3Subs", "fs3Subs.subCatDocPractice", "helpQuestions","examples", "documentationPractices", 'term']
         },);
 
     }

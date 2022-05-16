@@ -9,14 +9,13 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import RelativeTime from 'dayjs/plugin/relativeTime' // import plugin
 import 'dayjs/locale/da';
-//import FilterCitizenComponent from "./teacher/FilterCitizenComponent.vue";
 import {Fs3Service} from "../services/fs3.service";
 import {FS3} from "../models/fs3";
 import ViewCitizenTeacher from './teacher/ViewCitizenTeacher.vue';
 import {AuthStore} from "../stores/authStore";
 import UploaderComponent from "./shared/UploaderComponent.vue";
 import ViewCitizenStudent from "./student/ViewCitizenStudent.vue";
-import {Fs3SubCategory} from "../../../backend/dist/entities/fs3SubCategory.entity";
+import {FS3SubCategory} from "../models/fs3SubCategory";
 //import {StudentTourService} from '../services/studentTour.service';
 dayjs.extend(RelativeTime);
 dayjs.locale('da');
@@ -38,6 +37,7 @@ const displayPosition = ref(false);
 // Create FS3Data
 const openCreateFS3DataModal = () => {
   displayFS3Data.value = true;
+  // console.log(selectedTerm.value)
 };
 const closeCreateFS3DataModal = () => {
   displayFS3Data.value = false;
@@ -58,6 +58,7 @@ const decrementHelpQuestionIndex = () => {
   selectedHelpQuestionIndex.value--;
 };
 const selectedTerm = ref<FS3>();
+const selectedSub = ref<FS3SubCategory>();
 // General
 const generalTerms = ref<FS3[]>([]);
 // Functionality
@@ -74,6 +75,8 @@ const fs3Iterate = ref([
 
 function onCreateFS3Data() {
   closeCreateFS3DataModal();
+  console.log(selectedSub)
+  // console.log(selectedTerm.value.documentationPractices)
 }
 
 function getFS3s() {
@@ -139,11 +142,11 @@ function fetchCitizen(id = undefined) {
   <Dialog v-if="selectedTerm" v-model:visible="displayFS3Data" :breakpoints="{'960px': '75vw'} "
           :style="{width: '50vw'}" rows="4" cols="30" class="align-self-end">
 
-    <Button label="Hjælpespørgsmål" icon="pi pi-question-circle" @click="openHelpQuestionsModal" />
+    <Button label="Hjælpespørgsmål" icon="pi pi-question-circle" @click="openHelpQuestionsModal"/>
 
-    <Listbox v-if="selectedTerm.fs3Subs.length > 0" :options=selectedTerm.fs3Subs :multiple="false" :filter="true"
+
+    <Listbox v-model="selectedSub"  :options=selectedTerm.fs3Subs :multiple="false" :filter="true"
              optionLabel="category" listStyle="min-height:200px;max-height:200px" filterPlaceholder="Filter"/>
-
     <template #header>
       <div class="flex justify-content-left align-items-center">
         <h4 class="m-0">{{ selectedTerm.definition }}</h4>
@@ -151,9 +154,14 @@ function fetchCitizen(id = undefined) {
     </template>
     <Card style="margin-bottom: 2em">
       <template #content>
-        <ul v-for="(practice) in selectedTerm.documentationPractices">
-          <li>{{ practice.practice }}</li>
+        <ul v-if="selectedTerm.term.term ==='Generelle oplysninger'"
+            v-for="(subCatPractice) in selectedTerm.documentationPractices">
+          <li>{{ subCatPractice.practice }}</li>
         </ul>
+        <ul v-if="selectedSub" >
+          <li>{{ selectedSub.subCatDocPractice.practice}}</li>
+        </ul>
+
       </template>
     </Card>
     <h4 class="m-0">Fagligt Notat</h4>
@@ -165,7 +173,7 @@ function fetchCitizen(id = undefined) {
 
   <!--Help questions for fs3-->
   <Dialog v-if="selectedTerm" v-model:visible="displayHelpQuestions" :breakpoints="{'960px': '75vw'}"
-          :style="{width: '34vw'}" rows="4" cols="30" :position=helpQuestionPosition >
+          :style="{width: '34vw'}" rows="4" cols="30" :position=helpQuestionPosition>
     <template #header>
       <div class="flex justify-content-left align-items-center">
         <h4 class="m-0">Hjælpespørgsmål</h4>
@@ -182,8 +190,9 @@ function fetchCitizen(id = undefined) {
     </Card>
     <template #footer>
       <div class="flex align-items-center justify-content-center">
-        <Button label="Forrige" icon="pi pi-chevron-left" @click="decrementHelpQuestionIndex" />
-        <h4 class=" px-6">{{ selectedHelpQuestionIndex.valueOf() + 1 }} af {{ selectedTerm.helpQuestions.length.valueOf() }}</h4>
+        <Button label="Forrige" icon="pi pi-chevron-left" @click="decrementHelpQuestionIndex"/>
+        <h4 class=" px-6">{{ selectedHelpQuestionIndex.valueOf() + 1 }} af
+          {{ selectedTerm.helpQuestions.length.valueOf() }}</h4>
         <Button label="Næste" icon="pi pi-chevron-right" @click="incrementHelpQuestionIndex"/>
       </div>
     </template>

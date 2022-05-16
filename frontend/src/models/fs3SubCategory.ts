@@ -1,4 +1,8 @@
+import {Fs3SubCatDocPrac} from "./Fs3SubCatDocPrac";
+
+
 export interface FS3SubCategory {
-    fs3Id: number;
+
     category: string;
+    subCatDocPractice: Fs3SubCatDocPrac;
 }
