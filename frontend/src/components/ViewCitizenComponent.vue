@@ -16,6 +16,8 @@ import {AuthStore} from "../stores/authStore";
 import UploaderComponent from "./shared/UploaderComponent.vue";
 import ViewCitizenStudent from "./student/ViewCitizenStudent.vue";
 import {FS3SubCategory} from "../models/fs3SubCategory";
+import {Fs3OptionsService} from "../services/fs3Options.service";
+import {FS3Option} from "../models/fs3Option";
 //import {StudentTourService} from '../services/studentTour.service';
 dayjs.extend(RelativeTime);
 dayjs.locale('da');
@@ -24,6 +26,7 @@ const authStore = AuthStore();
 const citizenService = new CitizenService();
 const citizen: Ref<Citizen | undefined> = ref(undefined); //Edit this citizen to save
 const fs3Service: Fs3Service = new Fs3Service();
+const fs3OptionsService: Fs3OptionsService = new Fs3OptionsService();
 const displayFunctionality = ref(false);
 const displayFS3Data = ref(false);
 const FS3TextareaData = ref('');
@@ -61,6 +64,9 @@ const decrementHelpQuestionIndex = () => {
   if (selectedHelpQuestionIndex.value === 0) return;
   selectedHelpQuestionIndex.value--;
 };
+
+const fs3Options = ref<FS3Option[]>([]);
+
 //General
 const selectedTerm = ref<FS3>();
 // Health
@@ -105,10 +111,15 @@ function getFS3s() {
       .catch((error) => console.log("error: " + error))
 }
 
+function getFS3Options() {
+  fs3OptionsService.getFS3Options()
+      .then((result) => fs3Options.value = result.data as FS3Option[])
+      .catch((error) => console.log("error: " + error))
+}
 
 onMounted(() => {
   getFS3s();
-
+  getFS3Options()
   fetchCitizen();
 })
 
@@ -161,22 +172,24 @@ function fetchCitizen(id = undefined) {
         <h4 class="m-0">{{ selectedTerm.definition }}</h4>
       </div>
     </template>
-    <Card style="margin-bottom: 2em">
+    <Card v-if="selectedTerm.term.id === termEnum.GENERAL ||selectedTerm.term.id === termEnum.HEALTH" style="margin-bottom: 2em">
       <template #content>
         <ul v-if="selectedTerm.term.id === termEnum.GENERAL"
             v-for="(subCatPractice) in selectedTerm.documentationPractices">
           <li>{{ subCatPractice.practice }}</li>
         </ul>
-        <ul v-if="selectedSub" v-for="(subCatPractice) in selectedSub.subCatDocPractices" >
+        <ul v-if="selectedSub && selectedTerm.term.id === termEnum.HEALTH" v-for="(subCatPractice) in selectedSub.subCatDocPractices" >
           <li>{{ subCatPractice.practice}}</li>
         </ul>
+
       </template>
     </Card>
-
+    <!--General-->
     <div v-if="selectedTerm.term.id === termEnum.GENERAL">
       <h4 class="m-0">Beskrivelse</h4>
       <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
     </div>
+    <!--Health-->
     <div v-if="selectedTerm.term.id === termEnum.HEALTH">
       <h4 class="m-0">Beskrivelse af tilstanden</h4>
       <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
@@ -185,17 +198,36 @@ function fetchCitizen(id = undefined) {
       <h4 class="m-0">Forventet tilstand, opfølgning - dato</h4>
       <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
     </div>
+    <!--Functional-->
     <div v-if="selectedTerm.term.id === termEnum.FUNCTIONAL">
       <h4 class="m-0">Borgers vurdering og betydning</h4>
       <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
       <h4 class="m-0">Borgers ønsker og mål</h4>
       <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
-      <SelectButton v-model="value2" :options="generalTerms" optionLabel="definition" />
-      <h4 class="m-0">Faglig vurdering</h4>
+
+      <h4 class="m-0">Tilstand - Faglig vurdering</h4>
       <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
-      <h4 class="m-0">Bemærkning til faglig vurdering</h4>
+      <h4 class="m-0">Tilstand - Niveau 0-4</h4>
+      <SelectButton v-model="value2" :options="fs3Options" optionLabel="definition" >
+      <template #option="slotProps">
+        <div class="max-w-min min-h-250" >
+          <h5>{{ slotProps.option.definition }}</h5>
+          <img :src="slotProps.option.imageName">
+        </div>
+      </template>
+      </SelectButton>
+      <h4 class="m-0">Forventet tilstand - Faglig vurdering</h4>
       <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
-      <h4 class="m-0">Opfølgning - dato</h4>
+      <h4 class="m-0">Forventet tilstand - Niveau 0-4</h4>
+      <SelectButton v-model="value2" :options="fs3Options" optionLabel="definition" >
+        <template #option="slotProps">
+          <div class="max-w-min min-h-250" >
+            <h5>{{ slotProps.option.definition }}</h5>
+            <img :src="slotProps.option.imageName">
+          </div>
+        </template>
+      </SelectButton>
+      <h4 class="m-0">Opfølgning - Dato</h4>
       <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
     </div>
 
@@ -225,7 +257,7 @@ function fetchCitizen(id = undefined) {
       <div class="flex align-items-center justify-content-center">
         <Button label="Forrige" icon="pi pi-chevron-left" @click="decrementHelpQuestionIndex"/>
         <h4 class=" px-6">{{ selectedHelpQuestionIndex.valueOf() + 1 }} af
-          {{ selectedTerm.helpQuestions.length.valueOf() }}</h4>
+          {{ selectedTerm.helpQuestions.length }}</h4>
         <Button label="Næste" icon="pi pi-chevron-right" @click="incrementHelpQuestionIndex"/>
       </div>
     </template>

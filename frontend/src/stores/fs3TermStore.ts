@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
-import {FS3TermService} from "../services/fs3Term.service";
+import {Fs3OptionsService} from "../services/fs3Options.service";
 import {FS3Term} from "../models/fs3Term";
 
-const fs3TermService: FS3TermService = new FS3TermService();
+const fs3TermService: Fs3OptionsService = new Fs3OptionsService();
 export const Fs3TermStore = defineStore({
     id: "fs3Store",
     state: ()=>({

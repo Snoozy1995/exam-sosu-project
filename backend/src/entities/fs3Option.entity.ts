@@ -17,6 +17,10 @@ export class Fs3Option {
     @Column('text')
     description: string;
 
+    @ApiProperty()
+    @Column('varchar')
+    imageName: string;
+
     @ManyToMany(() => FS3)
     @JoinTable()
     fs3s: FS3[];
