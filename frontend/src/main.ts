@@ -25,6 +25,7 @@ import Textarea from "primevue/textarea";
 import Card from "primevue/card";
 import Panel from 'primevue/panel';
 import Socketio from "./plugins/socket.io";
+import SelectButton from "primevue/selectbutton";
 
 const app=createApp(App);
 let retrieved=false;
@@ -56,6 +57,7 @@ app.component("DataTable",DataTable);
 app.component("Textarea",Textarea);
 app.component("Card",Card);
 app.component("Panel",Panel);
+app.component("SelectButton",SelectButton);
 app.directive('tooltip', Tooltip);
 
 function host(){

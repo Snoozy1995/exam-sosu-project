@@ -151,7 +151,7 @@ function fetchCitizen(id = undefined) {
   <Dialog v-if="selectedTerm" v-model:visible="displayFS3Data" :breakpoints="{'960px': '75vw'} "
           :style="{width: '50vw'}" rows="4" cols="30" class="align-self-end">
 
-    <Button label="Hjælpespørgsmål" icon="pi pi-question-circle" @click="openHelpQuestionsModal"/>
+    <Button v-if="selectedTerm.term.id === termEnum.GENERAL" label="Hjælpespørgsmål" icon="pi pi-question-circle" @click="openHelpQuestionsModal"/>
 
 
     <Listbox v-model="selectedSub" v-if="selectedTerm.term.id === termEnum.HEALTH"  sele :options=selectedTerm.fs3Subs :multiple="false" :filter="true"
@@ -172,14 +172,39 @@ function fetchCitizen(id = undefined) {
         </ul>
       </template>
     </Card>
-    <h4 class="m-0">Fagligt Notat</h4>
-    <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
+
+    <div v-if="selectedTerm.term.id === termEnum.GENERAL">
+      <h4 class="m-0">Beskrivelse</h4>
+      <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
+    </div>
+    <div v-if="selectedTerm.term.id === termEnum.HEALTH">
+      <h4 class="m-0">Beskrivelse af tilstanden</h4>
+      <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
+      <h4 class="m-0">Faglig vurdering</h4>
+      <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
+      <h4 class="m-0">Forventet tilstand, opfølgning - dato</h4>
+      <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
+    </div>
+    <div v-if="selectedTerm.term.id === termEnum.FUNCTIONAL">
+      <h4 class="m-0">Borgers vurdering og betydning</h4>
+      <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
+      <h4 class="m-0">Borgers ønsker og mål</h4>
+      <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
+      <SelectButton v-model="value2" :options="generalTerms" optionLabel="definition" />
+      <h4 class="m-0">Faglig vurdering</h4>
+      <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
+      <h4 class="m-0">Bemærkning til faglig vurdering</h4>
+      <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
+      <h4 class="m-0">Opfølgning - dato</h4>
+      <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
+    </div>
+
     <div class="py-3 text-center">
       <Button label="Opret" icon="pi pi-check" class="w-full" @click="onCreateFS3Data"/>
     </div>
   </Dialog>
 
-  <!--Help questions for fs3-->
+  <!--Help questions for fs3 General -->
   <Dialog v-if="selectedTerm" v-model:visible="displayHelpQuestions" :breakpoints="{'960px': '75vw'}"
           :style="{width: '34vw'}" rows="4" cols="30" :position=helpQuestionPosition>
     <template #header>
