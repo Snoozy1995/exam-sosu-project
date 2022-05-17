@@ -29,6 +29,11 @@ const displayFS3Data = ref(false);
 const FS3TextareaData = ref('');
 const selectedHelpQuestionIndex = ref(0);
 const helpQuestionPosition = ref('top');
+const termEnum = Object.freeze({
+  FUNCTIONAL: 1,
+  HEALTH: 2,
+  GENERAL: 3
+});
 const closeFunctionalityModal = () => {
   displayFunctionality.value = false;
 };
@@ -37,7 +42,6 @@ const displayPosition = ref(false);
 // Create FS3Data
 const openCreateFS3DataModal = () => {
   displayFS3Data.value = true;
-  // console.log(selectedTerm.value)
 };
 const closeCreateFS3DataModal = () => {
   displayFS3Data.value = false;
@@ -57,8 +61,13 @@ const decrementHelpQuestionIndex = () => {
   if (selectedHelpQuestionIndex.value === 0) return;
   selectedHelpQuestionIndex.value--;
 };
+//General
 const selectedTerm = ref<FS3>();
-const selectedSub = ref<FS3SubCategory>();
+// Health
+let selectedSub = ref<FS3SubCategory>();
+// Functional
+
+
 // General
 const generalTerms = ref<FS3[]>([]);
 // Functionality
@@ -75,8 +84,8 @@ const fs3Iterate = ref([
 
 function onCreateFS3Data() {
   closeCreateFS3DataModal();
-  console.log(selectedSub)
-  // console.log(selectedTerm.value.documentationPractices)
+
+
 }
 
 function getFS3s() {
@@ -131,7 +140,7 @@ function fetchCitizen(id = undefined) {
   </Teleport>
 
   <!--Loop version, general/health/functionality-->
-  <Panel v-for="item in fs3Iterate" :id=item.id :header=item.label :toggleable="true" style="margin-bottom:25px;">
+  <Panel v-for="item in fs3Iterate" :id=item.id :header=item.label :toggleable="true" style="margin-bottom:25px; background: blue;" >
     <Listbox v-model="selectedTerm" :options=item.terms :multiple="false" :filter="true" optionLabel="definition"
              listStyle="min-height:200px;max-height:200px" filterPlaceholder="Filter"/>
     <Button label="Vælg" v-tooltip.top="'Vælg '+item.label" class="p-button-sm w-full" @click="openCreateFS3DataModal()"
@@ -145,7 +154,7 @@ function fetchCitizen(id = undefined) {
     <Button label="Hjælpespørgsmål" icon="pi pi-question-circle" @click="openHelpQuestionsModal"/>
 
 
-    <Listbox v-if="selectedTerm.term.term ==='Helbredstilstande'" v-model="selectedSub" :options=selectedTerm.fs3Subs :multiple="false" :filter="true"
+    <Listbox v-model="selectedSub" v-if="selectedTerm.term.id === termEnum.HEALTH"  sele :options=selectedTerm.fs3Subs :multiple="false" :filter="true"
              optionLabel="category" listStyle="min-height:200px;max-height:200px" filterPlaceholder="Filter"/>
     <template #header>
       <div class="flex justify-content-left align-items-center">
@@ -154,14 +163,13 @@ function fetchCitizen(id = undefined) {
     </template>
     <Card style="margin-bottom: 2em">
       <template #content>
-        <ul v-if="selectedTerm.term.term ==='Generelle oplysninger'"
+        <ul v-if="selectedTerm.term.id === termEnum.GENERAL"
             v-for="(subCatPractice) in selectedTerm.documentationPractices">
           <li>{{ subCatPractice.practice }}</li>
         </ul>
         <ul v-if="selectedSub" v-for="(subCatPractice) in selectedSub.subCatDocPractices" >
           <li>{{ subCatPractice.practice}}</li>
         </ul>
-
       </template>
     </Card>
     <h4 class="m-0">Fagligt Notat</h4>
@@ -224,8 +232,13 @@ function fetchCitizen(id = undefined) {
   </Teleport>
 </template>
 <style>
+
 .p-panel .p-panel-content {
   padding: 0px;
+  background: blue;
+}
+.p-panel-header {
+  background: blue;
 }
 
 .p-listbox {
