@@ -173,6 +173,9 @@ function fetchCitizen(id = undefined) {
       </div>
     </template>
     <Card v-if="selectedTerm.term.id === termEnum.GENERAL ||selectedTerm.term.id === termEnum.HEALTH" style="margin-bottom: 2em">
+      <template #title>
+        <h5>{{ selectedTerm.definition }}</h5>
+      </template>
       <template #content>
         <ul v-if="selectedTerm.term.id === termEnum.GENERAL"
             v-for="(subCatPractice) in selectedTerm.documentationPractices">
