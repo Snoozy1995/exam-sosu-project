@@ -7,8 +7,9 @@ import {TypeOrmModule} from '@nestjs/typeorm';
 import {UploadModule} from './upload/upload.module';
 import {FS3Module} from './fs3/fs3.module';
 import {AuthModule} from './auth/auth.module';
-import {Fs3TermModule} from './fs3Term/fs3Term.module';
+
 import {Fs3SubCategoryModule} from "./fs3SubCategory/fs3SubCategory.module";
+import {Fs3OptionModule} from "./fs3Option/fs3Option.module";
 
 @Module({
     imports: [
@@ -18,7 +19,7 @@ import {Fs3SubCategoryModule} from "./fs3SubCategory/fs3SubCategory.module";
         UploadModule,
         FS3Module,
         AuthModule,
-        Fs3TermModule,
+        Fs3OptionModule,
         Fs3SubCategoryModule,
     ],
     providers: [
