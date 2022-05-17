@@ -44,6 +44,7 @@ const displayHelpQuestions = ref(false);
 const displayPosition = ref(false);
 // Create FS3Data
 const openCreateFS3DataModal = () => {
+  selectedSub.value = selectedTerm.value.fs3Subs.at(0);
   displayFS3Data.value = true;
 };
 const closeCreateFS3DataModal = () => {
@@ -68,7 +69,7 @@ const decrementHelpQuestionIndex = () => {
 const fs3Options = ref<FS3Option[]>([]);
 
 //General
-const selectedTerm = ref<FS3>();
+let selectedTerm = ref<FS3>();
 // Health
 let selectedSub = ref<FS3SubCategory>();
 // Functional
@@ -151,7 +152,8 @@ function fetchCitizen(id = undefined) {
   </Teleport>
 
   <!--Loop version, general/health/functionality-->
-  <Panel v-for="item in fs3Iterate" :id=item.id :header=item.label :toggleable="true" style="margin-bottom:25px; background: blue;" >
+  <Panel v-for="item in fs3Iterate" :id=item.id :header=item.label :toggleable="true"
+         style="margin-bottom:25px; background: blue;">
     <Listbox v-model="selectedTerm" :options=item.terms :multiple="false" :filter="true" optionLabel="definition"
              listStyle="min-height:200px;max-height:200px" filterPlaceholder="Filter"/>
     <Button label="Vælg" v-tooltip.top="'Vælg '+item.label" class="p-button-sm w-full" @click="openCreateFS3DataModal()"
@@ -162,18 +164,27 @@ function fetchCitizen(id = undefined) {
   <Dialog v-if="selectedTerm" v-model:visible="displayFS3Data" :breakpoints="{'960px': '75vw'} "
           :style="{width: '50vw'}" rows="4" cols="30" class="align-self-end">
 
-    <Button v-if="selectedTerm.term.id === termEnum.GENERAL" label="Hjælpespørgsmål" icon="pi pi-question-circle" @click="openHelpQuestionsModal"/>
+    <Button v-if="selectedTerm.term.id === termEnum.GENERAL" label="Hjælpespørgsmål" icon="pi pi-question-circle"
+            @click="openHelpQuestionsModal"/>
 
 
-    <Listbox v-model="selectedSub" v-if="selectedTerm.term.id === termEnum.HEALTH"  sele :options=selectedTerm.fs3Subs :multiple="false" :filter="true"
+    <Listbox v-model="selectedSub" v-if="selectedTerm.term.id === termEnum.HEALTH" sele :options=selectedTerm.fs3Subs
+             :multiple="false" :filter="true"
              optionLabel="category" listStyle="min-height:200px;max-height:200px" filterPlaceholder="Filter"/>
     <template #header>
       <div class="flex justify-content-left align-items-center">
         <h4 class="m-0">{{ selectedTerm.definition }}</h4>
       </div>
     </template>
-    <Card v-if="selectedTerm.term.id === termEnum.GENERAL ||selectedTerm.term.id === termEnum.HEALTH" style="margin-bottom: 2em">
-      <template #title>
+    <Card v-if="selectedTerm.term.id === termEnum.GENERAL ||selectedTerm.term.id === termEnum.HEALTH"
+          style="margin-bottom: 2em">
+      <template v-if="selectedTerm.term.id === termEnum.GENERAL" #title>
+        <h5>{{ selectedTerm.definition }}</h5>
+      </template>
+      <template v-if="selectedTerm.term.id === termEnum.HEALTH && selectedSub" #title>
+        {{ selectedSub.category }}
+      </template>
+      <template v-if="selectedTerm.term.id === termEnum.FUNCTIONAL" #title>
         <h5>{{ selectedTerm.definition }}</h5>
       </template>
       <template #content>
@@ -181,8 +192,9 @@ function fetchCitizen(id = undefined) {
             v-for="(subCatPractice) in selectedTerm.documentationPractices">
           <li>{{ subCatPractice.practice }}</li>
         </ul>
-        <ul v-if="selectedSub && selectedTerm.term.id === termEnum.HEALTH" v-for="(subCatPractice) in selectedSub.subCatDocPractices" >
-          <li>{{ subCatPractice.practice}}</li>
+        <ul v-if="selectedSub && selectedTerm.term.id === termEnum.HEALTH"
+            v-for="(subCatPractice) in selectedSub.subCatDocPractices">
+          <li>{{ subCatPractice.practice }}</li>
         </ul>
 
       </template>
@@ -200,6 +212,8 @@ function fetchCitizen(id = undefined) {
       <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
       <h4 class="m-0">Forventet tilstand, opfølgning - dato</h4>
       <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
+      <h4 class="m-0">Potentielle problemer</h4>
+      <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
     </div>
     <!--Functional-->
     <div v-if="selectedTerm.term.id === termEnum.FUNCTIONAL">
@@ -211,20 +225,20 @@ function fetchCitizen(id = undefined) {
       <h4 class="m-0">Tilstand - Faglig vurdering</h4>
       <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
       <h4 class="m-0">Tilstand - Niveau 0-4</h4>
-      <SelectButton v-model="value2" :options="fs3Options" optionLabel="definition" >
-      <template #option="slotProps">
-        <div class="max-w-min min-h-250" >
-          <h5>{{ slotProps.option.definition }}</h5>
-          <img :src="slotProps.option.imageName">
-        </div>
-      </template>
+      <SelectButton v-model="value2" :options="fs3Options" optionLabel="definition">
+        <template #option="slotProps">
+          <div class="max-w-min min-h-250">
+            <h5>{{ slotProps.option.definition }}</h5>
+            <img :src="slotProps.option.imageName">
+          </div>
+        </template>
       </SelectButton>
       <h4 class="m-0">Forventet tilstand - Faglig vurdering</h4>
       <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
       <h4 class="m-0">Forventet tilstand - Niveau 0-4</h4>
-      <SelectButton v-model="value2" :options="fs3Options" optionLabel="definition" >
+      <SelectButton v-model="value2" :options="fs3Options" optionLabel="definition">
         <template #option="slotProps">
-          <div class="max-w-min min-h-250" >
+          <div class="max-w-min min-h-250">
             <h5>{{ slotProps.option.definition }}</h5>
             <img :src="slotProps.option.imageName">
           </div>
@@ -297,6 +311,7 @@ function fetchCitizen(id = undefined) {
   padding: 0px;
   background: blue;
 }
+
 .p-panel-header {
   background: blue;
 }
