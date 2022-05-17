@@ -171,6 +171,9 @@ function fetchCitizen(id = undefined) {
     <Listbox v-model="selectedSub" v-if="selectedTerm.term.id === termEnum.HEALTH" sele :options=selectedTerm.fs3Subs
              :multiple="false" :filter="true"
              optionLabel="category" listStyle="min-height:200px;max-height:200px" filterPlaceholder="Filter"/>
+    <Listbox v-model="selectedSub" v-if="selectedTerm.term.id === termEnum.FUNCTIONAL" sele :options=selectedTerm.fs3Subs
+             :multiple="false" :filter="true"
+             optionLabel="category" listStyle="min-height:200px;max-height:200px" filterPlaceholder="Filter"/>
     <template #header>
       <div class="flex justify-content-left align-items-center">
         <h4 class="m-0">{{ selectedTerm.definition }}</h4>
