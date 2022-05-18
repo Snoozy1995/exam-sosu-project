@@ -44,7 +44,8 @@ const displayHelpQuestions = ref(false);
 const displayPosition = ref(false);
 // Create FS3Data
 const openCreateFS3DataModal = () => {
-  selectedSub.value = selectedTerm.value.fs3Subs.at(0);
+  selectedSubCatHealth.value = selectedTerm.value.fs3Subs.at(0);
+  selectedSubCatFunctional.value = selectedTerm.value.fs3Subs.at(0);
   displayFS3Data.value = true;
 };
 const closeCreateFS3DataModal = () => {
@@ -71,9 +72,9 @@ const fs3Options = ref<FS3Option[]>([]);
 //General
 let selectedTerm = ref<FS3>();
 // Health
-let selectedSub = ref<FS3SubCategory>();
+let selectedSubCatHealth = ref<FS3SubCategory>();
 // Functional
-
+let selectedSubCatFunctional = ref<FS3SubCategory>();
 
 // General
 const generalTerms = ref<FS3[]>([]);
@@ -153,7 +154,7 @@ function fetchCitizen(id = undefined) {
 
   <!--Loop version, general/health/functionality-->
   <Panel v-for="item in fs3Iterate" :id=item.id :header=item.label :toggleable="true"
-         style="margin-bottom:25px; background: blue;">
+         style="margin-bottom:25px;">
     <Listbox v-model="selectedTerm" :options=item.terms :multiple="false" :filter="true" optionLabel="definition"
              listStyle="min-height:200px;max-height:200px" filterPlaceholder="Filter"/>
     <Button label="Vælg" v-tooltip.top="'Vælg '+item.label" class="p-button-sm w-full" @click="openCreateFS3DataModal()"
@@ -168,10 +169,10 @@ function fetchCitizen(id = undefined) {
             @click="openHelpQuestionsModal"/>
 
 
-    <Listbox v-model="selectedSub" v-if="selectedTerm.term.id === termEnum.HEALTH" sele :options=selectedTerm.fs3Subs
+    <Listbox v-model="selectedSubCatHealth" v-if="selectedTerm.term.id === termEnum.HEALTH" sele :options=selectedTerm.fs3Subs
              :multiple="false" :filter="true"
              optionLabel="category" listStyle="min-height:200px;max-height:200px" filterPlaceholder="Filter"/>
-    <Listbox v-model="selectedSub" v-if="selectedTerm.term.id === termEnum.FUNCTIONAL" sele :options=selectedTerm.fs3Subs
+    <Listbox v-model="selectedSubCatFunctional" v-if="selectedTerm.term.id === termEnum.FUNCTIONAL" sele :options=selectedTerm.fs3Subs
              :multiple="false" :filter="true"
              optionLabel="category" listStyle="min-height:200px;max-height:200px" filterPlaceholder="Filter"/>
     <template #header>
@@ -179,24 +180,28 @@ function fetchCitizen(id = undefined) {
         <h4 class="m-0">{{ selectedTerm.definition }}</h4>
       </div>
     </template>
-    <Card v-if="selectedTerm.term.id === termEnum.GENERAL ||selectedTerm.term.id === termEnum.HEALTH"
+    <Card
           style="margin-bottom: 2em">
       <template v-if="selectedTerm.term.id === termEnum.GENERAL" #title>
         <h5>{{ selectedTerm.definition }}</h5>
       </template>
-      <template v-if="selectedTerm.term.id === termEnum.HEALTH && selectedSub" #title>
-        {{ selectedSub.category }}
+      <template v-if="selectedTerm.term.id === termEnum.HEALTH && selectedSubCatHealth" #title>
+        {{ selectedSubCatHealth.category }}
       </template>
-      <template v-if="selectedTerm.term.id === termEnum.FUNCTIONAL" #title>
-        <h5>{{ selectedTerm.definition }}</h5>
+      <template v-if="selectedTerm.term.id === termEnum.FUNCTIONAL && selectedSubCatFunctional" #title>
+        <h5>{{ selectedSubCatFunctional.category }}</h5>
       </template>
       <template #content>
         <ul v-if="selectedTerm.term.id === termEnum.GENERAL"
             v-for="(subCatPractice) in selectedTerm.documentationPractices">
           <li>{{ subCatPractice.practice }}</li>
         </ul>
-        <ul v-if="selectedSub && selectedTerm.term.id === termEnum.HEALTH"
-            v-for="(subCatPractice) in selectedSub.subCatDocPractices">
+        <ul v-if="selectedSubCatHealth && selectedTerm.term.id === termEnum.HEALTH"
+            v-for="(subCatPractice) in selectedSubCatHealth.subCatDocPractices">
+          <li>{{ subCatPractice.practice }}</li>
+        </ul>
+        <ul v-if=" selectedSubCatFunctional && selectedTerm.term.id === termEnum.FUNCTIONAL"
+            v-for="(subCatPractice) in selectedSubCatFunctional.subCatDocPractices">
           <li>{{ subCatPractice.practice }}</li>
         </ul>
 
@@ -228,22 +233,22 @@ function fetchCitizen(id = undefined) {
       <h4 class="m-0">Tilstand - Faglig vurdering</h4>
       <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
       <h4 class="m-0">Tilstand - Niveau 0-4</h4>
-      <SelectButton v-model="value2" :options="fs3Options" optionLabel="definition">
+      <SelectButton v-model="value2" :options="fs3Options" optionLabel="definition" class="flex align-items-center justify-content-center">
         <template #option="slotProps">
-          <div class="max-w-min min-h-250">
+          <div class="max-w-min min-h-250 ">
             <h5>{{ slotProps.option.definition }}</h5>
-            <img :src="slotProps.option.imageName">
+            <img :src="'../src/assets/begraensninger/' + slotProps.option.imageName + '.png'">
           </div>
         </template>
       </SelectButton>
       <h4 class="m-0">Forventet tilstand - Faglig vurdering</h4>
       <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
       <h4 class="m-0">Forventet tilstand - Niveau 0-4</h4>
-      <SelectButton v-model="value2" :options="fs3Options" optionLabel="definition">
+      <SelectButton v-model="value2" :options="fs3Options" optionLabel="definition" class="flex align-items-center justify-content-center">
         <template #option="slotProps">
           <div class="max-w-min min-h-250">
             <h5>{{ slotProps.option.definition }}</h5>
-            <img :src="slotProps.option.imageName">
+            <img :src="'../src/assets/begraensninger/' + slotProps.option.imageName + '.png'">
           </div>
         </template>
       </SelectButton>
