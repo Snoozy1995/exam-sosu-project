@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import {Ref, ref} from "vue";
-import {onMounted} from "vue";
+import {onMounted, ref, Ref} from "vue";
 import {CitizenService} from '../services/citizen.service';
 import Router from "../router";
 import {Citizen} from "../models/citizen";
@@ -18,6 +17,7 @@ import ViewCitizenStudent from "./student/ViewCitizenStudent.vue";
 import {FS3SubCategory} from "../models/fs3SubCategory";
 import {Fs3OptionsService} from "../services/fs3Options.service";
 import {FS3Option} from "../models/fs3Option";
+import {Fs3DataService} from "../services/fs3Data.service";
 //import {StudentTourService} from '../services/studentTour.service';
 dayjs.extend(RelativeTime);
 dayjs.locale('da');
@@ -27,6 +27,7 @@ const citizenService = new CitizenService();
 const citizen: Ref<Citizen | undefined> = ref(undefined); //Edit this citizen to save
 const fs3Service: Fs3Service = new Fs3Service();
 const fs3OptionsService: Fs3OptionsService = new Fs3OptionsService();
+const fs3DataService: Fs3DataService = new Fs3DataService();
 const displayFunctionality = ref(false);
 const displayFS3Data = ref(false);
 const FS3TextareaData = ref('');
@@ -37,6 +38,20 @@ const termEnum = Object.freeze({
   HEALTH: 2,
   GENERAL: 3
 });
+
+// const citizen=CitizenStore().citizen;
+//
+// function create(){ //@todo
+//   if(!citizen.firstName.length||!citizen.lastName.length) return console.log("hmp1");
+//   if(!citizen.birthday.length) return;
+//   if(!citizen.civilStatus.length) return console.log("hmpf");
+//   if(AddressStore().street.length<4) return console.log("hmpf2");
+//   if(AddressStore().postCode.length!=4) return console.log("hmpf3");
+//   CitizenStore().createCitizen().then(res=>{
+//     //Send to this id view  @todo console.log(res.data.id);
+//   })
+// }
+
 const closeFunctionalityModal = () => {
   displayFunctionality.value = false;
 };
@@ -92,7 +107,7 @@ const fs3Iterate = ref([
 
 function onCreateFS3Data() {
   closeCreateFS3DataModal();
-
+  // fs3DataService.createFS3Data()
 
 }
 
