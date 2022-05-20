@@ -3,9 +3,10 @@ import AdminMenuComponent from '../admin/AdminMenuComponent.vue';
 import TeacherMenuComponent from '../teacher/TeacherMenuComponent.vue';
 import StudentMenuComponent from '../student/StudentMenuComponent.vue';
 import Breadcrumb from 'primevue/breadcrumb';
-import { AuthStore } from '../../stores/authStore';
-import { BreadcrumbStore } from '../../stores/breadcrumbStore';
-import { MenuStore } from '../../stores/menuStore';
+import {AuthStore} from '../../stores/authStore';
+import {BreadcrumbStore} from '../../stores/breadcrumbStore';
+import {MenuStore} from '../../stores/menuStore';
+
 const authStore=AuthStore();
 const menuStore=MenuStore();
 </script>

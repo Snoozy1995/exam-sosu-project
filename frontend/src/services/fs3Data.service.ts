@@ -7,7 +7,8 @@ export class Fs3DataService {
         return axios.get("/fs3Data");
     }
 
-    createFS3Data(fs3Data: any):Promise<AxiosResponse>{
+
+    createFS3Data(fs3Data: any):Promise<AxiosResponse<FS3Data>>{
         return axios.post<FS3Data>("/fs3Data/create", fs3Data);
     }
 

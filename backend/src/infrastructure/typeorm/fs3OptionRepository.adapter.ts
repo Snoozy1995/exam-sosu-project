@@ -1,7 +1,6 @@
 import {EntityManager, Repository} from 'typeorm';
 import {Injectable} from '@nestjs/common';
 import {Fs3OptionRepository} from "../../domain/borders/fs3Option.repository";
-import {FS3Term} from "../../entities/fs3Term.entity";
 import {Fs3Option} from "../../entities/fs3Option.entity";
 
 @Injectable()

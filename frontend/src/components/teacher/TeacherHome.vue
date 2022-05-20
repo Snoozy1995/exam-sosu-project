@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import Avatar from 'primevue/avatar';
-import { AuthStore } from '../../stores/authStore';
+import {AuthStore} from '../../stores/authStore';
 import dayjs from 'dayjs';
 import RelativeTime from 'dayjs/plugin/relativeTime' // import plugin
 import 'dayjs/locale/da';
+
 dayjs.extend(RelativeTime);
 dayjs.locale('da');
 const authStore=AuthStore();

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref } from '@vue/runtime-dom';
+import {ref} from '@vue/runtime-dom';
 import Dropdown from 'primevue/dropdown';
+
 const selectedTheme=ref({
         name: "Material light",
         code: "mdc-light-deeppurple"

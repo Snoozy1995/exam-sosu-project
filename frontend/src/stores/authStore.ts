@@ -1,8 +1,9 @@
-import { defineStore } from "pinia";
-import { School } from "../models/school";
-import { User } from "../models/user";
+import {defineStore} from "pinia";
+import {School} from "../models/school";
+import {User} from "../models/user";
 import Router from "../router";
-import { AuthService } from "../services/auth.service";
+import {AuthService} from "../services/auth.service";
+
 const authService: AuthService = new AuthService();
 export const AuthStore = defineStore({
   id: "authStore",

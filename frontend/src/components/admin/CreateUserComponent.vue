@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import Dropdown from 'primevue/dropdown';
 import Button from 'primevue/button';
-import { ref } from 'pinia/node_modules/vue-demi';
-import { AuthStore } from '../../stores/authStore';
-import { SchoolService } from '../../services/school.service';
-import { SchoolStore } from '../../stores/schoolStore';
+import {ref} from 'pinia/node_modules/vue-demi';
+import {AuthStore} from '../../stores/authStore';
+import {SchoolService} from '../../services/school.service';
+import {SchoolStore} from '../../stores/schoolStore';
+
 const store=SchoolStore();
 const cv_choices=[
 'Superuser',

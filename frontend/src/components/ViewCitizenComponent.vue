@@ -18,6 +18,11 @@ import {FS3SubCategory} from "../models/fs3SubCategory";
 import {Fs3OptionsService} from "../services/fs3Options.service";
 import {FS3Option} from "../models/fs3Option";
 import {Fs3DataService} from "../services/fs3Data.service";
+import {FS3Data} from "../models/fs3Data";
+import {Fs3DataGeneral} from "../models/fs3DataGeneral";
+import {Fs3DataHealth} from "../models/fs3DataHealth";
+import {Fs3DataFunctional} from "../models/fs3DataFunctional";
+import {CitizenStore} from "../stores/citizenStore";
 //import {StudentTourService} from '../services/studentTour.service';
 dayjs.extend(RelativeTime);
 dayjs.locale('da');
@@ -30,7 +35,6 @@ const fs3OptionsService: Fs3OptionsService = new Fs3OptionsService();
 const fs3DataService: Fs3DataService = new Fs3DataService();
 const displayFunctionality = ref(false);
 const displayFS3Data = ref(false);
-const FS3TextareaData = ref('');
 const selectedHelpQuestionIndex = ref(0);
 const helpQuestionPosition = ref('top');
 const termEnum = Object.freeze({
@@ -39,18 +43,57 @@ const termEnum = Object.freeze({
   GENERAL: 3
 });
 
-// const citizen=CitizenStore().citizen;
-//
-// function create(){ //@todo
-//   if(!citizen.firstName.length||!citizen.lastName.length) return console.log("hmp1");
-//   if(!citizen.birthday.length) return;
-//   if(!citizen.civilStatus.length) return console.log("hmpf");
-//   if(AddressStore().street.length<4) return console.log("hmpf2");
-//   if(AddressStore().postCode.length!=4) return console.log("hmpf3");
-//   CitizenStore().createCitizen().then(res=>{
-//     //Send to this id view  @todo console.log(res.data.id);
-//   })
-// }
+let generalData = ref<FS3Data>({} as FS3Data);
+
+let healthData: Ref<FS3Data> = ref();
+let functionalData: Ref<FS3Data> = ref();
+
+// general
+const generalDataDescription = ref('');
+// health
+const healthDataCondition = ref('');
+const healthDataProfConOpinion = ref('');
+const healthDataExpConDesc = ref('');
+const healthDataPotProblems = ref('');
+// functional
+const funcDataCitizenDescription = ref('');
+const funcDataCitWishAndGoal = ref('');
+const funcDataProfConOpinion = ref('');
+const funcDataHealthLevel = ref('');
+const funcDataExpConOpinion = ref('');
+const funcDataExpHealthLevel = ref('');
+const funcDataFollowUp = ref('');
+
+
+function create() {
+  let data = ({
+
+    fs3: selectedTerm.value,
+    citizen: CitizenStore().citizen,
+    generalData: {
+      description: generalDataDescription.value
+    },
+    healthData: {
+      condition: healthDataCondition.value,
+      professionalConditionOpinion: healthDataProfConOpinion.value,
+      expectedConditionDescription: healthDataExpConDesc.value,
+      potentialProblems: healthDataPotProblems.value,
+    },
+    functionalData: {
+      citizensDescription: funcDataCitizenDescription.value,
+      citizenWishesAndGoals: funcDataCitWishAndGoal.value,
+      professionalConditionOpinion: funcDataProfConOpinion.value,
+      healthLevel: funcDataHealthLevel.value,
+      expectedConditionOpinion: funcDataExpConOpinion.value,
+      expectedHealthLevel: funcDataExpHealthLevel.value,
+      followUp: funcDataFollowUp.value,
+    }
+  })
+  // generalData.value.generalData.description = 'hello';
+  // generalData.value.generalData.description = generalDataDescription.value;
+  fs3DataService.createFS3Data(data);
+
+}
 
 const closeFunctionalityModal = () => {
   displayFunctionality.value = false;
@@ -59,6 +102,7 @@ const displayHelpQuestions = ref(false);
 const displayPosition = ref(false);
 // Create FS3Data
 const openCreateFS3DataModal = () => {
+
   selectedSubCatHealth.value = selectedTerm.value.fs3Subs.at(0);
   selectedSubCatFunctional.value = selectedTerm.value.fs3Subs.at(0);
   displayFS3Data.value = true;
@@ -107,7 +151,7 @@ const fs3Iterate = ref([
 
 function onCreateFS3Data() {
   closeCreateFS3DataModal();
-  // fs3DataService.createFS3Data()
+  create();
 
 }
 
@@ -184,10 +228,12 @@ function fetchCitizen(id = undefined) {
             @click="openHelpQuestionsModal"/>
 
 
-    <Listbox v-model="selectedSubCatHealth" v-if="selectedTerm.term.id === termEnum.HEALTH" sele :options=selectedTerm.fs3Subs
+    <Listbox v-model="selectedSubCatHealth" v-if="selectedTerm.term.id === termEnum.HEALTH" sele
+             :options=selectedTerm.fs3Subs
              :multiple="false" :filter="true"
              optionLabel="category" listStyle="min-height:200px;max-height:200px" filterPlaceholder="Filter"/>
-    <Listbox v-model="selectedSubCatFunctional" v-if="selectedTerm.term.id === termEnum.FUNCTIONAL" sele :options=selectedTerm.fs3Subs
+    <Listbox v-model="selectedSubCatFunctional" v-if="selectedTerm.term.id === termEnum.FUNCTIONAL" sele
+             :options=selectedTerm.fs3Subs
              :multiple="false" :filter="true"
              optionLabel="category" listStyle="min-height:200px;max-height:200px" filterPlaceholder="Filter"/>
     <template #header>
@@ -196,7 +242,7 @@ function fetchCitizen(id = undefined) {
       </div>
     </template>
     <Card
-          style="margin-bottom: 2em">
+        style="margin-bottom: 2em">
       <template v-if="selectedTerm.term.id === termEnum.GENERAL" #title>
         <h5>{{ selectedTerm.definition }}</h5>
       </template>
@@ -225,30 +271,35 @@ function fetchCitizen(id = undefined) {
     <!--General-->
     <div v-if="selectedTerm.term.id === termEnum.GENERAL">
       <h4 class="m-0">Beskrivelse</h4>
-      <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
+      <Textarea v-model="generalDataDescription" :autoResize="true" class="w-full" autofocus/>
     </div>
     <!--Health-->
     <div v-if="selectedTerm.term.id === termEnum.HEALTH">
       <h4 class="m-0">Beskrivelse af tilstanden</h4>
-      <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
+      <Textarea v-model="healthData.healthData.condition" :autoResize="true" class="w-full" autofocus/>
       <h4 class="m-0">Faglig vurdering</h4>
-      <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
+      <Textarea v-model="healthData.healthData.condition" :autoResize="true" class="w-full" autofocus/>
       <h4 class="m-0">Forventet tilstand, opfølgning - dato</h4>
-      <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
+      <Textarea v-model="healthData.healthData.expectedConditionDescription" :autoResize="true" class="w-full"
+                autofocus/>
       <h4 class="m-0">Potentielle problemer</h4>
-      <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
+      <Textarea v-model="healthData.healthData.potentialProblems" :autoResize="true" class="w-full" autofocus/>
     </div>
     <!--Functional-->
     <div v-if="selectedTerm.term.id === termEnum.FUNCTIONAL">
       <h4 class="m-0">Borgers vurdering og betydning</h4>
-      <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
+      <Textarea v-model="functionalData.functionalData.citizensDescription" :autoResize="true" class="w-full"
+                autofocus/>
       <h4 class="m-0">Borgers ønsker og mål</h4>
-      <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
+      <Textarea v-model="functionalData.functionalData.citizenWishesAndGoals" :autoResize="true" class="w-full"
+                autofocus/>
 
       <h4 class="m-0">Tilstand - Faglig vurdering</h4>
-      <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
+      <Textarea v-model="functionalData.functionalData.citizensDescription" :autoResize="true" class="w-full"
+                autofocus/>
       <h4 class="m-0">Tilstand - Niveau 0-4</h4>
-      <SelectButton v-model="value2" :options="fs3Options" optionLabel="definition" class="flex align-items-center justify-content-center">
+      <SelectButton v-model="functionalData.functionalData.healthLevel" :options="fs3Options" optionLabel="definition"
+                    class="flex align-items-center justify-content-center">
         <template #option="slotProps">
           <div class="max-w-min min-h-250 ">
             <h5>{{ slotProps.option.definition }}</h5>
@@ -257,9 +308,11 @@ function fetchCitizen(id = undefined) {
         </template>
       </SelectButton>
       <h4 class="m-0">Forventet tilstand - Faglig vurdering</h4>
-      <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
+      <Textarea v-model="functionalData.functionalData.expectedConditionOpinion" :autoResize="true" class="w-full"
+                autofocus/>
       <h4 class="m-0">Forventet tilstand - Niveau 0-4</h4>
-      <SelectButton v-model="value2" :options="fs3Options" optionLabel="definition" class="flex align-items-center justify-content-center">
+      <SelectButton v-model="functionalData.functionalData.expectedHealthLevel" :options="fs3Options"
+                    optionLabel="definition" class="flex align-items-center justify-content-center">
         <template #option="slotProps">
           <div class="max-w-min min-h-250">
             <h5>{{ slotProps.option.definition }}</h5>
@@ -268,7 +321,7 @@ function fetchCitizen(id = undefined) {
         </template>
       </SelectButton>
       <h4 class="m-0">Opfølgning - Dato</h4>
-      <Textarea v-model="FS3TextareaData" :autoResize="true" class="w-full" autofocus/>
+      <Textarea v-model="functionalData.functionalData.followUp" :autoResize="true" class="w-full" autofocus/>
     </div>
 
     <div class="py-3 text-center">

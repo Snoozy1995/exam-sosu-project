@@ -1,4 +1,4 @@
-import { FS3Term } from "./fs3Term";
+import {FS3Term} from "./fs3Term";
 import {FS3SubCategory} from "./fs3SubCategory";
 import {FS3Example} from "./fs3Example";
 import {FS3HelpQuestion} from "./fs3HelpQuestion";

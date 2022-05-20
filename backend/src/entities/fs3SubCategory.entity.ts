@@ -1,4 +1,4 @@
-import {Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryColumn} from "typeorm";
+import {Column, Entity, ManyToOne, OneToMany, PrimaryColumn} from "typeorm";
 import {ApiProperty} from "@nestjs/swagger";
 import {FS3} from "./fs3.entity";
 import {Fs3SubCatDocPrac} from "./fs3SubCatDocPrac.entity";

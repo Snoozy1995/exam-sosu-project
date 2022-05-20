@@ -22,7 +22,7 @@ export class FS3DataController {
     }
 
     @Post('/create')
-    async createFS3Data(@Body() body: CreateFS3DataDto): Promise<FS3Data> {
+    async createFS3Data(@Body() body: FS3Data): Promise<FS3Data> {
         return this.create.createFS3Data(body);
     }
 }

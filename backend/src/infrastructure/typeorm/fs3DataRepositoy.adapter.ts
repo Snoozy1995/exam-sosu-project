@@ -18,14 +18,8 @@ export class Fs3DataRepositoyAdapter implements Fs3DataRepository {
         },);
     }
 
-    async createFS3Data(fs3Data: CreateFS3DataDto): Promise<FS3Data> {
+    async createFS3Data(fs3Data: FS3Data): Promise<FS3Data> {
 
-        return this.fs3DataRepository.save({
-            generalData: fs3Data.generalData,
-            healthData: fs3Data.healthData,
-            functionalData: fs3Data.functionalData
-
-
-        });
+        return this.fs3DataRepository.save(fs3Data);
     }
 }

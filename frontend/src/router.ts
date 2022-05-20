@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router";
+import {createRouter, createWebHistory} from "vue-router";
 import CreateCitizen from './components/teacher/CreateCitizenComponent.vue';
 import ModuleView from './components/misc/ModuleView.vue';
 import LoginComponent from './components/LoginComponent.vue';
@@ -10,6 +10,9 @@ import AllSchoolsListComponent from './components/admin/AllSchoolsListComponent.
 import UserSearchComponent from './components/admin/UserSearchComponent.vue';
 import CreateCaseComponent from './components/teacher/CreateCaseComponent.vue';
 import ViewCaseComponent from './components/shared/ViewCaseComponent.vue';
+import {AuthStore} from "./stores/authStore";
+import {BreadcrumbStore} from "./stores/breadcrumbStore";
+
 const Router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -116,9 +119,6 @@ const Router = createRouter({
     },*/
   ],
 });
-
-import { AuthStore } from "./stores/authStore";
-import { BreadcrumbStore } from "./stores/breadcrumbStore";
 
 Router.afterEach((to,from,fail)=>{
   BreadcrumbStore().set(to.meta.breadcrumb);
