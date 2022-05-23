@@ -33,6 +33,8 @@ function saveAddress(){
 }
 </script>
 <script lang="ts">
+import Router from "../../router";
+
 export default {
   props:['citizen'],
 	methods: {
