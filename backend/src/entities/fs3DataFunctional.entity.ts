@@ -8,31 +8,31 @@ export class Fs3DataFunctional {
     id: number;
 
     @ApiProperty()
-    @Column('text')
+    @Column('text', {nullable: true})
     citizensDescription: string;
 
     @ApiProperty()
-    @Column('text')
+    @Column('text', {nullable: true})
     citizenWishesAndGoals: string;
 
     @ApiProperty()
-    @Column('text')
+    @Column('text', {nullable: true})
     professionalConditionOpinion: string;
 
     @ApiProperty()
-    @Column('boolean')
+    @Column('boolean', {nullable: true})
     healthLevel: number;
 
     @ApiProperty()
-    @Column('text')
+    @Column('text', {nullable: true})
     expectedConditionOpinion: string;
 
     @ApiProperty()
-    @Column('boolean')
+    @Column('boolean', {nullable: true})
     expectedHealthLevel: number;
 
     @ApiProperty()
-    @Column('text')
+    @Column('text', {nullable: true})
     followUp: string;
 
 

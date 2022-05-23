@@ -8,6 +8,7 @@ export const CitizenStore = defineStore({
   id: "citizenStore",
   state:()=>({
     citizen:{
+      id: 0,
       firstName:'',
       lastName:'',
       birthday:'',

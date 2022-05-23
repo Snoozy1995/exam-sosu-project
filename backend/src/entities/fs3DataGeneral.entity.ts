@@ -9,7 +9,7 @@ export class Fs3DataGeneral {
     id: number;
 
     @ApiProperty()
-    @Column('text')
+    @Column('text', {nullable: true})
     description: string;
 
 

@@ -44,32 +44,28 @@ const termEnum = Object.freeze({
 });
 
 let generalData = ref<FS3Data>({} as FS3Data);
-
-let healthData: Ref<FS3Data> = ref();
-let functionalData: Ref<FS3Data> = ref();
-
 // general
-const generalDataDescription = ref('');
+const generalDataDescription = ref(undefined);
 // health
-const healthDataCondition = ref('');
-const healthDataProfConOpinion = ref('');
-const healthDataExpConDesc = ref('');
-const healthDataPotProblems = ref('');
+const healthDataCondition = ref(undefined);
+const healthDataProfConOpinion = ref(undefined);
+const healthDataExpConDesc = ref(undefined);
+const healthDataPotProblems = ref(undefined);
 // functional
-const funcDataCitizenDescription = ref('');
-const funcDataCitWishAndGoal = ref('');
-const funcDataProfConOpinion = ref('');
-const funcDataHealthLevel = ref('');
-const funcDataExpConOpinion = ref('');
-const funcDataExpHealthLevel = ref('');
-const funcDataFollowUp = ref('');
+const funcDataCitizenDescription = ref(undefined);
+const funcDataCitWishAndGoal = ref(undefined);
+const funcDataProfConOpinion = ref(undefined);
+const funcDataHealthLevel = ref<FS3Option>({} as FS3Option);
+const funcDataExpConOpinion = ref(undefined);
+const funcDataExpHealthLevel = ref<FS3Option>({} as FS3Option);
+const funcDataFollowUp = ref(undefined);
 
 
 function create() {
   let data = ({
 
     fs3: selectedTerm.value,
-    citizen: CitizenStore().citizen,
+    citizen: citizen.value,
     generalData: {
       description: generalDataDescription.value
     },
@@ -83,14 +79,12 @@ function create() {
       citizensDescription: funcDataCitizenDescription.value,
       citizenWishesAndGoals: funcDataCitWishAndGoal.value,
       professionalConditionOpinion: funcDataProfConOpinion.value,
-      healthLevel: funcDataHealthLevel.value,
+      healthLevel: funcDataHealthLevel.value.option,
       expectedConditionOpinion: funcDataExpConOpinion.value,
-      expectedHealthLevel: funcDataExpHealthLevel.value,
+      expectedHealthLevel: funcDataExpHealthLevel.value.option,
       followUp: funcDataFollowUp.value,
     }
   })
-  // generalData.value.generalData.description = 'hello';
-  // generalData.value.generalData.description = generalDataDescription.value;
   fs3DataService.createFS3Data(data);
 
 }
@@ -113,6 +107,10 @@ const closeCreateFS3DataModal = () => {
 
 const openHelpQuestionsModal = () => {
   displayHelpQuestions.value = true;
+};
+const closeHelpQuestionsModal = () => {
+  displayHelpQuestions.value = false;
+  selectedHelpQuestionIndex.value = 0;
 };
 
 
@@ -179,9 +177,10 @@ function getFS3Options() {
 }
 
 onMounted(() => {
+  fetchCitizen();
   getFS3s();
   getFS3Options()
-  fetchCitizen();
+
 })
 
 onBeforeRouteUpdate(update => {
@@ -276,29 +275,29 @@ function fetchCitizen(id = undefined) {
     <!--Health-->
     <div v-if="selectedTerm.term.id === termEnum.HEALTH">
       <h4 class="m-0">Beskrivelse af tilstanden</h4>
-      <Textarea v-model="healthData.healthData.condition" :autoResize="true" class="w-full" autofocus/>
+      <Textarea v-model="healthDataCondition" :autoResize="true" class="w-full" autofocus/>
       <h4 class="m-0">Faglig vurdering</h4>
-      <Textarea v-model="healthData.healthData.condition" :autoResize="true" class="w-full" autofocus/>
+      <Textarea v-model="healthDataProfConOpinion" :autoResize="true" class="w-full" autofocus/>
       <h4 class="m-0">Forventet tilstand, opfølgning - dato</h4>
-      <Textarea v-model="healthData.healthData.expectedConditionDescription" :autoResize="true" class="w-full"
+      <Textarea v-model="healthDataExpConDesc" :autoResize="true" class="w-full"
                 autofocus/>
       <h4 class="m-0">Potentielle problemer</h4>
-      <Textarea v-model="healthData.healthData.potentialProblems" :autoResize="true" class="w-full" autofocus/>
+      <Textarea v-model="healthDataPotProblems" :autoResize="true" class="w-full" autofocus/>
     </div>
     <!--Functional-->
     <div v-if="selectedTerm.term.id === termEnum.FUNCTIONAL">
       <h4 class="m-0">Borgers vurdering og betydning</h4>
-      <Textarea v-model="functionalData.functionalData.citizensDescription" :autoResize="true" class="w-full"
+      <Textarea v-model="funcDataCitizenDescription" :autoResize="true" class="w-full"
                 autofocus/>
       <h4 class="m-0">Borgers ønsker og mål</h4>
-      <Textarea v-model="functionalData.functionalData.citizenWishesAndGoals" :autoResize="true" class="w-full"
+      <Textarea v-model="funcDataCitWishAndGoal" :autoResize="true" class="w-full"
                 autofocus/>
 
       <h4 class="m-0">Tilstand - Faglig vurdering</h4>
-      <Textarea v-model="functionalData.functionalData.citizensDescription" :autoResize="true" class="w-full"
+      <Textarea v-model="funcDataProfConOpinion" :autoResize="true" class="w-full"
                 autofocus/>
       <h4 class="m-0">Tilstand - Niveau 0-4</h4>
-      <SelectButton v-model="functionalData.functionalData.healthLevel" :options="fs3Options" optionLabel="definition"
+      <SelectButton v-model="funcDataHealthLevel" :options="fs3Options" optionLabel="definition"
                     class="flex align-items-center justify-content-center">
         <template #option="slotProps">
           <div class="max-w-min min-h-250 ">
@@ -308,10 +307,10 @@ function fetchCitizen(id = undefined) {
         </template>
       </SelectButton>
       <h4 class="m-0">Forventet tilstand - Faglig vurdering</h4>
-      <Textarea v-model="functionalData.functionalData.expectedConditionOpinion" :autoResize="true" class="w-full"
+      <Textarea v-model="funcDataExpConOpinion" :autoResize="true" class="w-full"
                 autofocus/>
       <h4 class="m-0">Forventet tilstand - Niveau 0-4</h4>
-      <SelectButton v-model="functionalData.functionalData.expectedHealthLevel" :options="fs3Options"
+      <SelectButton v-model="funcDataExpHealthLevel" :options="fs3Options"
                     optionLabel="definition" class="flex align-items-center justify-content-center">
         <template #option="slotProps">
           <div class="max-w-min min-h-250">
@@ -321,7 +320,7 @@ function fetchCitizen(id = undefined) {
         </template>
       </SelectButton>
       <h4 class="m-0">Opfølgning - Dato</h4>
-      <Textarea v-model="functionalData.functionalData.followUp" :autoResize="true" class="w-full" autofocus/>
+      <Textarea v-model="funcDataFollowUp" :autoResize="true" class="w-full" autofocus/>
     </div>
 
     <div class="py-3 text-center">
@@ -330,7 +329,7 @@ function fetchCitizen(id = undefined) {
   </Dialog>
 
   <!--Help questions for fs3 General -->
-  <Dialog v-if="selectedTerm" v-model:visible="displayHelpQuestions" :breakpoints="{'960px': '75vw'}"
+  <Dialog v-if="selectedTerm" v-model:visible="displayHelpQuestions" @update:visible="closeHelpQuestionsModal" :breakpoints="{'960px': '75vw'}"
           :style="{width: '34vw'}" rows="4" cols="30" :position=helpQuestionPosition>
     <template #header>
       <div class="flex justify-content-left align-items-center">

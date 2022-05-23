@@ -9,18 +9,18 @@ export class Fs3DataHealth {
     id: number;
 
     @ApiProperty()
-    @Column('text')
+    @Column('text', {nullable: true})
     condition: string;
 
     @ApiProperty()
-    @Column('text')
+    @Column('text', {nullable: true})
     professionalConditionOpinion: string;
 
     @ApiProperty()
-    @Column('text')
+    @Column('text', {nullable: true})
     expectedConditionDescription: string;
 
     @ApiProperty()
-    @Column('text')
+    @Column('text', {nullable: true})
     potentialProblems: string;
 }

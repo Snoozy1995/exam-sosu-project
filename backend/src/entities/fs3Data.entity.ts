@@ -53,17 +53,17 @@ export class FS3Data {
     updated_at: Date;
 
     @ApiProperty()
-    @OneToOne(() => Fs3DataGeneral, {cascade: true})
+    @OneToOne(() => Fs3DataGeneral, {cascade: true, nullable: true})
     @JoinColumn()
     generalData: Fs3DataGeneral;
 
     @ApiProperty()
-    @OneToOne(() => Fs3DataHealth)
+    @OneToOne(() => Fs3DataHealth, {cascade: true, nullable: true})
     @JoinColumn()
     healthData: Fs3DataHealth;
 
     @ApiProperty()
-    @OneToOne(() => Fs3DataFunctional)
+    @OneToOne(() => Fs3DataFunctional, {cascade: true, nullable: true})
     @JoinColumn()
     functionalData: Fs3DataFunctional;
 }
