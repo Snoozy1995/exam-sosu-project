@@ -163,8 +163,18 @@ const fs3Iterate = ref([
 async function onCreateFS3Data() {
   await create();
   closeCreateFS3DataModal();
+}
 
-
+function returnButtonCSSClass(){
+  if (selectedTerm.value.term.id === termEnum.GENERAL){
+    return fs3Iterate.value.at(0).buttonColor;
+  }
+  else if (selectedTerm.value.term.id === termEnum.HEALTH){
+    return fs3Iterate.value.at(1).buttonColor;
+  }
+  else {
+    return fs3Iterate.value.at(2).buttonColor;
+  }
 }
 
 function getFS3s() {
@@ -238,15 +248,15 @@ function fetchCitizen(id = undefined) {
           :breakpoints="{'960px': '75vw'} "
           :style="{width: '50vw'}" rows="4" cols="30" class="align-self-end">
 
-    <Button v-if="selectedTerm.term.id === termEnum.GENERAL" label="Hjælpespørgsmål" icon="pi pi-question-circle"
+    <Button v-bind:class=returnButtonCSSClass() v-if="selectedTerm.term.id === termEnum.GENERAL" label="Hjælpespørgsmål" icon="pi pi-question-circle"
             @click="openHelpQuestionsModal"/>
 
 
-    <Listbox v-model="selectedSubCatHealth" v-if="selectedTerm.term.id === termEnum.HEALTH" sele
+    <Listbox v-model="selectedSubCatHealth" v-if="selectedTerm.term.id === termEnum.HEALTH"
              :options=selectedTerm.fs3Subs
              :multiple="false" :filter="true"
              optionLabel="category" listStyle="min-height:200px;max-height:200px" filterPlaceholder="Filter"/>
-    <Listbox v-model="selectedSubCatFunctional" v-if="selectedTerm.term.id === termEnum.FUNCTIONAL" sele
+    <Listbox v-model="selectedSubCatFunctional" v-if="selectedTerm.term.id === termEnum.FUNCTIONAL"
              :options=selectedTerm.fs3Subs
              :multiple="false" :filter="true"
              optionLabel="category" listStyle="min-height:200px;max-height:200px" filterPlaceholder="Filter"/>
@@ -307,7 +317,6 @@ function fetchCitizen(id = undefined) {
       <h4 class="m-0">Borgers ønsker og mål</h4>
       <Textarea v-model="funcDataCitWishAndGoal" :autoResize="true" class="w-full"
                 autofocus/>
-
       <h4 class="m-0">Tilstand - Faglig vurdering</h4>
       <Textarea v-model="funcDataProfConOpinion" :autoResize="true" class="w-full"
                 autofocus/>
@@ -339,7 +348,7 @@ function fetchCitizen(id = undefined) {
     </div>
 
     <div class="py-3 text-center">
-      <Button label="Opret" icon="pi pi-check" class="w-full" @click="onCreateFS3Data"/>
+      <Button label="Opret" icon="pi pi-check" v-bind:class=returnButtonCSSClass() class="w-full" @click="onCreateFS3Data"/>
     </div>
   </Dialog>
 
@@ -363,10 +372,10 @@ function fetchCitizen(id = undefined) {
     </Card>
     <template #footer>
       <div class="flex align-items-center justify-content-center">
-        <Button label="Forrige" icon="pi pi-chevron-left" @click="decrementHelpQuestionIndex"/>
+        <Button v-bind:class=returnButtonCSSClass() label="Forrige" icon="pi pi-chevron-left" @click="decrementHelpQuestionIndex"/>
         <h4 class=" px-6">{{ selectedHelpQuestionIndex.valueOf() + 1 }} af
           {{ selectedTerm.helpQuestions.length }}</h4>
-        <Button label="Næste" icon="pi pi-chevron-right" @click="incrementHelpQuestionIndex"/>
+        <Button v-bind:class=returnButtonCSSClass() label="Næste" icon="pi pi-chevron-right" @click="incrementHelpQuestionIndex"/>
       </div>
     </template>
   </Dialog>
@@ -457,13 +466,6 @@ function fetchCitizen(id = undefined) {
   color: rgba(0, 0, 0, 0.87);
   border-top-right-radius: 4px;
   border-top-left-radius: 4px;
-}
-
-
-.p-selectbutton .p-button.p-highlight {
-  background: #3B82F6;
-  border-color: #e0e0e1;
-  color: rgba(0, 0, 0, 0.87);
 }
 
 .p-selectbutton .p-button {
