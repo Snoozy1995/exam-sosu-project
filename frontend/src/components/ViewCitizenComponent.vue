@@ -18,11 +18,6 @@ import {FS3SubCategory} from "../models/fs3SubCategory";
 import {Fs3OptionsService} from "../services/fs3Options.service";
 import {FS3Option} from "../models/fs3Option";
 import {Fs3DataService} from "../services/fs3Data.service";
-import {FS3Data} from "../models/fs3Data";
-import {Fs3DataGeneral} from "../models/fs3DataGeneral";
-import {Fs3DataHealth} from "../models/fs3DataHealth";
-import {Fs3DataFunctional} from "../models/fs3DataFunctional";
-import {CitizenStore} from "../stores/citizenStore";
 //import {StudentTourService} from '../services/studentTour.service';
 dayjs.extend(RelativeTime);
 dayjs.locale('da');
@@ -43,23 +38,41 @@ const termEnum = Object.freeze({
   GENERAL: 3
 });
 
-let generalData = ref<FS3Data>({} as FS3Data);
-// general
-const generalDataDescription = ref(undefined);
-// health
-const healthDataCondition = ref(undefined);
-const healthDataProfConOpinion = ref(undefined);
-const healthDataExpConDesc = ref(undefined);
-const healthDataPotProblems = ref(undefined);
-// functional
-const funcDataCitizenDescription = ref(undefined);
-const funcDataCitWishAndGoal = ref(undefined);
-const funcDataProfConOpinion = ref(undefined);
-const funcDataHealthLevel = ref<FS3Option>({} as FS3Option);
-const funcDataExpConOpinion = ref(undefined);
-const funcDataExpHealthLevel = ref<FS3Option>({} as FS3Option);
-const funcDataFollowUp = ref(undefined);
 
+// general
+let generalDataDescription = ref(undefined);
+// health
+let healthDataCondition = ref(undefined);
+let healthDataProfConOpinion = ref(undefined);
+let healthDataExpConDesc = ref(undefined);
+let healthDataPotProblems = ref(undefined);
+// functional
+let funcDataCitizenDescription = ref(undefined);
+let funcDataCitWishAndGoal = ref(undefined);
+let funcDataProfConOpinion = ref(undefined);
+let funcDataHealthLevel = ref<FS3Option | undefined>({} as FS3Option);
+let funcDataExpConOpinion = ref(undefined);
+let funcDataExpHealthLevel = ref<FS3Option>({} as FS3Option);
+let funcDataFollowUp = ref(undefined);
+
+function resetFS3Data() {
+// general
+//   this.$refs.generalDataDescription.reset();
+  generalDataDescription.value = '';
+// health
+  healthDataCondition.value = '';
+  healthDataProfConOpinion.value = '';
+  healthDataExpConDesc.value = '';
+  healthDataPotProblems.value = '';
+// functional
+  funcDataCitizenDescription.value = '';
+  funcDataCitWishAndGoal.value = '';
+  funcDataProfConOpinion.value = '';
+  funcDataHealthLevel.value = null;
+  funcDataExpConOpinion.value = '';
+  funcDataExpHealthLevel.value = null;
+  funcDataFollowUp.value = '';
+}
 
 function create() {
   let data = ({
@@ -86,7 +99,7 @@ function create() {
     }
   })
   fs3DataService.createFS3Data(data);
-
+  resetFS3Data();
 }
 
 const closeFunctionalityModal = () => {
@@ -94,15 +107,15 @@ const closeFunctionalityModal = () => {
 };
 const displayHelpQuestions = ref(false);
 const displayPosition = ref(false);
-// Create FS3Data
-const openCreateFS3DataModal = () => {
 
+const openCreateFS3DataModal = () => {
   selectedSubCatHealth.value = selectedTerm.value.fs3Subs.at(0);
   selectedSubCatFunctional.value = selectedTerm.value.fs3Subs.at(0);
   displayFS3Data.value = true;
 };
 const closeCreateFS3DataModal = () => {
   displayFS3Data.value = false;
+  resetFS3Data();
 };
 
 const openHelpQuestionsModal = () => {
@@ -112,7 +125,6 @@ const closeHelpQuestionsModal = () => {
   displayHelpQuestions.value = false;
   selectedHelpQuestionIndex.value = 0;
 };
-
 
 const incrementHelpQuestionIndex = () => {
   if (selectedHelpQuestionIndex.value === selectedTerm.value.helpQuestions.length - 1) return;
@@ -148,8 +160,9 @@ const fs3Iterate = ref([
 ]);
 
 function onCreateFS3Data() {
-  closeCreateFS3DataModal();
   create();
+  closeCreateFS3DataModal();
+
 
 }
 
@@ -220,7 +233,8 @@ function fetchCitizen(id = undefined) {
   </Panel>
 
   <!--FS3 Data-->
-  <Dialog v-if="selectedTerm" v-model:visible="displayFS3Data" :breakpoints="{'960px': '75vw'} "
+  <Dialog v-if="selectedTerm" v-model:visible="displayFS3Data" @update:visible="closeCreateFS3DataModal"
+          :breakpoints="{'960px': '75vw'} "
           :style="{width: '50vw'}" rows="4" cols="30" class="align-self-end">
 
     <Button v-if="selectedTerm.term.id === termEnum.GENERAL" label="Hjælpespørgsmål" icon="pi pi-question-circle"
@@ -329,7 +343,8 @@ function fetchCitizen(id = undefined) {
   </Dialog>
 
   <!--Help questions for fs3 General -->
-  <Dialog v-if="selectedTerm" v-model:visible="displayHelpQuestions" @update:visible="closeHelpQuestionsModal" :breakpoints="{'960px': '75vw'}"
+  <Dialog v-if="selectedTerm" v-model:visible="displayHelpQuestions" @update:visible="closeHelpQuestionsModal"
+          :breakpoints="{'960px': '75vw'}"
           :style="{width: '34vw'}" rows="4" cols="30" :position=helpQuestionPosition>
     <template #header>
       <div class="flex justify-content-left align-items-center">
@@ -387,9 +402,40 @@ function fetchCitizen(id = undefined) {
   background: blue;
 }
 
-.p-panel-header {
-  background: blue;
+.p-selectbutton .p-button.p-highlight {
+  background: #1d1dd2;
+  border-color: #2323ce;
+  color: rgba(0, 0, 0, 0.87);
 }
+.p-selectbutton .p-button.p-highlight:hover {
+  background: #2757f8;
+  border-color: #1d1dd2;
+  color: rgba(0, 0, 0, 0.87);
+}
+.p-selectbutton .p-button.p-highlight {
+  background: #3B82F6;
+  border-color: #e0e0e1;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.p-selectbutton .p-button {
+  background: #FFFFFF;
+  border: 1px solid rgba(171, 8, 8, 0.12);
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, background-size 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
+}
+.p-selectbutton .p-button:focus.p-highlight {
+  background: #3B82F6;
+  border-color: #d9d8d9;
+}
+.p-selectbutton .p-button:not(.p-disabled):not(.p-highlight):hover {
+  background: #3B82F6;
+  border-color: rgba(0, 0, 0, 0.12);
+  color: rgba(0, 0, 0, 0.87);
+}
+.p-button:hover {
+  background: #3B82F6;
+}
+
 
 .p-listbox {
   border-radius: 0px;
