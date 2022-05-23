@@ -107,11 +107,8 @@ function create() {
   resetFS3Data();
 }
 
-const closeFunctionalityModal = () => {
-  displayFunctionality.value = false;
-};
 const displayHelpQuestions = ref(false);
-const displayPosition = ref(false);
+
 
 const openCreateFS3DataModal = () => {
   selectedSubCatHealth.value = selectedTerm.value.fs3Subs.at(0);
@@ -349,7 +346,7 @@ function fetchCitizen(id = undefined) {
   <!--Help questions for fs3 General -->
   <Dialog v-if="selectedTerm" v-model:visible="displayHelpQuestions" @update:visible="closeHelpQuestionsModal"
           :breakpoints="{'960px': '75vw'}"
-          :style="{width: '34vw'}" rows="4" cols="30" :position=helpQuestionPosition>
+          :style="{width: '34vw'}" rows="4" cols="30" :position=helpQuestionPosition.valueOf()>
     <template #header>
       <div class="flex justify-content-left align-items-center">
         <h4 class="m-0">Hjælpespørgsmål</h4>
