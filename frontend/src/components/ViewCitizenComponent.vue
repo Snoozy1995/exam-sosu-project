@@ -52,26 +52,33 @@ let funcDataCitWishAndGoal = ref(undefined);
 let funcDataProfConOpinion = ref(undefined);
 let funcDataHealthLevel = ref<FS3Option | undefined>({} as FS3Option);
 let funcDataExpConOpinion = ref(undefined);
-let funcDataExpHealthLevel = ref<FS3Option>({} as FS3Option);
+let funcDataExpHealthLevel = ref<FS3Option | undefined>({} as FS3Option);
 let funcDataFollowUp = ref(undefined);
 
 function resetFS3Data() {
 // general
 //   this.$refs.generalDataDescription.reset();
-  generalDataDescription.value = '';
+  generalDataDescription.value = undefined;
 // health
-  healthDataCondition.value = '';
-  healthDataProfConOpinion.value = '';
-  healthDataExpConDesc.value = '';
-  healthDataPotProblems.value = '';
+  healthDataCondition.value = undefined;
+  healthDataProfConOpinion.value = undefined;
+  healthDataExpConDesc.value = undefined;
+  healthDataPotProblems.value = undefined;
 // functional
-  funcDataCitizenDescription.value = '';
-  funcDataCitWishAndGoal.value = '';
-  funcDataProfConOpinion.value = '';
-  funcDataHealthLevel.value = null;
-  funcDataExpConOpinion.value = '';
-  funcDataExpHealthLevel.value = null;
-  funcDataFollowUp.value = '';
+  funcDataCitizenDescription.value = undefined;
+  funcDataCitWishAndGoal.value = undefined;
+  funcDataProfConOpinion.value = undefined;
+  funcDataHealthLevel.value = {option: undefined,
+  definition: '',
+  description: '',
+  imageName: ''};
+  // funcDataHealthLevel = ref<FS3Option>({} as FS3Option);
+  funcDataExpConOpinion.value = undefined;
+  funcDataExpHealthLevel.value = {option: undefined,
+    definition: '',
+    description: '',
+    imageName: ''};
+  funcDataFollowUp.value = undefined;
 }
 
 function create() {
@@ -97,7 +104,7 @@ function create() {
       expectedHealthLevel: funcDataExpHealthLevel.value.option,
       followUp: funcDataFollowUp.value,
     }
-  })
+  });
   fs3DataService.createFS3Data(data);
   resetFS3Data();
 }
@@ -115,7 +122,6 @@ const openCreateFS3DataModal = () => {
 };
 const closeCreateFS3DataModal = () => {
   displayFS3Data.value = false;
-  resetFS3Data();
 };
 
 const openHelpQuestionsModal = () => {
@@ -159,8 +165,8 @@ const fs3Iterate = ref([
   {label: 'Funktionsevnetilstande', terms: functionalTerms, id: 'tutorialFunctionality'},
 ]);
 
-function onCreateFS3Data() {
-  create();
+async function onCreateFS3Data() {
+  await create();
   closeCreateFS3DataModal();
 
 
@@ -400,6 +406,15 @@ function fetchCitizen(id = undefined) {
 .p-panel .p-panel-content {
   padding: 0px;
   background: blue;
+}
+
+.p-panel .p-panel-header {
+  border: 1px solid #e0e0e0;
+  padding: 0.75rem;
+  background: green;
+  color: rgba(0, 0, 0, 0.87);
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
 }
 
 .p-selectbutton .p-button.p-highlight {
