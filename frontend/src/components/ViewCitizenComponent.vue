@@ -94,7 +94,7 @@ function fetchCitizen(id=undefined){
   <ViewCitizenTeacher v-if="citizen&&authStore.user.role=='teacher'" :citizen="citizen" />
   <ViewCitizenStudent v-if="citizen&&authStore.user.role=='student'" :citizen="citizen" />
   <Teleport to="#breadCrumbContainer">
-    <Tag v-if="citizen" style="margin-right:5px;" severity="info" v-tooltip.bottom="'Sidst gemt '+dayjs(citizen.updated_at).format('HH.mm DD-MM-YY')+'\nÆndringer gemmes automatisk.'">Sidst gemt {{dayjs(citizen.updated_at).fromNow()}} </Tag>
+    <Tag v-if="citizen" style="margin-right:5px;" severity="success" v-tooltip.bottom="'Sidst gemt '+dayjs(citizen.updated_at).format('HH.mm DD-MM-YY')+'\nÆndringer gemmes automatisk.'">Sidst gemt {{dayjs(citizen.updated_at).fromNow()}} </Tag>
   </Teleport>
 
   <!--Loop version, general/health/functionality-->

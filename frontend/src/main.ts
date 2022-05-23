@@ -24,6 +24,7 @@ import DataTable from "primevue/datatable";
 import Textarea from "primevue/textarea";
 import Card from "primevue/card";
 import Panel from 'primevue/panel';
+import BadgeDirective from 'primevue/badgedirective';
 import Socketio from "./plugins/socket.io";
 
 const app=createApp(App);
@@ -57,6 +58,7 @@ app.component("Textarea",Textarea);
 app.component("Card",Card);
 app.component("Panel",Panel);
 app.directive('tooltip', Tooltip);
+app.directive('badge', BadgeDirective);
 
 function host(){
   app.use(createPinia())
