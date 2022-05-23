@@ -1,16 +1,17 @@
-import { ApiProperty } from '@nestjs/swagger';
+import {ApiProperty} from '@nestjs/swagger';
 import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  ManyToOne,
-  OneToOne,
-  JoinColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
+    Column,
+    CreateDateColumn,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    OneToOne,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn,
 } from 'typeorm';
-import { Address } from './address.entity';
-import { Citizen } from './citizen.entity';
+import {Address} from './address.entity';
+import {Citizen} from './citizen.entity';
+
 @Entity()
 export class ContactPerson {
   @ApiProperty()

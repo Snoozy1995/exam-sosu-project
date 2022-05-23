@@ -1,5 +1,5 @@
-import { School } from '../../../entities/school.entity';
-import { SchoolRepository } from '../../borders/school.repository';
+import {School} from '../../../entities/school.entity';
+import {SchoolRepository} from '../../borders/school.repository';
 
 export class SaveSchoolInteractor {
   constructor(private readonly schoolRepository: SchoolRepository) {}

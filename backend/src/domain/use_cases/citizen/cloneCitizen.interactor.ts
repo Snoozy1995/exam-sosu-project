@@ -1,4 +1,4 @@
-import { Citizen } from '../../../entities/citizen.entity';
+import {Citizen} from '../../../entities/citizen.entity';
 
 export class CloneCitizenInteractor {
   public cloneCitizen(ncitizen: Citizen): Citizen {

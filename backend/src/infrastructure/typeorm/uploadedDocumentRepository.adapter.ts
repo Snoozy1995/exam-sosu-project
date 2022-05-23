@@ -1,7 +1,7 @@
-import { EntityManager, Repository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
-import { UploadedDocumentRepository } from '../../domain/borders/uploadedDocument.repository';
-import { UploadedDocument } from 'src/entities/uploadedDocument.entity';
+import {EntityManager, Repository} from 'typeorm';
+import {Injectable} from '@nestjs/common';
+import {UploadedDocumentRepository} from '../../domain/borders/uploadedDocument.repository';
+import {UploadedDocument} from 'src/entities/uploadedDocument.entity';
 
 @Injectable()
 export class UploadedDocumentRepositoryAdapter

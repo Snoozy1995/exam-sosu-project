@@ -1,10 +1,10 @@
-import { EntityManager, Repository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
-import { AuthRepository } from '../../domain/borders/auth.repository';
-import { User } from 'src/entities/user.entity';
-import { AuthDto } from 'src/auth/dto/auth.dto';
+import {EntityManager, Repository} from 'typeorm';
+import {Injectable} from '@nestjs/common';
+import {AuthRepository} from '../../domain/borders/auth.repository';
+import {User} from 'src/entities/user.entity';
+import {AuthDto} from 'src/auth/dto/auth.dto';
 import * as bcrypt from 'bcrypt';
-import { CreateUserDto } from 'src/auth/dto/createuser.dto';
+import {CreateUserDto} from 'src/auth/dto/createuser.dto';
 
 @Injectable()
 export class AuthRepositoryAdapter implements AuthRepository {

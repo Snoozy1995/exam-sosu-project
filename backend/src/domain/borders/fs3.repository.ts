@@ -1,4 +1,4 @@
-import { FS3 } from '../../entities/fs3.entity';
+import {FS3} from '../../entities/fs3.entity';
 
 export interface FS3Repository {
   save(FS3: FS3): Promise<FS3>;

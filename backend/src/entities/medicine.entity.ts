@@ -1,13 +1,7 @@
-import { ApiProperty } from '@nestjs/swagger';
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  ManyToOne,
-  CreateDateColumn,
-  UpdateDateColumn,
-} from 'typeorm';
-import { Citizen } from './citizen.entity';
+import {ApiProperty} from '@nestjs/swagger';
+import {Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn,} from 'typeorm';
+import {Citizen} from './citizen.entity';
+
 @Entity()
 export class Medicine {
   @ApiProperty()

@@ -1,5 +1,5 @@
-import { Citizen } from "./citizen";
-import { User } from "./user";
+import {Citizen} from "./citizen";
+import {User} from "./user";
 
 export interface UploadedDocument {
   id: number;

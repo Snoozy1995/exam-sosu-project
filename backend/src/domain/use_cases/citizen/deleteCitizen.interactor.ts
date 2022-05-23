@@ -1,4 +1,4 @@
-import { CitizenRepository } from '../../borders/citizen.repository';
+import {CitizenRepository} from '../../borders/citizen.repository';
 
 export class DeleteCitizenInteractor {
   constructor(private readonly citizenRepository: CitizenRepository) {}

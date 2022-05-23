@@ -2,8 +2,9 @@
 import Dropdown from 'primevue/dropdown';
 import Button from 'primevue/button';
 import CreateAddress from '../misc/CreateAddressComponent.vue';
-import { CitizenStore } from '../../stores/citizenStore';
-import { AddressStore } from '../../stores/addressStore';
+import {CitizenStore} from '../../stores/citizenStore';
+import {AddressStore} from '../../stores/addressStore';
+
 const cv_choices=[
 'Single',
 'I et forhold',

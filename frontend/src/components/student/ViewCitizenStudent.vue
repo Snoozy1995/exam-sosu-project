@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import dayjs from 'dayjs';
-import { getCurrentInstance, ref } from 'vue';
-import { Citizen } from '../../models/citizen';
+import {getCurrentInstance, ref} from 'vue';
+import {Citizen} from '../../models/citizen';
+
 let test=getCurrentInstance();
 let citizen=test.props.citizen as Citizen;
 const toIterate=ref([
