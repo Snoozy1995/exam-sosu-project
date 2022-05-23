@@ -2,7 +2,8 @@
 import AdminHomeComponent from "./admin/AdminHomeComponent.vue";
 import TeacherHome from "./teacher/TeacherHome.vue";
 import StudentHome from "./student/StudentHome.vue";
-import { AuthStore } from '../stores/authStore';
+import {AuthStore} from '../stores/authStore';
+
 const authStore=AuthStore();
 //@todo use enums for below
 </script>

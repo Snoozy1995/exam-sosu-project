@@ -1,7 +1,7 @@
-import { EntityManager, Repository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
-import { Citizen } from '../../entities/citizen.entity';
-import { CitizenRepository } from '../../domain/borders/citizen.repository';
+import {EntityManager, Repository} from 'typeorm';
+import {Injectable} from '@nestjs/common';
+import {Citizen} from '../../entities/citizen.entity';
+import {CitizenRepository} from '../../domain/borders/citizen.repository';
 
 @Injectable()
 export class CitizenRepositoryAdapter implements CitizenRepository {

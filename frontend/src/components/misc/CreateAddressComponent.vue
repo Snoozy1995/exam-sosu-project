@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import AutoComplete, { AutoCompleteItemSelectEvent } from 'primevue/autocomplete';
-import { AddressStore } from '../../stores/addressStore';
-import { CityService } from '../../services/city.service'; //@todo move to store
-import { AddressService } from '../../services/address.service'; //@todo move to store
+import AutoComplete, {AutoCompleteItemSelectEvent} from 'primevue/autocomplete';
+import {AddressStore} from '../../stores/addressStore';
+import {CityService} from '../../services/city.service'; //@todo move to store
+import {AddressService} from '../../services/address.service'; //@todo move to store
 
 const store=AddressStore();
 const cityService=new CityService();

@@ -1,4 +1,4 @@
-import { io } from "socket.io-client";
+import {io} from "socket.io-client";
 
 export default {
   install: (app:any, { connection, options }:any) => {

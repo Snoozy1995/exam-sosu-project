@@ -1,13 +1,8 @@
-import { Inject } from '@nestjs/common';
-import {
-  MessageBody,
-  SubscribeMessage,
-  WebSocketGateway,
-  WebSocketServer,
-} from '@nestjs/websockets';
-import { Server } from 'socket.io';
-import { SearchCitizenInteractor } from '../domain/use_cases/citizen/searchCitizens.interactor';
-import { Citizen } from '../entities/citizen.entity';
+import {Inject} from '@nestjs/common';
+import {MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer,} from '@nestjs/websockets';
+import {Server} from 'socket.io';
+import {SearchCitizenInteractor} from '../domain/use_cases/citizen/searchCitizens.interactor';
+import {Citizen} from '../entities/citizen.entity';
 
 @WebSocketGateway({
   cors: true,

@@ -1,7 +1,6 @@
-import { defineStore } from "pinia";
-import { Citizen } from "../models/citizen";
-import { CitizenService } from "../services/citizen.service";
-import { AddressStore } from "./addressStore";
+import {defineStore} from "pinia";
+import {CitizenService} from "../services/citizen.service";
+import {AddressStore} from "./addressStore";
 
 const citizenService: CitizenService = new CitizenService();
 

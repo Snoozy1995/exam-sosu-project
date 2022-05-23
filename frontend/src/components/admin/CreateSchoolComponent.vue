@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import Button from 'primevue/button';
 import CreateAddressComponent from '../misc/CreateAddressComponent.vue';
-import { SchoolStore } from '../../stores/schoolStore';
-import { AddressStore } from '../../stores/addressStore';
+import {SchoolStore} from '../../stores/schoolStore';
+import {AddressStore} from '../../stores/addressStore';
 
 const store=SchoolStore();
 

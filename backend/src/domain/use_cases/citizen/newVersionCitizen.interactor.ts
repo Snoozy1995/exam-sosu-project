@@ -1,6 +1,6 @@
-import { Citizen } from '../../../entities/citizen.entity';
-import { CitizenRepository } from '../../borders/citizen.repository';
-import { CloneCitizenInteractor } from './cloneCitizen.interactor';
+import {Citizen} from '../../../entities/citizen.entity';
+import {CitizenRepository} from '../../borders/citizen.repository';
+import {CloneCitizenInteractor} from './cloneCitizen.interactor';
 
 export class NewVersionCitizenInteractor {
   constructor(private readonly citizenRepository: CitizenRepository) {}

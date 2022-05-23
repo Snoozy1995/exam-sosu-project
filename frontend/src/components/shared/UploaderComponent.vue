@@ -1,9 +1,9 @@
 <script setup lang="ts">import axios from 'axios';
-  import FileUpload from 'primevue/fileupload';
-  import { ref } from 'vue';
-  import Router from '../../router';
+import FileUpload from 'primevue/fileupload';
+import {ref} from 'vue';
+import Router from '../../router';
 
-  const showUploadFilesDialog=ref(false);
+const showUploadFilesDialog=ref(false);
   function myUploader(event:any){
     var formData = new FormData();
     for(let file of event.files){ formData.append('file',file); formData.append('citizen',Router.currentRoute.value.params.id as string); }

@@ -1,20 +1,11 @@
-import {
-  Body,
-  Controller,
-  Inject,
-  Post,
-  Session,
-  UploadedFiles,
-  UseGuards,
-  UseInterceptors,
-} from '@nestjs/common';
-import { AnyFilesInterceptor } from '@nestjs/platform-express';
-import { ApiTags } from '@nestjs/swagger';
-import { diskStorage } from 'multer';
+import {Body, Controller, Inject, Post, Session, UploadedFiles, UseGuards, UseInterceptors,} from '@nestjs/common';
+import {AnyFilesInterceptor} from '@nestjs/platform-express';
+import {ApiTags} from '@nestjs/swagger';
+import {diskStorage} from 'multer';
 import * as path from 'path';
-import { SaveFilesInteractor } from 'src/domain/use_cases/upload/saveFiles.interactor';
-import { UploadedDocument } from 'src/entities/uploadedDocument.entity';
-import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';
+import {SaveFilesInteractor} from 'src/domain/use_cases/upload/saveFiles.interactor';
+import {UploadedDocument} from 'src/entities/uploadedDocument.entity';
+import {AuthenticatedGuard} from '../auth/guards/authenticated.guard';
 
 @ApiTags('upload')
 @Controller('upload')

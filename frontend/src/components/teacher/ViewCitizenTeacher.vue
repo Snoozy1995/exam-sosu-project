@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import ConfirmPopup from 'primevue/confirmpopup';
 import {CitizenService} from '../../services/citizen.service';
-import Router from "../../router";
 import Inplace from 'primevue/inplace';
 import dayjs from 'dayjs';
 //import FilterCitizenComponent from "./teacher/FilterCitizenComponent.vue";
 import CreateAddressComponent from '../misc/CreateAddressComponent.vue';
-import { AddressStore } from '../../stores/addressStore';
-import { getCurrentInstance, ref } from 'vue';
-import { Citizen } from '../../models/citizen';
+import {AddressStore} from '../../stores/addressStore';
+import {getCurrentInstance, ref} from 'vue';
+import {Citizen} from '../../models/citizen';
+
 const citizenService=new CitizenService();
 let test=getCurrentInstance();
 let citizen=test.props.citizen as Citizen;
@@ -33,6 +33,8 @@ function saveAddress(){
 }
 </script>
 <script lang="ts">
+import Router from "../../router";
+
 export default {
   props:['citizen'],
 	methods: {

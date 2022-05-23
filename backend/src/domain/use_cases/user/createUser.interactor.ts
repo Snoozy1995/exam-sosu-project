@@ -1,6 +1,6 @@
-import { CreateUserDto } from 'src/auth/dto/createuser.dto';
-import { AuthRepository } from 'src/domain/borders/auth.repository';
-import { User } from 'src/entities/user.entity';
+import {CreateUserDto} from 'src/auth/dto/createuser.dto';
+import {AuthRepository} from 'src/domain/borders/auth.repository';
+import {User} from 'src/entities/user.entity';
 
 export class CreateUserInteractor {
   constructor(private readonly authRepository: AuthRepository) {}

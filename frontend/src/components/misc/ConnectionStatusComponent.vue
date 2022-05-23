@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { AuthStore } from "../../stores/authStore";
+import {AuthStore} from "../../stores/authStore";
 import Sidebar from 'primevue/sidebar';
-import { inject, onMounted, ref } from 'vue';
+import {inject, onMounted, ref} from 'vue';
 import Router from '../../router';
-import { Socket } from "socket.io-client";
+import {Socket} from "socket.io-client";
+
 const socket = inject('socket') as Socket;
 let authStore=AuthStore();
 let show=ref(false);

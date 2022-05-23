@@ -1,7 +1,7 @@
-import { WorkGroup } from 'src/entities/workGroups.entity';
-import { Citizen } from '../../../entities/citizen.entity';
-import { CitizenRepository } from '../../borders/citizen.repository';
-import { CloneCitizenInteractor } from './cloneCitizen.interactor';
+import {WorkGroup} from 'src/entities/workGroups.entity';
+import {Citizen} from '../../../entities/citizen.entity';
+import {CitizenRepository} from '../../borders/citizen.repository';
+import {CloneCitizenInteractor} from './cloneCitizen.interactor';
 
 export class CloneCitizenForGroupInteractor {
   constructor(private readonly citizenRepository: CitizenRepository) {}

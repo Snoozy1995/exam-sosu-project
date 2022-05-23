@@ -1,15 +1,16 @@
-import { ApiProperty } from '@nestjs/swagger';
+import {ApiProperty} from '@nestjs/swagger';
 import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  ManyToOne,
-  OneToMany,
-  CreateDateColumn,
-  UpdateDateColumn,
+    Column,
+    CreateDateColumn,
+    Entity,
+    ManyToOne,
+    OneToMany,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn,
 } from 'typeorm';
-import { Citizen } from './citizen.entity';
-import { SchoolClass } from './schoolClass.entity';
+import {Citizen} from './citizen.entity';
+import {SchoolClass} from './schoolClass.entity';
+
 @Entity()
 export class WorkGroup {
   @ApiProperty()

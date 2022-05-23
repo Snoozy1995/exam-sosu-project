@@ -1,21 +1,22 @@
-import { Role } from '../enums/role.enum';
+import {Role} from '../enums/role.enum';
 import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  ManyToMany,
-  ManyToOne,
-  OneToMany,
-  Index,
-  CreateDateColumn,
-  UpdateDateColumn,
-  JoinColumn,
+    Column,
+    CreateDateColumn,
+    Entity,
+    Index,
+    JoinColumn,
+    ManyToMany,
+    ManyToOne,
+    OneToMany,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn,
 } from 'typeorm';
-import { School } from './school.entity';
-import { SchoolClass } from './schoolClass.entity';
-import { UploadedDocument } from './uploadedDocument.entity';
-import { Citizen } from './citizen.entity';
-import { ApiProperty } from '@nestjs/swagger';
+import {School} from './school.entity';
+import {SchoolClass} from './schoolClass.entity';
+import {UploadedDocument} from './uploadedDocument.entity';
+import {Citizen} from './citizen.entity';
+import {ApiProperty} from '@nestjs/swagger';
+
 @Entity()
 export class User {
   @ApiProperty()

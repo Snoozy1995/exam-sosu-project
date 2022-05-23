@@ -1,26 +1,27 @@
-import { CivilStatus } from '../enums/civilStatus.enum';
+import {CivilStatus} from '../enums/civilStatus.enum';
 import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  ManyToMany,
-  OneToOne,
-  OneToMany,
-  ManyToOne,
-  JoinColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
+    Column,
+    CreateDateColumn,
+    Entity,
+    JoinColumn,
+    ManyToMany,
+    ManyToOne,
+    OneToMany,
+    OneToOne,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn,
 } from 'typeorm';
-import { UploadedDocument } from './uploadedDocument.entity';
-import { Medicine } from './medicine.entity';
-import { Address } from './address.entity';
-import { ContactPerson } from './contactPerson.entity';
-import { FS3Data } from './fs3Data.entity';
-import { User } from './user.entity';
-import { WorkGroup } from './workGroups.entity';
-import { School } from './school.entity';
-import { ApiProperty } from '@nestjs/swagger';
-import { Activity } from './activity.entity';
+import {UploadedDocument} from './uploadedDocument.entity';
+import {Medicine} from './medicine.entity';
+import {Address} from './address.entity';
+import {ContactPerson} from './contactPerson.entity';
+import {FS3Data} from './fs3Data.entity';
+import {User} from './user.entity';
+import {WorkGroup} from './workGroups.entity';
+import {School} from './school.entity';
+import {ApiProperty} from '@nestjs/swagger';
+import {Activity} from './activity.entity';
+
 @Entity()
 export class Citizen {
   @ApiProperty()

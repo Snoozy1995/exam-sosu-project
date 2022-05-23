@@ -1,10 +1,10 @@
-import { Address } from "./address";
-import { ContactPerson } from "./contactPerson";
-import { FS3Data } from "./fs3Data";
-import { Medicine } from "./medicine";
-import { School } from "./school";
-import { UploadedDocument } from "./uploadedDocument";
-import { User } from "./user";
+import {Address} from "./address";
+import {ContactPerson} from "./contactPerson";
+import {FS3Data} from "./fs3Data";
+import {Medicine} from "./medicine";
+import {School} from "./school";
+import {UploadedDocument} from "./uploadedDocument";
+import {User} from "./user";
 
 export interface Citizen {
   id: number;

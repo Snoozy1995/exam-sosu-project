@@ -1,6 +1,6 @@
-import { createApp } from 'vue'
+import {createApp} from 'vue'
 import App from './App.vue'
-import { createPinia } from 'pinia'
+import {createPinia} from 'pinia'
 import Router from './router';
 
 import PrimeVue from 'primevue/config';
@@ -26,6 +26,7 @@ import Card from "primevue/card";
 import Panel from 'primevue/panel';
 import BadgeDirective from 'primevue/badgedirective';
 import Socketio from "./plugins/socket.io";
+import SelectButton from "primevue/selectbutton";
 
 const app=createApp(App);
 let retrieved=false;
@@ -57,6 +58,7 @@ app.component("DataTable",DataTable);
 app.component("Textarea",Textarea);
 app.component("Card",Card);
 app.component("Panel",Panel);
+app.component("SelectButton",SelectButton);
 app.directive('tooltip', Tooltip);
 app.directive('badge', BadgeDirective);
 

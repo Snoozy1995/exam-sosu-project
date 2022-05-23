@@ -1,6 +1,5 @@
-import { Address } from "./address";
-import { School } from "./school";
-import { User } from "./user";
+import {School} from "./school";
+import {User} from "./user";
 
 export interface SchoolClass {
   id:number;

@@ -1,6 +1,6 @@
-import { Citizen } from "./citizen";
-import { School } from "./school";
-import { UploadedDocument } from "./uploadedDocument";
+import {Citizen} from "./citizen";
+import {School} from "./school";
+import {UploadedDocument} from "./uploadedDocument";
 
 export interface User {
   username: string;

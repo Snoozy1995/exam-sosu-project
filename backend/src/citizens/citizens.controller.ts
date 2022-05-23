@@ -1,24 +1,14 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Inject,
-  Param,
-  Post,
-  Session,
-  UseGuards,
-} from '@nestjs/common';
-import { ApiParam, ApiTags } from '@nestjs/swagger';
-import { NewVersionCitizenInteractor } from 'src/domain/use_cases/citizen/newVersionCitizen.interactor';
-import { DeleteCitizenInteractor } from '../domain/use_cases/citizen/deleteCitizen.interactor';
-import { FindAllCitizenInteractor } from '../domain/use_cases/citizen/findAllCitizen.interactor';
-import { FindOneCitizenInteractor } from '../domain/use_cases/citizen/findOneCitizen.interactor';
-import { SaveCitizenInteractor } from '../domain/use_cases/citizen/saveCitizen.interactor';
-import { Citizen } from '../entities/citizen.entity';
-import { Role } from '../enums/role.enum';
-import { Roles } from '../auth/roles/roles.decorator';
-import { AuthenticatedGuard } from 'src/auth/guards/authenticated.guard';
+import {Body, Controller, Delete, Get, Inject, Param, Post, Session, UseGuards,} from '@nestjs/common';
+import {ApiParam, ApiTags} from '@nestjs/swagger';
+import {NewVersionCitizenInteractor} from 'src/domain/use_cases/citizen/newVersionCitizen.interactor';
+import {DeleteCitizenInteractor} from '../domain/use_cases/citizen/deleteCitizen.interactor';
+import {FindAllCitizenInteractor} from '../domain/use_cases/citizen/findAllCitizen.interactor';
+import {FindOneCitizenInteractor} from '../domain/use_cases/citizen/findOneCitizen.interactor';
+import {SaveCitizenInteractor} from '../domain/use_cases/citizen/saveCitizen.interactor';
+import {Citizen} from '../entities/citizen.entity';
+import {Role} from '../enums/role.enum';
+import {Roles} from '../auth/roles/roles.decorator';
+import {AuthenticatedGuard} from 'src/auth/guards/authenticated.guard';
 
 @ApiTags('citizens')
 @Controller('citizens')
