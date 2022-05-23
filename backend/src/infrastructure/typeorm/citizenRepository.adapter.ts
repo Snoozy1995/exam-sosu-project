@@ -16,7 +16,7 @@ export class CitizenRepositoryAdapter implements CitizenRepository {
   }
 
   findAll(): Promise<Citizen[]> {
-    return this.citizenRepo.find();
+    return this.citizenRepo.find({ relations: ['address', 'files'] });
   }
 
   findOne(id: number | string): Promise<Citizen> {

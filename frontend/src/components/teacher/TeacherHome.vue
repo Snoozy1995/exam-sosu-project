@@ -25,7 +25,7 @@ const authStore=AuthStore();
       <br>
       <br>
 
-      <Panel header="Aktuelle opgaver"  :toggleable="true">
+      <Panel header="Aktuelle opgaver" :toggleable="true">
           <template #icons>
               <Button class="p-button-sm" icon="pi pi-plus" style="margin-right:10px;" v-tooltip="'Ny opgave'" />
           </template>
