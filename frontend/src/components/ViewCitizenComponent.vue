@@ -57,7 +57,6 @@ let funcDataFollowUp = ref(undefined);
 
 function resetFS3Data() {
 // general
-//   this.$refs.generalDataDescription.reset();
   generalDataDescription.value = undefined;
 // health
   healthDataCondition.value = undefined;
@@ -69,15 +68,14 @@ function resetFS3Data() {
   funcDataCitWishAndGoal.value = undefined;
   funcDataProfConOpinion.value = undefined;
   funcDataHealthLevel.value = {option: undefined,
-  definition: '',
-  description: '',
-  imageName: ''};
-  // funcDataHealthLevel = ref<FS3Option>({} as FS3Option);
+  definition: undefined,
+  description: undefined,
+  imageName: undefined};
   funcDataExpConOpinion.value = undefined;
   funcDataExpHealthLevel.value = {option: undefined,
-    definition: '',
-    description: '',
-    imageName: ''};
+    definition: undefined,
+    description: undefined,
+    imageName: undefined};
   funcDataFollowUp.value = undefined;
 }
 
@@ -160,9 +158,9 @@ const functionalTerms = ref<FS3[]>([]);
 const healthTerms = ref<FS3[]>([]);
 // const selectedHealthTerm=ref<FS3>(); //Added to fix build error
 const fs3Iterate = ref([
-  {label: 'Generelle oplysninger', terms: generalTerms, id: 'tutorialGeneral'},
-  {label: 'Helbredstilstande', terms: healthTerms, id: 'tutorialHealth'},
-  {label: 'Funktionsevnetilstande', terms: functionalTerms, id: 'tutorialFunctionality'},
+  {label: 'Generelle oplysninger', terms: generalTerms, id: 'tutorialGeneral', panelColor: 'p-panelGeneral', buttonColor: 'p-buttonGeneral'},
+  {label: 'Helbredstilstande', terms: healthTerms, id: 'tutorialHealth', panelColor: 'p-panelHealth', buttonColor: 'p-buttonHealth'},
+  {label: 'Funktionsevnetilstande', terms: functionalTerms, id: 'tutorialFunctionality', panelColor: 'p-panelFunctional', buttonColor: 'p-buttonFunctional'},
 ]);
 
 async function onCreateFS3Data() {
@@ -231,10 +229,10 @@ function fetchCitizen(id = undefined) {
 
   <!--Loop version, general/health/functionality-->
   <Panel v-for="item in fs3Iterate" :id=item.id :header=item.label :toggleable="true"
-         style="margin-bottom:25px;">
+         style="margin-bottom:25px;" v-bind:class=item.panelColor>
     <Listbox v-model="selectedTerm" :options=item.terms :multiple="false" :filter="true" optionLabel="definition"
              listStyle="min-height:200px;max-height:200px" filterPlaceholder="Filter"/>
-    <Button label="Vælg" v-tooltip.top="'Vælg '+item.label" class="p-button-sm w-full" @click="openCreateFS3DataModal()"
+    <Button label="Vælg" v-tooltip.top="'Vælg '+item.label" class="p-button-sm w-full" v-bind:class=item.buttonColor @click="openCreateFS3DataModal()"
             style="border-radius:0px;" autofocus/>
   </Panel>
 
@@ -405,28 +403,66 @@ function fetchCitizen(id = undefined) {
 
 .p-panel .p-panel-content {
   padding: 0px;
-  background: blue;
 }
 
-.p-panel .p-panel-header {
+.p-buttonGeneral {
+  color: #ffffff;
+  background: #8a8a8a;
+  border: 0 none;
+  padding: 0.571rem 0.75rem;
+  font-size: 1rem;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, background-size 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
+  border-radius: 4px;
+}
+
+.p-buttonHealth {
+  color: #ffffff;
+  background: #65859B;
+  border: 0 none;
+  padding: 0.571rem 0.75rem;
+  font-size: 1rem;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, background-size 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
+  border-radius: 4px;
+}
+
+.p-buttonFunctional {
+  color: #ffffff;
+  background: #C6B22F;
+  border: 0 none;
+  padding: 0.571rem 0.75rem;
+  font-size: 1rem;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, background-size 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
+  border-radius: 4px;
+}
+
+.p-panelGeneral .p-panel-header {
   border: 1px solid #e0e0e0;
   padding: 0.75rem;
-  background: green;
+  background: #8a8a8a;
   color: rgba(0, 0, 0, 0.87);
   border-top-right-radius: 4px;
   border-top-left-radius: 4px;
 }
 
-.p-selectbutton .p-button.p-highlight {
-  background: #1d1dd2;
-  border-color: #2323ce;
+.p-panelHealth .p-panel-header {
+  border: 1px solid #e0e0e0;
+  padding: 0.75rem;
+  background: #65859B;
   color: rgba(0, 0, 0, 0.87);
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
 }
-.p-selectbutton .p-button.p-highlight:hover {
-  background: #2757f8;
-  border-color: #1d1dd2;
+
+.p-panelFunctional .p-panel-header {
+  border: 1px solid #e0e0e0;
+  padding: 0.75rem;
+  background: #C6B22F;
   color: rgba(0, 0, 0, 0.87);
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
 }
+
+
 .p-selectbutton .p-button.p-highlight {
   background: #3B82F6;
   border-color: #e0e0e1;
