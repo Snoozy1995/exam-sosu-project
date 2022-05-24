@@ -18,12 +18,18 @@ import {FS3SubCategory} from "../models/fs3SubCategory";
 import {Fs3OptionsService} from "../services/fs3Options.service";
 import {FS3Option} from "../models/fs3Option";
 import {Fs3DataService} from "../services/fs3Data.service";
-//import {StudentTourService} from '../services/studentTour.service';
+import Dialog from "primevue/dialog";
+import {ViewCitizenTourService} from '../plugins/tour';
+import {CitizenStore} from '../stores/citizenStore';
+
+const citizenStore=CitizenStore();
+
 dayjs.extend(RelativeTime);
 dayjs.locale('da');
 const authStore = AuthStore();
-//const studenttour=new StudentTourService();
+const tour=new ViewCitizenTourService();
 const citizenService = new CitizenService();
+
 const citizen: Ref<Citizen | undefined> = ref(undefined); //Edit this citizen to save
 const fs3Service: Fs3Service = new Fs3Service();
 const fs3OptionsService: Fs3OptionsService = new Fs3OptionsService();
@@ -31,7 +37,7 @@ const fs3DataService: Fs3DataService = new Fs3DataService();
 const displayFunctionality = ref(false);
 const displayFS3Data = ref(false);
 const selectedHelpQuestionIndex = ref(0);
-const helpQuestionPosition = ('top');
+//const helpQuestionPosition = ("top");
 const termEnum = Object.freeze({
   FUNCTIONAL: 1,
   HEALTH: 2,
@@ -114,6 +120,13 @@ const openCreateFS3DataModal = () => {
   selectedSubCatHealth.value = selectedTerm.value.fs3Subs.at(0);
   selectedSubCatFunctional.value = selectedTerm.value.fs3Subs.at(0);
   displayFS3Data.value = true;
+  tour.tour.hide();
+  setTimeout(()=>{
+    if(tour.tour.getCurrentStep().id=="clickBtn"){
+      tour.tour.next();
+      //tour.tour.show();
+    }
+  },500)
 };
 const closeCreateFS3DataModal = () => {
   displayFS3Data.value = false;
@@ -201,6 +214,15 @@ onBeforeRouteUpdate(update => {
   fetchCitizen(update.params.id);
 });
 
+function onListBoxChange(e){
+  if(e.value.definition=="Mestring"){
+    if(tour.tour.getCurrentStep().id=="Mestring"){
+      tour.tour.next();
+    }
+  }
+  console.log(e.value);
+}
+
 let firstFetch = true;
 
 function fetchCitizen(id = undefined) {
@@ -209,9 +231,12 @@ function fetchCitizen(id = undefined) {
     citizen.value = _citizen.data;
     if (firstFetch) {
       firstFetch = false;
-      //studenttour.start();
     }
-  }).catch((r) => setTimeout(() => fetchCitizen(), 1000)); //@todo
+  }).catch((r) => {console.log(r)}); //@todo
+}
+
+function startGuide(){
+  tour.start();
 }
 </script>
 <template>
@@ -222,12 +247,13 @@ function fetchCitizen(id = undefined) {
          v-tooltip.bottom="'Sidst gemt '+dayjs(citizen.updated_at).format('HH.mm DD-MM-YY')+'\nÆndringer gemmes automatisk.'">
       Sidst gemt {{ dayjs(citizen.updated_at).fromNow() }}
     </Tag>
+    <Button class="p-button-sm p-button-info" icon="pi pi-calendar-plus" v-tooltip.bottom="'Guide'" style="margin-right:5px;" v-on:click="startGuide()"></Button>
   </Teleport>
 
   <!--Loop version, general/health/functionality-->
   <Panel v-for="item in fs3Iterate" :id=item.id :header=item.label :toggleable="true"
          style="margin-bottom:25px;" v-bind:class=item.panelColor>
-    <Listbox v-model="selectedTerm" :options=item.terms :multiple="false" :filter="true" optionLabel="definition"
+    <Listbox v-model="selectedTerm" :options=item.terms :multiple="false" :filter="true" v-on:change="onListBoxChange" optionLabel="definition"
              listStyle="min-height:200px;max-height:200px" filterPlaceholder="Filter"/>
     <Button label="Vælg" v-tooltip.top="'Vælg '+item.label" class="p-button-sm w-full" v-bind:class=item.buttonColor @click="openCreateFS3DataModal()"
             style="border-radius:0px;" autofocus/>
@@ -238,7 +264,7 @@ function fetchCitizen(id = undefined) {
           :breakpoints="{'960px': '75vw'} "
           :style="{width: '50vw'}" rows="4" cols="30" class="align-self-end">
 
-    <Button v-if="selectedTerm.term.id === termEnum.GENERAL" label="Hjælpespørgsmål" icon="pi pi-question-circle"
+    <Button v-if="selectedTerm.term.id === termEnum.GENERAL" label="Hjælpespørgsmål" icon="pi pi-question-circle" id="helpQuestionBtn"
             @click="openHelpQuestionsModal"/>
 
 
@@ -346,7 +372,7 @@ function fetchCitizen(id = undefined) {
   <!--Help questions for fs3 General -->
   <Dialog v-if="selectedTerm" v-model:visible="displayHelpQuestions" @update:visible="closeHelpQuestionsModal"
           :breakpoints="{'960px': '75vw'}"
-          :style="{width: '34vw'}" rows="4" cols="30" :position=helpQuestionPosition>
+          :style="{width: '34vw'}" rows="4" cols="30" position="top" >
     <template #header>
       <div class="flex justify-content-left align-items-center">
         <h4 class="m-0">Hjælpespørgsmål</h4>
@@ -372,28 +398,30 @@ function fetchCitizen(id = undefined) {
   </Dialog>
 
   <Teleport to="#rightSide">
-    <li class="flex align-items-start py-3 px-2 border-top-1 border-right-1 border-left-1 surface-border flex-wrap">
-      <div class="text-700 w-12 font-medium flex justify-content-center" style="font-size:20px;">Seneste data (FS3)
-      </div>
-      <ul class="text-900 list-none p-2 min-w-full" style="margin-bottom:10px; margin-top:10px;">
-        <li v-if="citizen" style='padding:5px;padding-top:0px;' v-for="item in citizen.files">
-          TODO
-        </li>
-      </ul>
-    </li>
-    <li class="flex align-items-start py-3 px-2 border-1 surface-border flex-wrap">
-      <div class="text-700 w-12 font-medium flex justify-content-center" style="font-size:20px;">Tilhørende dokumenter
-      </div>
-      <ul class="text-900 list-none p-2 min-w-full" style="margin-bottom:10px; margin-top:10px;">
-        <li v-if="citizen" style='padding:5px;padding-top:0px;' v-for="item in citizen.files">
-          <a :href="axios.defaults.baseURL+'/public/'+item.filename">
-            <i class="pi pi-file"></i> {{ item.originalname }} <span
-              class="text-500">{{ (item.size / 1024 / 1024).toFixed(2) }}mb</span>
-          </a>
-        </li>
-      </ul>
-      <UploaderComponent/>
-    </li>
+    <div id="tutorialRightSide">
+      <!--<li class="flex align-items-start py-3 px-2 border-top-1 border-right-1 border-left-1 surface-border flex-wrap">
+        <div class="text-700 w-12 font-medium flex justify-content-center" style="font-size:20px;">Seneste data (FS3)
+        </div>
+        <ul class="text-900 list-none p-2 min-w-full" style="margin-bottom:10px; margin-top:10px;">
+          <li v-if="citizen" style='padding:5px;padding-top:0px;' v-for="item in citizen.files">
+            TODO
+          </li>
+        </ul>
+      </li>-->
+      <li class="flex align-items-start py-3 px-2 border-1 surface-border flex-wrap">
+        <div class="text-700 w-12 font-medium flex justify-content-center" style="font-size:20px;">Tilhørende dokumenter
+        </div>
+        <ul class="text-900 list-none p-2 min-w-full" style="margin-bottom:10px; margin-top:10px;">
+          <li v-if="citizen" style='padding:5px;padding-top:0px;' v-for="item in citizen.files">
+            <a :href="axios.defaults.baseURL+'/public/'+item.filename">
+              <i class="pi pi-file"></i> {{ item.originalname }} <span
+                class="text-500">{{ (item.size / 1024 / 1024).toFixed(2) }}mb</span>
+            </a>
+          </li>
+        </ul>
+        <UploaderComponent/>
+      </li>
+    </div>
   </Teleport>
 </template>
 <style>
