@@ -37,7 +37,6 @@ const fs3DataService: Fs3DataService = new Fs3DataService();
 const displayFunctionality = ref(false);
 const displayFS3Data = ref(false);
 const selectedHelpQuestionIndex = ref(0);
-//const helpQuestionPosition = ("top");
 const termEnum = Object.freeze({
   FUNCTIONAL: 1,
   HEALTH: 2,
@@ -372,7 +371,7 @@ function startGuide(){
   <!--Help questions for fs3 General -->
   <Dialog v-if="selectedTerm" v-model:visible="displayHelpQuestions" @update:visible="closeHelpQuestionsModal"
           :breakpoints="{'960px': '75vw'}"
-          :style="{width: '34vw'}" rows="4" cols="30" position="top" >
+          :style="{width: '34vw'}" rows="4" cols="30" position="top">
     <template #header>
       <div class="flex justify-content-left align-items-center">
         <h4 class="m-0">Hjælpespørgsmål</h4>
