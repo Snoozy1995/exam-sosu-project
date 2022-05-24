@@ -22,13 +22,19 @@ socket.on("connect",()=>{
   firstConnect.value=false;
 });
 socket.on('connect_error',()=>{
-  //show.value=true;
+  show.value=true;
+  console.log("connectError")
 })
 socket.on('disconnect',()=>{
-  //show.value=true;
+  show.value=true;
+  console.log("disconnect")
+});
+socket.on('close',()=>{
+  console.log("closed")
 });
 onMounted(() => {
   socket.connect(); //Connect to socket server
+  console.log("onMountedCalled")
 });
 </script>
 <template>
