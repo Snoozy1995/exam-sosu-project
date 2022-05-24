@@ -17,14 +17,30 @@ services:
 
   health-api:
     build:
-        context: "backend"
+      context: "backend"
     image: "localhost:7002/health-api:${IMAGE_TAG}"
     container_name: "${API_CONT_NAME}"
+    environment:
+      - DEBUG=socket*
     ports:
       - "${API_PORT}:3000"
     volumes:
       - /typeorm_config/ormconfig.json:/ormconfig.json
-# K6 stuff below here
+
+#  mysql:
+#    image: mysql:8
+#    container_name: "${DB_CONT_NAME}"
+#    ports:
+#      - 3306:3306
+#    volumes:
+#      - /db/mysql:/var/lib/mysql
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+#      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+#      - MYSQL_USER=${MYSQL_USER}
+#      - MYSQL_DATABASE=${MYSQL_DATABASE}
+
+  # K6 stuff below here
   influxdb:
     container_name: "${INFLUXDB_CONT_NAME}"
     image: influxdb:1.8
