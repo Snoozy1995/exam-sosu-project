@@ -36,7 +36,7 @@ export default {
             <!--<div class="w-2 flex justify-content-end"><Button icon="pi pi-pencil" class="p-button-text" v-tooltip.right="'Rediger '+item.label" /></div>-->
           </div>
         </li>
-        <li class="border-top-1 border-right-1 border-left-1 surface-border px-2">
+        <li class="border-1 surface-border px-2">
           <div class="flex align-items-center flex-wrap">
             <div class="text-500 w-6 md:w-3 font-medium">Adresse</div>
             <div class="text-900 w-full md:w-7 md:flex-order-0 flex-order-1 p-2">{{citizen.address.street}}, {{citizen.address.postCode}} {{citizen.address.note}}</div>
