@@ -27,6 +27,10 @@ import Panel from 'primevue/panel';
 import BadgeDirective from 'primevue/badgedirective';
 import Socketio from "./plugins/socket.io";
 import SelectButton from "primevue/selectbutton";
+import ToastService from 'primevue/toastservice';
+import Message from "primevue/message";
+import Toast from "primevue/toast";
+// import Toast from "primevue/toast";
 
 const app=createApp(App);
 let retrieved=false;
@@ -59,6 +63,7 @@ app.component("Textarea",Textarea);
 app.component("Card",Card);
 app.component("Panel",Panel);
 app.component("SelectButton",SelectButton);
+app.component("Toast",Toast);
 app.directive('tooltip', Tooltip);
 app.directive('badge', BadgeDirective);
 
@@ -66,6 +71,7 @@ function host(){
   app.use(createPinia())
   app.use(Router);
   app.use(PrimeVue);
+  app.use(ToastService)
   app.use(ConfirmationService);
   app.use(Socketio, {
     connection:window.location.host,
