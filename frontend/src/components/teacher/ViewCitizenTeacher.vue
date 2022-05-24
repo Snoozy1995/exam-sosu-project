@@ -90,7 +90,7 @@ export default {
             </template>
           </Inplace>
         </li>
-        <li class="border-top-1 border-right-1 border-left-1 surface-border px-2">
+        <li class="border-1 surface-border px-2">
           <Inplace :closable="true" @close="saveAddress()">
               <template #display>
                 <div class="flex align-items-center flex-wrap">
