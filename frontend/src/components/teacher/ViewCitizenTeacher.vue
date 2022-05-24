@@ -103,11 +103,11 @@ export default {
           </Inplace>
         </li>
         <!--Medicin-->
-        <li id="tutorial2" class="flex align-items-center px-2 border-1 surface-border flex-wrap">
+        <!--<li id="tutorial2" class="flex align-items-center px-2 border-1 surface-border flex-wrap">
           <div class="text-500 w-6 md:w-3 font-medium">Medicin</div>
           <div class="text-900 w-full md:w-7 md:flex-order-0 flex-order-1">Robert De Niro, Al Pacino</div>
           <div class="w-6 md:w-2 flex justify-content-end"><Button icon="pi pi-pencil" class="p-button-text"></Button></div>
-        </li>
+        </li>-->
       </ul>
     </div>
   </Teleport>
