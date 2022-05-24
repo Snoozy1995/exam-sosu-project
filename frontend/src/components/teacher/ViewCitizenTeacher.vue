@@ -10,8 +10,8 @@ import {getCurrentInstance, ref} from 'vue';
 import {Citizen} from '../../models/citizen';
 
 const citizenService=new CitizenService();
-let test=getCurrentInstance();
-let citizen=test.props.citizen as Citizen;
+let instance=getCurrentInstance();
+let citizen=instance.props.citizen as Citizen;
 const toIterate=ref([
   {label:"Fornavn",target:'firstName',type:'text'},
   {label:"Efternavn",target:'lastName',type:'text'},
@@ -60,12 +60,12 @@ export default {
   <Teleport to="#breadCrumbContainer">
     <router-link style="margin-right:5px;" :to="{path:'/citizen/'+citizen.parent.id}" v-if="citizen&&citizen.parent"><Button v-tooltip.bottom="'Gå til borger dette stammer fra'" icon="pi pi-arrow-up-left" class='p-button-sm' /></router-link>
     <Button icon="pi pi-user-plus" v-tooltip.bottom="'Duplikere template'" style="margin-right:5px;" class="p-button-sm p-button-help" v-on:click="cloneConfirm($event)" />
-    <Button class="p-button-sm p-button-info" icon="pi pi-calendar-plus" v-tooltip="'Brug til opgave/student'"></Button>
+    <!--<Button class="p-button-sm p-button-info" icon="pi pi-calendar-plus" v-tooltip="'Brug til opgave/student'"></Button>-->
   </Teleport>
 
   <Teleport v-if="citizen" to="#leftSide">
-    <div style="padding:10px;">
-      <div id="tutorial1" class="font-medium text-3xl text-900 mb-3">Borger information</div>
+    <div id="tutorialCitizenInfo" style="padding:10px;">
+      <div class="font-medium text-3xl text-900 mb-3">Borger information</div>
       <ul class="list-none p-0 m-0 min-w-full">
         <!--Firstname/Lastname/Birthday-->
         <li v-for="item in toIterate" class="border-top-1 border-right-1 border-left-1 surface-border px-2">
@@ -90,7 +90,7 @@ export default {
             </template>
           </Inplace>
         </li>
-        <li class="border-top-1 border-right-1 border-left-1 surface-border px-2">
+        <li class="border-1 surface-border px-2">
           <Inplace :closable="true" @close="saveAddress()">
               <template #display>
                 <div class="flex align-items-center flex-wrap">
@@ -103,11 +103,11 @@ export default {
           </Inplace>
         </li>
         <!--Medicin-->
-        <li id="tutorial2" class="flex align-items-center px-2 border-1 surface-border flex-wrap">
+        <!--<li id="tutorial2" class="flex align-items-center px-2 border-1 surface-border flex-wrap">
           <div class="text-500 w-6 md:w-3 font-medium">Medicin</div>
           <div class="text-900 w-full md:w-7 md:flex-order-0 flex-order-1">Robert De Niro, Al Pacino</div>
           <div class="w-6 md:w-2 flex justify-content-end"><Button icon="pi pi-pencil" class="p-button-text"></Button></div>
-        </li>
+        </li>-->
       </ul>
     </div>
   </Teleport>
