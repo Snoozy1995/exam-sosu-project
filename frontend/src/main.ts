@@ -73,8 +73,14 @@ function host(){
   app.use(PrimeVue);
   app.use(ToastService)
   app.use(ConfirmationService);
+  let con;
+  if(window.location.host.includes("localhost")){
+    con="http://localhost:3000"
+  }else{
+    con="http://localhost"
+  }
   app.use(Socketio, {
-    connection:"http://185.196.21.189:3091",
+    connection:con,
     options: {
       autoConnect: false, //Turn off automatic connection
       // ... Other options
