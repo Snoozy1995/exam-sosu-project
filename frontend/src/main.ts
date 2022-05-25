@@ -28,25 +28,8 @@ import BadgeDirective from 'primevue/badgedirective';
 import Socketio from "./plugins/socket.io";
 import SelectButton from "primevue/selectbutton";
 import ToastService from 'primevue/toastservice';
-import Message from "primevue/message";
 import Toast from "primevue/toast";
-// import Toast from "primevue/toast";
-
 const app=createApp(App);
-/*let retrieved=false;
-axios.get("/config/api-url.txt").then((result)=>{
-  if(result.status&&result.status==200){
-    retrieved=true;
-    axios.defaults.baseURL=result.data;
-  }else{
-    axios.defaults.baseURL="http://localhost:3000";
-  }
-  host();
-}).catch(()=>{
-  axios.defaults.baseURL="http://localhost:3000";
-  host()
-});
-axios.defaults.withCredentials=true;*/
 
 app.component('InputText',InputText);
 app.component('Button',Button);
@@ -67,29 +50,25 @@ app.component("Toast",Toast);
 app.directive('tooltip', Tooltip);
 app.directive('badge', BadgeDirective);
 
-//function host(){
-  app.use(createPinia())
-  app.use(Router);
-  app.use(PrimeVue);
-  app.use(ToastService)
-  app.use(ConfirmationService);
-  let con,baseUrl;
-  if(window.location.host.includes("localhost")){
-    con="http://localhost:3000"
-    baseUrl=con;
-  }else{
-    con=window.location.host
-    baseUrl="/api"
-    console.log(baseUrl);
-  }
-  axios.defaults.baseURL=baseUrl;
-  axios.defaults.withCredentials=true;
-  app.use(Socketio, {
-    connection:con,
-    options: {
-      autoConnect: false, //Turn off automatic connection
-      // ... Other options
-    },
-  });  
-  app.mount("#app");
-//}
+app.use(createPinia())
+app.use(Router);
+app.use(PrimeVue);
+app.use(ToastService)
+app.use(ConfirmationService);
+let con,baseUrl;
+if(window.location.host.includes("localhost")){
+  con="http://localhost:3000"
+  baseUrl=con;
+}else{
+  con=window.location.host
+  baseUrl="/api"
+}
+axios.defaults.baseURL=baseUrl;
+axios.defaults.withCredentials=true;
+app.use(Socketio, {
+  connection:con,
+  options: {
+    autoConnect: false, 
+  },
+});  
+app.mount("#app");
