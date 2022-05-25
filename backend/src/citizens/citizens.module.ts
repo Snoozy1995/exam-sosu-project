@@ -1,25 +1,29 @@
-import {Module} from '@nestjs/common';
-import {CitizensController} from './citizens.controller';
-import {CitizenRepositoryAdapter} from '../infrastructure/typeorm/citizenRepository.adapter';
-import {Citizen} from '../entities/citizen.entity';
-import {TypeOrmModule} from '@nestjs/typeorm';
-import {CitizenRepository} from '../domain/borders/citizen.repository';
-import {SaveCitizenInteractor} from '../domain/use_cases/citizen/saveCitizen.interactor';
-import {FindAllCitizenInteractor} from '../domain/use_cases/citizen/findAllCitizen.interactor';
-import {FindOneCitizenInteractor} from '../domain/use_cases/citizen/findOneCitizen.interactor';
-import {CitizensGateway} from './citizens.gateway';
-import {SearchCitizenInteractor} from '../domain/use_cases/citizen/searchCitizens.interactor';
-import {DeleteCitizenInteractor} from '../domain/use_cases/citizen/deleteCitizen.interactor';
-import {CloneCitizenForGroupInteractor} from 'src/domain/use_cases/citizen/cloneCitizenForGroup.interactor';
-import {CloneCitizenForUserInteractor} from 'src/domain/use_cases/citizen/cloneCitizenForUser.interactor';
-import {CloneCitizenInteractor} from 'src/domain/use_cases/citizen/cloneCitizen.interactor';
-import {NewVersionCitizenInteractor} from 'src/domain/use_cases/citizen/newVersionCitizen.interactor';
+import { Module } from '@nestjs/common';
+import { CitizensController } from './citizens.controller';
+import { CitizenRepositoryAdapter } from '../infrastructure/typeorm/citizenRepository.adapter';
+import { Citizen } from '../entities/citizen.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { CitizenRepository } from '../domain/borders/citizen.repository';
+import { SaveCitizenInteractor } from '../domain/use_cases/citizen/saveCitizen.interactor';
+import { FindAllCitizenInteractor } from '../domain/use_cases/citizen/findAllCitizen.interactor';
+import { FindOneCitizenInteractor } from '../domain/use_cases/citizen/findOneCitizen.interactor';
+import { CitizensGateway } from './citizens.gateway';
+import { SearchCitizenInteractor } from '../domain/use_cases/citizen/searchCitizens.interactor';
+import { DeleteCitizenInteractor } from '../domain/use_cases/citizen/deleteCitizen.interactor';
+import { CloneCitizenForGroupInteractor } from 'src/domain/use_cases/citizen/cloneCitizenForGroup.interactor';
+import { CloneCitizenForUserInteractor } from 'src/domain/use_cases/citizen/cloneCitizenForUser.interactor';
+import { CloneCitizenInteractor } from 'src/domain/use_cases/citizen/cloneCitizen.interactor';
+import { NewVersionCitizenInteractor } from 'src/domain/use_cases/citizen/newVersionCitizen.interactor';
+import { QueryHandlers } from './queries/handlers';
+//import { CommandHandlers } from './commands/handlers';
+import { CqrsModule } from '@nestjs/cqrs';
+import { CommandHandlers } from './commands/handlers';
 
 const repo = 'CitizenRepository';
 const inject = { inject: [repo] };
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Citizen])],
+  imports: [TypeOrmModule.forFeature([Citizen]), CqrsModule],
   providers: [
     CloneCitizenInteractor,
     CitizensGateway,
@@ -75,6 +79,8 @@ const inject = { inject: [repo] };
       useFactory: (citizenRepo: CitizenRepository) =>
         new NewVersionCitizenInteractor(citizenRepo),
     },
+    ...QueryHandlers,
+    ...CommandHandlers,
   ],
   controllers: [CitizensController],
 })

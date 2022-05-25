@@ -10,33 +10,26 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
-import { NewVersionCitizenInteractor } from 'src/domain/use_cases/citizen/newVersionCitizen.interactor';
-import { DeleteCitizenInteractor } from '../domain/use_cases/citizen/deleteCitizen.interactor';
-import { FindAllCitizenInteractor } from '../domain/use_cases/citizen/findAllCitizen.interactor';
-import { FindOneCitizenInteractor } from '../domain/use_cases/citizen/findOneCitizen.interactor';
-import { SaveCitizenInteractor } from '../domain/use_cases/citizen/saveCitizen.interactor';
 import { Citizen } from '../entities/citizen.entity';
 import { Role } from '../enums/role.enum';
 import { Roles } from '../auth/roles/roles.decorator';
 import { AuthenticatedGuard } from 'src/auth/guards/authenticated.guard';
 import { CitizenUpdatedEvent } from './events/citizen-updated.event';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { GetCitizenQuery, GetCitizensQuery } from './queries/impl';
+import { DeleteCitizenCommand } from './commands/impl/delete-citizen.command';
+import { SaveCitizenCommand } from './commands/impl/save-citizen.command';
+import { NewVersionCitizenCommand } from './commands/impl/new-version-citizen.command';
 
 @ApiTags('citizens')
 @Controller('citizens')
 @UseGuards(AuthenticatedGuard)
 export class CitizensController {
   constructor(
-    @Inject('SaveCitizen') private readonly saveCitizen: SaveCitizenInteractor,
-    @Inject('FindOneCitizen')
-    private readonly findOneCitizen: FindOneCitizenInteractor,
-    @Inject('FindAllCitizen')
-    private readonly findAllCitizen: FindAllCitizenInteractor,
-    @Inject('DeleteCitizen')
-    private readonly deleteCitizen: DeleteCitizenInteractor,
-    @Inject('NewVersionCitizen')
-    private readonly newVersionCitizen: NewVersionCitizenInteractor,
     private eventEmitter: EventEmitter2,
+    private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
   ) {}
 
   @Post()
@@ -47,8 +40,8 @@ export class CitizensController {
   ): Promise<Citizen> {
     body.user = session.loggedIn;
     body.schoolName = body.user.schoolName;
-    const result = await this.saveCitizen.saveCitizen(body);
-    return new Promise((res, rej) => {
+    const result = await this.commandBus.execute(new SaveCitizenCommand(body));
+    return new Promise((res) => {
       const event = new CitizenUpdatedEvent();
       event.citizen = result;
       this.eventEmitter.emit('citizen.updated', event);
@@ -58,7 +51,7 @@ export class CitizensController {
 
   @Get()
   findAll(): Promise<Citizen[]> {
-    return this.findAllCitizen.findAllCitizen();
+    return this.queryBus.execute(new GetCitizensQuery());
   }
 
   @Get('/:identifier')
@@ -70,18 +63,18 @@ export class CitizensController {
     schema: { oneOf: [{ type: 'string' }, { type: 'integer' }] },
   })
   findOne(@Param('identifier') params: string | number): Promise<Citizen> {
-    return this.findOneCitizen.findOneCitizen(params);
+    return this.queryBus.execute(new GetCitizenQuery(params));
   }
 
   @Delete(':id')
   @Roles(Role.Teacher)
   delete(@Param() params): Promise<boolean> {
-    return this.deleteCitizen.deleteCitizen(params.id);
+    return this.commandBus.execute(new DeleteCitizenCommand(params.id));
   }
 
   @Get('version/:id')
   @Roles(Role.Teacher)
   version(@Param() params) {
-    return this.newVersionCitizen.newVersionCitizen(params.id);
+    return this.commandBus.execute(new NewVersionCitizenCommand(params.id));
   }
 }
