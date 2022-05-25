@@ -1,14 +1,14 @@
-import {Module} from '@nestjs/common';
-import {TypeOrmModule} from '@nestjs/typeorm';
-import {AutocompleteSchoolInteractor} from 'src/domain/use_cases/school/autocompleteSchool.interactor';
-import {DeleteSchoolInteractor} from 'src/domain/use_cases/school/deleteSchool.interactor';
-import {SchoolRepository} from '../domain/borders/school.repository';
-import {FindAllSchoolInteractor} from '../domain/use_cases/school/findAllSchool.interactor';
-import {FindOneSchoolInteractor} from '../domain/use_cases/school/findOneSchool.interactor';
-import {SaveSchoolInteractor} from '../domain/use_cases/school/saveSchool.interactor';
-import {School} from '../entities/school.entity';
-import {SchoolRepositoryAdapter} from '../infrastructure/typeorm/schoolRepository.adapter';
-import {SchoolsController} from './schools.controller';
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { AutocompleteSchoolInteractor } from 'src/domain/use_cases/school/autocompleteSchool.interactor';
+import { DeleteSchoolInteractor } from 'src/domain/use_cases/school/deleteSchool.interactor';
+import { SchoolRepository } from '../domain/borders/school.repository';
+import { FindAllSchoolInteractor } from '../domain/use_cases/school/findAllSchool.interactor';
+import { FindOneSchoolInteractor } from '../domain/use_cases/school/findOneSchool.interactor';
+import { SaveSchoolInteractor } from '../domain/use_cases/school/saveSchool.interactor';
+import { School } from '../entities/school.entity';
+import { SchoolRepositoryAdapter } from '../infrastructure/typeorm/schoolRepository.adapter';
+import { SchoolsController } from './schools.controller';
 
 @Module({
   controllers: [SchoolsController],

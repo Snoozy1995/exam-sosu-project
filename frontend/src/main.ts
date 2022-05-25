@@ -33,7 +33,7 @@ import Toast from "primevue/toast";
 // import Toast from "primevue/toast";
 
 const app=createApp(App);
-let retrieved=false;
+/*let retrieved=false;
 axios.get("/config/api-url.txt").then((result)=>{
   if(result.status&&result.status==200){
     retrieved=true;
@@ -46,7 +46,7 @@ axios.get("/config/api-url.txt").then((result)=>{
   axios.defaults.baseURL="http://localhost:3000";
   host()
 });
-axios.defaults.withCredentials=true;
+axios.defaults.withCredentials=true;*/
 
 app.component('InputText',InputText);
 app.component('Button',Button);
@@ -67,18 +67,22 @@ app.component("Toast",Toast);
 app.directive('tooltip', Tooltip);
 app.directive('badge', BadgeDirective);
 
-function host(){
+//function host(){
   app.use(createPinia())
   app.use(Router);
   app.use(PrimeVue);
   app.use(ToastService)
   app.use(ConfirmationService);
-  let con;
+  let con,baseUrl;
   if(window.location.host.includes("localhost")){
     con="http://localhost:3000"
+    baseUrl=con;
   }else{
     con=window.location.host
+    baseUrl=con+"/api"
   }
+  axios.defaults.baseURL=baseUrl;
+  axios.defaults.withCredentials=true;
   app.use(Socketio, {
     connection:con,
     options: {
@@ -87,4 +91,4 @@ function host(){
     },
   });  
   app.mount("#app");
-}
+//}
