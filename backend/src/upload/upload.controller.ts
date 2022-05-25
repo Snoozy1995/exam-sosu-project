@@ -1,11 +1,22 @@
-import {Body, Controller, Inject, Post, Session, UploadedFiles, UseGuards, UseInterceptors,} from '@nestjs/common';
-import {AnyFilesInterceptor} from '@nestjs/platform-express';
-import {ApiTags} from '@nestjs/swagger';
-import {diskStorage} from 'multer';
+import {
+  Body,
+  Controller,
+  Inject,
+  Post,
+  Session,
+  UploadedFiles,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
+import { AnyFilesInterceptor } from '@nestjs/platform-express';
+import { ApiTags } from '@nestjs/swagger';
+import { diskStorage } from 'multer';
 import * as path from 'path';
-import {SaveFilesInteractor} from 'src/domain/use_cases/upload/saveFiles.interactor';
-import {UploadedDocument} from 'src/entities/uploadedDocument.entity';
-import {AuthenticatedGuard} from '../auth/guards/authenticated.guard';
+import { SaveFilesInteractor } from 'src/domain/use_cases/upload/saveFiles.interactor';
+import { UploadedDocument } from 'src/entities/uploadedDocument.entity';
+import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';
+import { UploadEvent } from './events/upload.event';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @ApiTags('upload')
 @Controller('upload')
@@ -13,6 +24,7 @@ import {AuthenticatedGuard} from '../auth/guards/authenticated.guard';
 export class UploadController {
   constructor(
     @Inject('SaveFiles') private readonly saveFiles: SaveFilesInteractor,
+    private eventEmitter: EventEmitter2,
   ) {}
 
   @Post()
@@ -52,7 +64,7 @@ export class UploadController {
   ) {
     console.log(body);
     console.log(files);
-    const response = [];
+    const response: UploadedDocument[] = [];
     files.forEach((file) => {
       const fileReponse = {
         filename: file.filename,
@@ -63,6 +75,11 @@ export class UploadController {
       };
       response.push(fileReponse as UploadedDocument);
     });
+
+    const event = new UploadEvent();
+    event.citizenId = body.citizen;
+    event.uploaded = response;
+    this.eventEmitter.emit('upload', event);
     return this.saveFiles.saveFiles(response);
   }
 }

@@ -16,7 +16,7 @@ export class CitizenService {
     return axios.get('/citizens/'+id);
   }
 
-  getAlltCitizens(){
+  getAllCitizens(){
     return axios.get('/citizens/');
   }
 

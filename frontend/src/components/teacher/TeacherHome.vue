@@ -4,10 +4,34 @@ import {AuthStore} from '../../stores/authStore';
 import dayjs from 'dayjs';
 import RelativeTime from 'dayjs/plugin/relativeTime' // import plugin
 import 'dayjs/locale/da';
-
+import { CitizenService } from '../../services/citizen.service';
+import { Citizen } from '../../models/citizen';
+import { inject, ref, Ref } from 'vue';
+import { Socket } from 'socket.io-client';
+const citizenService=new CitizenService();
 dayjs.extend(RelativeTime);
 dayjs.locale('da');
 const authStore=AuthStore();
+const citizens: Ref<Citizen[]>=ref();
+function getCitizens(){
+  citizenService.getAllCitizens().then(res=>{
+    res.data.sort((a,b)=>{
+      return (new Date(b.updated_at).getTime()-new Date(a.updated_at).getTime());
+    });
+    citizens.value=res.data;
+  });
+}
+getCitizens();
+
+const socket = inject('socket') as Socket;
+socket.on("citizenUpdate",(_citizen:Citizen)=>{
+  let index=citizens.value.findIndex(val=>{ return val.id==_citizen.id});
+  if(citizens.value[index]){
+    citizens.value[index]=_citizen;
+  }else{
+    citizens.value.unshift(_citizen);
+  }
+});
 </script>
 
 <template>
@@ -39,13 +63,13 @@ const authStore=AuthStore();
 
       <br>
       <br>-->
-      <Panel header="Dine templates"  :toggleable="true" class="teacherhomecitizen">
+      <Panel header="Alle templates"  :toggleable="true" class="teacherhomecitizen">
           <template #icons>
             <router-link to="/citizen/create">
               <Button class="p-button-sm" icon="pi pi-plus" style="margin-right:10px;" v-tooltip="'Nyt template'"></Button>
             </router-link>
           </template>
-          <Listbox :options="authStore.user.citizens" style="border-radius:0px;border:0px;">
+          <Listbox :options="citizens" style="border-radius:0px;border:0px;">
             <template #option="slotProps">
               <router-link style="width:100%;display:inline-block;padding:0px;" :to="{path:'/citizen/'+slotProps.option.id}" >
                 <div class="grid border-top-1 surface-border p-1" style="margin:0px;">

@@ -1,4 +1,5 @@
 import {defineStore} from "pinia";
+import { Citizen } from "../models/citizen";
 import {CitizenService} from "../services/citizen.service";
 import {AddressStore} from "./addressStore";
 
@@ -17,7 +18,8 @@ export const CitizenStore = defineStore({
         postCode:'',
         city:'',
       }
-    }
+    },
+    viewingCitizen:{} as Citizen
   }),
   actions: {
     createCitizen() {

@@ -62,7 +62,7 @@ FilterService.register(EQUALS_FILTER.value, (value, filter) => {
 
 
 onMounted(() => {
-  citizenService.value.getAlltCitizens().then((result) => citizens.value = result.data as Citizen[])
+  citizenService.value.getAllCitizens().then((result) => citizens.value = result.data as Citizen[])
       .catch((error) => console.log("error: " + error))
   loading.value = false;
   });

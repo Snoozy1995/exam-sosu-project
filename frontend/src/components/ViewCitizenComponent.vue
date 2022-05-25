@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {onMounted, ref, Ref} from "vue";
+import {inject, onMounted, ref, Ref} from "vue";
 import {CitizenService} from '../services/citizen.service';
 import Router from "../router";
 import {Citizen} from "../models/citizen";
@@ -21,6 +21,7 @@ import {Fs3DataService} from "../services/fs3Data.service";
 import Dialog from "primevue/dialog";
 import {ViewCitizenTourService} from '../plugins/tour';
 import {CitizenStore} from '../stores/citizenStore';
+import { Socket } from "socket.io-client";
 
 const citizenStore=CitizenStore();
 
@@ -231,16 +232,34 @@ function fetchCitizen(id = undefined) {
     if (firstFetch) {
       firstFetch = false;
     }
+    citizenStore.viewingCitizen=citizen.value;
   }).catch((r) => {console.log(r)}); //@todo
 }
 
 function startGuide(){
   tour.start();
 }
+
+const socket = inject('socket') as Socket;
+socket.on("citizenUpdate",(_citizen:Citizen)=>{
+  console.log("Citizen update "+citizen.value.id+"|"+_citizen.id);
+  if(citizen.value.id!=_citizen.id) return;
+  citizen.value=_citizen;
+  citizenStore.viewingCitizen=_citizen;
+});
+
+socket.on("upload",(payload)=>{
+  if(citizen.value.id!=payload.citizenId) return;
+  console.log(payload);
+  for(let item of payload.uploaded){
+    citizen.value.files.push(item);
+  }
+  citizenStore.viewingCitizen=citizen.value;
+});
 </script>
 <template>
-  <ViewCitizenTeacher v-if="citizen&&authStore.user.role=='teacher'" :citizen="citizen"/>
-  <ViewCitizenStudent v-if="citizen&&authStore.user.role=='student'" :citizen="citizen"/>
+  <ViewCitizenTeacher v-if="citizen&&authStore.user.role=='teacher'" />
+  <ViewCitizenStudent v-if="citizen&&authStore.user.role=='student'" />
   <Teleport to="#breadCrumbContainer">
     <Tag v-if="citizen" style="margin-right:5px;" severity="success"
          v-tooltip.bottom="'Sidst gemt '+dayjs(citizen.updated_at).format('HH.mm DD-MM-YY')+'\nÆndringer gemmes automatisk.'">
