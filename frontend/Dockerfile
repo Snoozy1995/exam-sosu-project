@@ -1,13 +1,8 @@
-# build stage
-FROM node:lts-alpine as build-stage
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
-RUN npm run build
-
-# production stage
-FROM nginx:stable-alpine as production-stage
-COPY --from=build-stage /app/dist /usr/share/nginx/html
+FROM nginx
+RUN mkdir /app
+COPY /dist /app
+COPY nginx.conf /etc/nginx/conf.d/default.conf.template
+#COPY expose-env.sh /docker-entrypoint.d/40-expose-env.sh
+#RUN chmod 777 /docker-entrypoint.d/40-expose-env.sh
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

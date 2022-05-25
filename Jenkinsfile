@@ -9,30 +9,37 @@ pipeline{
         stage("Build project") {
             parallel {
                 stage("Build API"){
-                    when {
-                        anyOf {
-                            changeset "backend/**"
-                        }
-                    }
+                    //when {
+                    //    changeset "backend/**"
+                    //}
                     steps{
-                        sh "docker-compose --env-file config/Test.env build health-api"
+                        dir("backend"){
+                            sh "npm install"
+                            sh "npm run build"
+                        }
                     }
                 }
 
                 stage('Build Frontend') {
-                    when {
-                        changeset "frontend/**"
-                    }
+                    //when {
+                    //    changeset "frontend/**"
+                    //}
                     steps {
-                        sh "docker-compose --env-file config/Test.env build health-web"
+                        dir("frontend"){
+                            sh "npm install"
+                            sh "npm run build"
+                        }
                     }
                 }
             }
         }
-        stage("Unit test"){
+        /*stage("Unit test coverage"){
+            when {
+                changeset "backend/**"
+            }
             steps{
                 dir("backend"){
-                    sh "npm run test:cov"
+                    sh "npm run test:cov --passWithNoTests"
                     clover(cloverReportDir: 'coverage', cloverReportFileName: 'clover.xml',
                         // optional, default is: method=70, conditional=80, statement=80
                         healthyTarget: [methodCoverage: 70, conditionalCoverage: 80, statementCoverage: 80],
@@ -43,7 +50,7 @@ pipeline{
                     )
                 }
             }
-        }
+        }*/
         stage("Clean containers") {
             steps {
                 script {
@@ -54,7 +61,7 @@ pipeline{
                 }
             }
         }
-        stage("Deploy") {
+        stage("Deploy containers") {
             steps {
                 sh "docker-compose --env-file config/Test.env up -d health-web health-api influxdb grafana"
             }
@@ -62,7 +69,7 @@ pipeline{
 
         stage('Smoke Test') {
             steps {
-                sh 'docker-compose --env-file config/Test.env run k6 run /k6_loadtests/smoke-test.js'
+                sh 'docker-compose --env-file config/Test.env run k6 run /scripts/smoke-test.js'
             }
         }
 

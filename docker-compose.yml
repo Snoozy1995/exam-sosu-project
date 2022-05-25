@@ -3,12 +3,15 @@ version: "3.9"
 networks:
   k6:
   grafana:
+  health:
 
 services:
   health-web:
     build:
       context: "frontend"
     image: "localhost:7002/health-web:${IMAGE_TAG}"
+    networks:
+      - health
     container_name: "${WEB_CONT_NAME}"
     ports:
       - "${WEB_PORT}:80"
@@ -17,12 +20,32 @@ services:
 
   health-api:
     build:
-        context: "backend"
+      context: "backend"
     image: "localhost:7002/health-api:${IMAGE_TAG}"
+    networks:
+      - health
     container_name: "${API_CONT_NAME}"
+    environment:
+      - DEBUG=socket*
     ports:
-      - "${API_PORT}:80"
-# K6 stuff below here
+      - "${API_PORT}:3000"
+    volumes:
+      - /typeorm_config/ormconfig.json:/ormconfig.json
+
+#  mysql:
+#    image: mysql:8
+#    container_name: "${DB_CONT_NAME}"
+#    ports:
+#      - 3306:3306
+#    volumes:
+#      - /db/mysql:/var/lib/mysql
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+#      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+#      - MYSQL_USER=${MYSQL_USER}
+#      - MYSQL_DATABASE=${MYSQL_DATABASE}
+
+  # K6 stuff below here
   influxdb:
     container_name: "${INFLUXDB_CONT_NAME}"
     image: influxdb:1.8
@@ -46,9 +69,9 @@ services:
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_BASIC_ENABLED=false
     volumes:
-      - ./dashboards:/var/lib/grafana/dashboards
-      - ./grafana-dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
-      - ./grafana-datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
+      - ./loadtests/dashboards:/var/lib/grafana/dashboards
+      - ./loadtests/grafana-dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
+      - ./loadtests/grafana-datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
 
   k6:
     container_name: "${K6_CONT_NAME}"
@@ -60,4 +83,4 @@ services:
     environment:
       - K6_OUT=influxdb=http://influxdb:8086/k6
     volumes:
-      - ./k6_loadtests:/k6_loadtests
+      - ./loadtests/scripts:/scripts
