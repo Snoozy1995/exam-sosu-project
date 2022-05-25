@@ -77,7 +77,7 @@ function host(){
   if(window.location.host.includes("localhost")){
     con="http://localhost:3000"
   }else{
-    con="http://localhost"
+    con=window.location.host
   }
   app.use(Socketio, {
     connection:con,
