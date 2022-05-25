@@ -1,7 +1,8 @@
 import {EntityManager, Repository} from 'typeorm';
 import {Injectable} from '@nestjs/common';
 import {FS3Repository} from 'src/domain/borders/fs3.repository';
-import {FS3} from 'src/entities/fs3.entity';
+import {FS3} from "../../entities/fs3.entity";
+
 
 @Injectable()
 export class FS3RepositoryAdapter implements FS3Repository {

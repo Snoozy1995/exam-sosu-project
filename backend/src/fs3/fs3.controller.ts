@@ -6,7 +6,8 @@ import {SaveFS3Interactor} from '../domain/use_cases/fs3/saveFS3.interactor';
 import {FS3} from '../entities/fs3.entity';
 import {Role} from '../enums/role.enum';
 import {Roles} from '../auth/roles/roles.decorator';
-import {AuthenticatedGuard} from 'src/auth/guards/authenticated.guard';
+import {AuthenticatedGuard} from "../auth/guards/authenticated.guard";
+
 
 @ApiTags('fs3')
 @Controller('fs3')
@@ -22,13 +23,13 @@ export class FS3Controller {
 
   @Post()
   @Roles(Role.SuperUser)
-  save(@Body() body: FS3): Promise<FS3> {
+  save(@Body() body: any): Promise<FS3> {
     return this.saveFS3.saveFS3(body);
   }
 
   @Get()
   @Roles(Role.SuperUser)
-  findAll(): Promise<FS3[]> {
+  findAll(): Promise<any> {
     return this.findAllFS3.findAllFS3();
   }
 

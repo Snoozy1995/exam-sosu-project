@@ -18,6 +18,7 @@ import {FS3SubCategory} from "../models/fs3SubCategory";
 import {Fs3OptionsService} from "../services/fs3Options.service";
 import {FS3Option} from "../models/fs3Option";
 import {Fs3DataService} from "../services/fs3Data.service";
+import {useToast} from "primevue/usetoast";
 import Dialog from "primevue/dialog";
 import {ViewCitizenTourService} from '../plugins/tour';
 import {CitizenStore} from '../stores/citizenStore';
@@ -38,6 +39,7 @@ const fs3DataService: Fs3DataService = new Fs3DataService();
 const displayFunctionality = ref(false);
 const displayFS3Data = ref(false);
 const selectedHelpQuestionIndex = ref(0);
+const toast = useToast();
 const termEnum = Object.freeze({
   FUNCTIONAL: 1,
   HEALTH: 2,
@@ -73,15 +75,19 @@ function resetFS3Data() {
   funcDataCitizenDescription.value = undefined;
   funcDataCitWishAndGoal.value = undefined;
   funcDataProfConOpinion.value = undefined;
-  funcDataHealthLevel.value = {option: undefined,
-  definition: undefined,
-  description: undefined,
-  imageName: undefined};
-  funcDataExpConOpinion.value = undefined;
-  funcDataExpHealthLevel.value = {option: undefined,
+  funcDataHealthLevel.value = {
+    option: undefined,
     definition: undefined,
     description: undefined,
-    imageName: undefined};
+    imageName: undefined
+  };
+  funcDataExpConOpinion.value = undefined;
+  funcDataExpHealthLevel.value = {
+    option: undefined,
+    definition: undefined,
+    description: undefined,
+    imageName: undefined
+  };
   funcDataFollowUp.value = undefined;
 }
 
@@ -109,7 +115,12 @@ function create() {
       followUp: funcDataFollowUp.value,
     }
   });
-  fs3DataService.createFS3Data(data);
+  fs3DataService.createFS3Data(data).then(() => showSuccessMessage())
+      .catch((error) => {
+        console.log("error: " + error);
+        showErrorMessage();
+      })
+
   resetFS3Data();
 }
 
@@ -135,10 +146,17 @@ const closeCreateFS3DataModal = () => {
 const openHelpQuestionsModal = () => {
   displayHelpQuestions.value = true;
 };
+
 const closeHelpQuestionsModal = () => {
   displayHelpQuestions.value = false;
   selectedHelpQuestionIndex.value = 0;
 };
+const showSuccessMessage = () => {
+  toast.add({severity: 'success', summary: 'Gemt.', life: 3000});
+}
+const showErrorMessage = () => {
+  toast.add({severity: 'error', summary: 'Data blev ikke gemt.', life: 3000});
+}
 
 const incrementHelpQuestionIndex = () => {
   if (selectedHelpQuestionIndex.value === selectedTerm.value.helpQuestions.length - 1) return;
@@ -173,11 +191,22 @@ const fs3Iterate = ref([
   {label: 'Funktionsevnetilstande', terms: functionalTerms, id: 'tutorialFunctionality', panelColor: 'p-panelFunctional', buttonColor: 'p-buttonFunctional'},
 ]);
 
-async function onCreateFS3Data() {
-  await create();
+function onCreateFS3Data() {
+  create();
   closeCreateFS3DataModal();
 
 
+}
+
+
+function returnButtonCSSClass() {
+  if (selectedTerm.value.term.id === termEnum.GENERAL) {
+    return fs3Iterate.value.at(0).buttonColor;
+  } else if (selectedTerm.value.term.id === termEnum.HEALTH) {
+    return fs3Iterate.value.at(1).buttonColor;
+  } else {
+    return fs3Iterate.value.at(2).buttonColor;
+  }
 }
 
 function getFS3s() {
@@ -273,7 +302,8 @@ socket.on("upload",(payload)=>{
          style="margin-bottom:25px;" v-bind:class=item.panelColor>
     <Listbox v-model="selectedTerm" :options=item.terms :multiple="false" :filter="true" v-on:change="onListBoxChange" optionLabel="definition"
              listStyle="min-height:200px;max-height:200px" filterPlaceholder="Filter"/>
-    <Button label="Vælg" v-tooltip.top="'Vælg '+item.label" class="p-button-sm w-full" v-bind:class=item.buttonColor @click="openCreateFS3DataModal()"
+    <Button label="Vælg" v-tooltip.top="'Vælg '+item.label" class="p-button-sm w-full" v-bind:class=item.buttonColor
+            @click="openCreateFS3DataModal()"
             style="border-radius:0px;" autofocus/>
   </Panel>
 
@@ -282,15 +312,15 @@ socket.on("upload",(payload)=>{
           :breakpoints="{'960px': '75vw'} "
           :style="{width: '50vw'}" rows="4" cols="30" class="align-self-end">
 
-    <Button v-if="selectedTerm.term.id === termEnum.GENERAL" label="Hjælpespørgsmål" icon="pi pi-question-circle" id="helpQuestionBtn"
+    <Button v-bind:class=returnButtonCSSClass() v-if="selectedTerm.term.id === termEnum.GENERAL" label="Hjælpespørgsmål" icon="pi pi-question-circle" id="helpQuestionBtn"
             @click="openHelpQuestionsModal"/>
 
 
-    <Listbox v-model="selectedSubCatHealth" v-if="selectedTerm.term.id === termEnum.HEALTH" sele
+    <Listbox v-model="selectedSubCatHealth" v-if="selectedTerm.term.id === termEnum.HEALTH"
              :options=selectedTerm.fs3Subs
              :multiple="false" :filter="true"
              optionLabel="category" listStyle="min-height:200px;max-height:200px" filterPlaceholder="Filter"/>
-    <Listbox v-model="selectedSubCatFunctional" v-if="selectedTerm.term.id === termEnum.FUNCTIONAL" sele
+    <Listbox v-model="selectedSubCatFunctional" v-if="selectedTerm.term.id === termEnum.FUNCTIONAL"
              :options=selectedTerm.fs3Subs
              :multiple="false" :filter="true"
              optionLabel="category" listStyle="min-height:200px;max-height:200px" filterPlaceholder="Filter"/>
@@ -383,7 +413,8 @@ socket.on("upload",(payload)=>{
     </div>
 
     <div class="py-3 text-center">
-      <Button label="Opret" icon="pi pi-check" class="w-full" @click="onCreateFS3Data"/>
+      <Button label="Gem" icon="pi pi-check" v-bind:class=returnButtonCSSClass() class="w-full"
+              @click="onCreateFS3Data"/>
     </div>
   </Dialog>
 
@@ -407,10 +438,12 @@ socket.on("upload",(payload)=>{
     </Card>
     <template #footer>
       <div class="flex align-items-center justify-content-center">
-        <Button label="Forrige" icon="pi pi-chevron-left" @click="decrementHelpQuestionIndex"/>
+        <Button v-bind:class=returnButtonCSSClass() label="Forrige" icon="pi pi-chevron-left"
+                @click="decrementHelpQuestionIndex"/>
         <h4 class=" px-6">{{ selectedHelpQuestionIndex.valueOf() + 1 }} af
           {{ selectedTerm.helpQuestions.length }}</h4>
-        <Button label="Næste" icon="pi pi-chevron-right" @click="incrementHelpQuestionIndex"/>
+        <Button v-bind:class=returnButtonCSSClass() label="Næste" icon="pi pi-chevron-right"
+                @click="incrementHelpQuestionIndex"/>
       </div>
     </template>
   </Dialog>
@@ -505,27 +538,23 @@ socket.on("upload",(payload)=>{
   border-top-left-radius: 4px;
 }
 
-
-.p-selectbutton .p-button.p-highlight {
-  background: #3B82F6;
-  border-color: #e0e0e1;
-  color: rgba(0, 0, 0, 0.87);
-}
-
 .p-selectbutton .p-button {
   background: #FFFFFF;
   border: 1px solid rgba(171, 8, 8, 0.12);
   transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, background-size 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
 }
+
 .p-selectbutton .p-button:focus.p-highlight {
   background: #3B82F6;
   border-color: #d9d8d9;
 }
+
 .p-selectbutton .p-button:not(.p-disabled):not(.p-highlight):hover {
   background: #3B82F6;
   border-color: rgba(0, 0, 0, 0.12);
   color: rgba(0, 0, 0, 0.87);
 }
+
 .p-button:hover {
   background: #3B82F6;
 }
