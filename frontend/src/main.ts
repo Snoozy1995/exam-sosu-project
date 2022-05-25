@@ -80,6 +80,7 @@ app.directive('badge', BadgeDirective);
   }else{
     con=window.location.host
     baseUrl=con+"/api"
+    console.log(baseUrl);
   }
   axios.defaults.baseURL=baseUrl;
   axios.defaults.withCredentials=true;
