@@ -7,28 +7,28 @@ import dayjs from 'dayjs';
 import CreateAddressComponent from '../misc/CreateAddressComponent.vue';
 import {AddressStore} from '../../stores/addressStore';
 import {getCurrentInstance, ref} from 'vue';
-import {Citizen} from '../../models/citizen';
+import { CitizenStore } from "../../stores/citizenStore";
+import { Citizen } from "../../models/citizen";
 
 const citizenService=new CitizenService();
-let instance=getCurrentInstance();
-let citizen=instance.props.citizen as Citizen;
+const citizenStore=CitizenStore();
 const toIterate=ref([
   {label:"Fornavn",target:'firstName',type:'text'},
   {label:"Efternavn",target:'lastName',type:'text'},
   {label:'Fødselsdag',target:'birthday',type:'date'}
 ]);
 function save(){
-  citizenService.saveCitizen(citizen).then((req)=>{
+  citizenService.saveCitizen(citizenStore.viewingCitizen).then((req)=>{
     if(req.status!=201) return;
-    citizen=req.data;
+    //citizen=req.data;
   });
 }
 function saveAddress(){
-  if(citizen==undefined) return;
+  if(citizenStore.viewingCitizen==undefined) return;
   if(AddressStore().street.length<4) return console.log("hmpf2");
   if(AddressStore().postCode.length!=4) return console.log("hmpf3");
-  citizen.address.postCode=Number.parseInt(AddressStore().postCode);
-  citizen.address.street=AddressStore().street;
+  citizenStore.viewingCitizen.address.postCode=Number.parseInt(AddressStore().postCode);
+  citizenStore.viewingCitizen.address.street=AddressStore().street;
   save();
 }
 </script>
@@ -36,7 +36,6 @@ function saveAddress(){
 import Router from "../../router";
 
 export default {
-  props:['citizen'],
 	methods: {
     cloneConfirm(event:any) {
       console.log(event.currentTarget);
@@ -58,12 +57,12 @@ export default {
 <template>
   <ConfirmPopup></ConfirmPopup>
   <Teleport to="#breadCrumbContainer">
-    <router-link style="margin-right:5px;" :to="{path:'/citizen/'+citizen.parent.id}" v-if="citizen&&citizen.parent"><Button v-tooltip.bottom="'Gå til borger dette stammer fra'" icon="pi pi-arrow-up-left" class='p-button-sm' /></router-link>
+    <router-link style="margin-right:5px;" :to="{path:'/citizen/'+citizenStore.viewingCitizen.parent.id}" v-if="citizenStore.viewingCitizen&&citizenStore.viewingCitizen.parent"><Button v-tooltip.bottom="'Gå til borger dette stammer fra'" icon="pi pi-arrow-up-left" class='p-button-sm' /></router-link>
     <Button icon="pi pi-user-plus" v-tooltip.bottom="'Duplikere template'" style="margin-right:5px;" class="p-button-sm p-button-help" v-on:click="cloneConfirm($event)" />
     <!--<Button class="p-button-sm p-button-info" icon="pi pi-calendar-plus" v-tooltip="'Brug til opgave/student'"></Button>-->
   </Teleport>
 
-  <Teleport v-if="citizen" to="#leftSide">
+  <Teleport v-if="citizenStore.viewingCitizen" to="#leftSide">
     <div id="tutorialCitizenInfo" style="padding:10px;">
       <div class="font-medium text-3xl text-900 mb-3">Borger information</div>
       <ul class="list-none p-0 m-0 min-w-full">
@@ -75,10 +74,10 @@ export default {
                   <div class="text-500 w-4 md:w-3 font-medium">{{item.label}}</div>
                   <div class="text-900 w-6 md:w-7 md:flex-order-10 flex-order-0 p-2">
                     <div v-if="item.type=='date'">
-                      {{dayjs(Date.now()).diff(citizen.birthday,'year')}} år - {{new Date(citizen.birthday).toLocaleDateString()}}
+                      {{dayjs(Date.now()).diff(citizenStore.viewingCitizen.birthday,'year')}} år - {{new Date(citizenStore.viewingCitizen.birthday).toLocaleDateString()}}
                     </div>
                     <div v-if="item.type!='date'">
-                      {{citizen[item.target]}}
+                      {{citizenStore.viewingCitizen[item.target]}}
                     </div>
                   </div>
                   <div class="w-2 flex justify-content-end"><Button icon="pi pi-pencil" class="p-button-text" v-tooltip.right="'Rediger '+item.label" /></div>
@@ -86,7 +85,7 @@ export default {
             </template>
             <template #content>
               <span class="text-500 font-medium" style="margin-right:25px;">{{item.label}}</span>
-              <InputText class="p-inputtext-sm" :type=item.type v-model="citizen[item.target]" />
+              <InputText class="p-inputtext-sm" :type=item.type v-model="citizenStore.viewingCitizen[item.target]" />
             </template>
           </Inplace>
         </li>
@@ -95,7 +94,7 @@ export default {
               <template #display>
                 <div class="flex align-items-center flex-wrap">
                   <div class="text-500 w-6 md:w-3 font-medium">Adresse</div>
-                  <div class="text-900 w-full md:w-7 md:flex-order-0 flex-order-1">{{citizen.address.street}}, {{citizen.address.postCode}} {{citizen.address.note}}</div>
+                  <div class="text-900 w-full md:w-7 md:flex-order-0 flex-order-1">{{citizenStore.viewingCitizen.address.street}}, {{citizenStore.viewingCitizen.address.postCode}} {{citizenStore.viewingCitizen.address.note}}</div>
                   <div class="w-6 md:w-2 flex justify-content-end"><Button icon="pi pi-pencil" class="p-button-text"></Button></div>
                 </div>
             </template>
