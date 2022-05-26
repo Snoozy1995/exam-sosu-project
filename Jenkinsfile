@@ -63,7 +63,7 @@ pipeline{
         }
         stage("Deploy containers") {
             steps {
-                sh "docker-compose --env-file config/Test.env up -d health-web health-api influxdb grafana"
+                sh "docker-compose --env-file config/Test.env up -d health-web health-api health-mysql influxdb grafana"
             }
         }
 

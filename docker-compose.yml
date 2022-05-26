@@ -30,7 +30,7 @@ services:
     volumes:
       - /typeorm_config/ormconfig.json:/ormconfig.json
 
-  mysql:
+  health-mysql:
     image: mysql:8
     networks:
       health:
