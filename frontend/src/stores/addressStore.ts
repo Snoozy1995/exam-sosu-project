@@ -5,8 +5,6 @@ export const AddressStore = defineStore({
   state: ()=>({
     street:'',
     postCode:'',
-
-
     municipality:'',
     city:'',
     suggestions:[],

@@ -1,9 +1,9 @@
-import {ApiProperty} from '@nestjs/swagger';
-import {Citizen} from 'src/entities/citizen.entity';
-import {School} from 'src/entities/school.entity';
-import {SchoolClass} from 'src/entities/schoolClass.entity';
-import {UploadedDocument} from 'src/entities/uploadedDocument.entity';
-import {Role} from 'src/enums/role.enum';
+import { ApiProperty } from '@nestjs/swagger';
+import { Citizen } from 'src/entities/citizen.entity';
+import { School } from 'src/entities/school.entity';
+import { SchoolClass } from 'src/entities/schoolClass.entity';
+import { UploadedDocument } from 'src/entities/uploadedDocument.entity';
+import { Role } from 'src/enums/role.enum';
 
 export class UserDto {
   @ApiProperty()

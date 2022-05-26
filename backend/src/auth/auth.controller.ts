@@ -1,13 +1,21 @@
-import {Body, Controller, Get, HttpException, HttpStatus, Inject, Post, Session,} from '@nestjs/common';
-import {ValidateUserInteractor} from 'src/domain/use_cases/user/validateUser.interactor';
-import {ApiTags} from '@nestjs/swagger';
-import {User} from 'src/entities/user.entity';
-import {AuthDto} from './dto/auth.dto';
-import {CreateUserInteractor} from 'src/domain/use_cases/user/createUser.interactor';
-import {CreateUserDto} from './dto/createuser.dto';
-import {GetMyUserInteractor} from 'src/domain/use_cases/user/getMyUser.interactor';
-import {UserDto} from './dto/user.dto';
-import {FindOneSchoolInteractor} from 'src/domain/use_cases/school/findOneSchool.interactor';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Post,
+  Session,
+} from '@nestjs/common';
+import { ValidateUserInteractor } from 'src/domain/use_cases/user/validateUser.interactor';
+import { ApiTags } from '@nestjs/swagger';
+import { User } from 'src/entities/user.entity';
+import { AuthDto } from './dto/auth.dto';
+import { CreateUserInteractor } from 'src/domain/use_cases/user/createUser.interactor';
+import { CreateUserDto } from './dto/createuser.dto';
+import { GetMyUserInteractor } from 'src/domain/use_cases/user/getMyUser.interactor';
+import { UserDto } from './dto/user.dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -16,8 +24,6 @@ export class AuthController {
     @Inject('Login') private readonly login: ValidateUserInteractor,
     @Inject('CreateUser') private readonly create: CreateUserInteractor,
     @Inject('GetMyUser') private readonly get: GetMyUserInteractor,
-    @Inject('FindOneSchool')
-    private readonly findSchool: FindOneSchoolInteractor,
   ) {}
 
   @Post()

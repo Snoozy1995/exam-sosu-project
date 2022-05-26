@@ -10,6 +10,9 @@ import { School } from '../entities/school.entity';
 import { SchoolRepositoryAdapter } from '../infrastructure/typeorm/schoolRepository.adapter';
 import { SchoolsController } from './schools.controller';
 
+const repo = 'SchoolRepository';
+const inject = { inject: [repo] };
+
 @Module({
   controllers: [SchoolsController],
   imports: [TypeOrmModule.forFeature([School])],
@@ -19,31 +22,31 @@ import { SchoolsController } from './schools.controller';
       useClass: SchoolRepositoryAdapter,
     },
     {
-      inject: ['SchoolRepository'],
+      ...inject,
       provide: 'SaveSchool',
       useFactory: (userRepo: SchoolRepository) =>
         new SaveSchoolInteractor(userRepo),
     },
     {
-      inject: ['SchoolRepository'],
+      ...inject,
       provide: 'FindOneSchool',
       useFactory: (userRepo: SchoolRepository) =>
         new FindOneSchoolInteractor(userRepo),
     },
     {
-      inject: ['SchoolRepository'],
+      ...inject,
       provide: 'FindAllSchool',
       useFactory: (userRepo: SchoolRepository) =>
         new FindAllSchoolInteractor(userRepo),
     },
     {
-      inject: ['SchoolRepository'],
+      ...inject,
       provide: 'DeleteSchool',
       useFactory: (userRepo: SchoolRepository) =>
         new DeleteSchoolInteractor(userRepo),
     },
     {
-      inject: ['SchoolRepository'],
+      ...inject,
       provide: 'AutocompleteSchool',
       useFactory: (userRepo: SchoolRepository) =>
         new AutocompleteSchoolInteractor(userRepo),

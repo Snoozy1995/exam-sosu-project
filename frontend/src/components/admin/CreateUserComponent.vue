@@ -18,9 +18,8 @@ const role=ref('');
 const school=ref('');
 function create(){
   AuthStore().createUser(username.value,password.value,role.value.toLowerCase(),school.value).then(res=>{
-    //@todo
+    alert("Created user");
   });
-  //@todo
 }
 function autocomplete(){
   new SchoolService().autocomplete(school.value).then(_city=>{

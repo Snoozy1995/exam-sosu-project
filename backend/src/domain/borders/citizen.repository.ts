@@ -1,4 +1,4 @@
-import {Citizen} from 'src/entities/citizen.entity';
+import { Citizen } from 'src/entities/citizen.entity';
 
 export interface CitizenRepository {
   save(citizen: Citizen): Promise<Citizen>;

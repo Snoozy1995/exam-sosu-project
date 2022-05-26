@@ -28,7 +28,10 @@ export const CitizenStore = defineStore({
       return new Promise((resolve, reject) => {
         citizenService
           .saveCitizen(this.citizen).then(res=>{
-            resolve(res);
+            if(res.status==201||res.status==200){
+              resolve(res.data as Citizen);
+            }
+            reject(res.statusText);
           })
       });
     },

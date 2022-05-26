@@ -112,11 +112,6 @@ const Router = createRouter({
       meta: {public:true},
       component: LoginComponent,
     },
-    /*{
-      path: "/:catchAll(.*)",
-      name: "404",
-      component: ConnectionFailedComponent, //Change this.
-    },*/
   ],
 });
 
