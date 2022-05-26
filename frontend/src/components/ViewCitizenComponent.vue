@@ -256,13 +256,15 @@ let firstFetch = true;
 
 function fetchCitizen(id = undefined) {
   citizenService.getCitizen(id == undefined ? Router.currentRoute.value.params.id : id).then(_citizen => {
-    if (!_citizen || !_citizen.data) return; // Something went wrong, most likely a citizen with said id doesnt exist, or permission denied, we should probably redirect either way. @todo
+    if (!_citizen || !_citizen.data) return Router.push('/'); // Something went wrong, most likely a citizen with said id doesnt exist, or permission denied, we should probably redirect either way.
     citizen.value = _citizen.data;
     if (firstFetch) {
       firstFetch = false;
     }
     citizenStore.viewingCitizen=citizen.value;
-  }).catch((r) => {console.log(r)}); //@todo
+  }).catch(() => {
+    Router.push('/');
+  });
 }
 
 function startGuide(){

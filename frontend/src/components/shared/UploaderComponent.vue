@@ -8,7 +8,6 @@ const showUploadFilesDialog=ref(false);
     var formData = new FormData();
     for(let file of event.files){ formData.append('file',file); formData.append('citizen',Router.currentRoute.value.params.id as string); }
     axios.post('/upload',formData, { headers: { 'Content-Type': 'multipart/form-data' } }).then(()=>{
-      //fetchCitizen(); //@todo
       showUploadFilesDialog.value=false;
     })
   }
