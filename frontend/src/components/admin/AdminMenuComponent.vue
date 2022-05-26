@@ -24,12 +24,12 @@ menuStore.items=[
         {
           label:'Skoler',
           items:[
-              { to: "/school/create", label: "Ny", icon: "pi pi-fw pi-user-plus" }/*,
+              { to: "/school/create", label: "Ny", icon: "pi pi-fw pi-user-plus" },
               {
                 to:'/school/list',
                 label:'Liste',
                 icon:'pi pi-fw pi-users',
-              }*/
+              }
           ]
         },
         //{
