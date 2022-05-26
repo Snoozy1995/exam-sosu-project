@@ -1,42 +1,47 @@
-import encoding from 'k6/encoding';
 import http from 'k6/http';
-import { check } from 'k6';
+import {check} from 'k6';
 
-const username = 'test';
-const password = 'test';
+export let options = {
+    stages: [
+        {duration: '5s', target: 1},
+        // {duration:'5s', target:50},
+        // {duration:'5s', target:1000},//spike the request to 1000 at 4 mins
+        // {duration:'5s', target:1000},// stay at 1000 request for 8 mins
+        // {duration:'5s', target:200},
+        // {duration:'5s', target:0},
+    ]
+}
 
 export default function () {
-    const credentials = `${username}:${password}`;
-
-    // Passing username and password as part of the URL will
-    // allow us to authenticate using HTTP Basic Auth.
-    const url = `http://${credentials}@httpbin.test.k6.io/basic-auth/${username}/${password}`;
-
-    let res = http.get(url);
-
-    // Verify response
-    check(res, {
-        'status is 200': (r) => r.status === 200,
-        'is authenticated': (r) => r.json().authenticated === true,
-        'is correct user': (r) => r.json().user === username,
+    var url = "http://185.196.21.189:3091/";
+    var payload = JSON.stringify({
+        username: 'teacher',
+        password: 'teacher'
     });
 
-    // Alternatively you can create the header yourself to authenticate
-    // using HTTP Basic Auth
-    const encodedCredentials = encoding.b64encode(credentials);
-    const options = {
+    var params = {
         headers: {
-            Authorization: `Basic ${encodedCredentials}`,
+            'Content-Type': 'application/json',
         },
     };
+    const resPost = http.post(url + '/auth', payload, params);
+    check(resPost, {
+        'status is 201': (r) => r.status === 201,
+    });
+    //
+    // const cookie = resPost.cookies["connect.sid"][0].value;
+    // console.log("cookie: ")
+    // console.log(cookie)
 
-    res = http.get(`http://httpbin.test.k6.io/basic-auth/${username}/${password}`, options);
 
-    // Verify response (checking the echoed data from the httpbin.test.k6.io
-    // basic auth test API endpoint)
-    check(res, {
+    const resGet = http.get(url + '/fs3', {
+        cookies: {
+            // "connect.sid": cookie
+        }
+    });
+    console.log("resGet: ")
+    console.log(resGet)
+    check(resGet, {
         'status is 200': (r) => r.status === 200,
-        'is authenticated': (r) => r.json().authenticated === true,
-        'is correct user': (r) => r.json().user === username,
     });
 }
