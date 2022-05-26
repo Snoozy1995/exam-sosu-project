@@ -15,4 +15,8 @@ export class SchoolService{
       resolve(data);
     });
   }
+
+  getAllSchools() {
+    return axios.get('/schools/');
+  }
 }
