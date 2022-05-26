@@ -3,12 +3,9 @@ import {sleep, check} from 'k6';
 
 export let options = {
     stages: [
-        {duration: '5s', target: 1},
-        // {duration:'5s', target:50},
-        // {duration:'5s', target:1000},//spike the request to 1000 at 4 mins
-        // {duration:'5s', target:1000},// stay at 1000 request for 8 mins
-        // {duration:'5s', target:200},
-        // {duration:'5s', target:0},
+        { duration: '5m', target: 100 }, // simulate ramp-up of traffic from 1 to 100 users over 5 minutes.
+        { duration: '10m', target: 100 }, // stay at 100 users for 10 minutes
+        { duration: '5m', target: 0 }, // ramp-down to 0 users
     ]
 }
 sleep(10);
@@ -32,11 +29,8 @@ export default function () {
     check(resPost, {
         'status is 201': (r) => r.status === 201,
     });
-    //
-    const cookie = resPost.cookies["connect.sid"][0].value;
-    // console.log("cookie: ")
-    // console.log(cookie)
 
+    const cookie = resPost.cookies["connect.sid"][0].value;
 
     const resGet = http.get(url + '/fs3', {
         cookies: {
