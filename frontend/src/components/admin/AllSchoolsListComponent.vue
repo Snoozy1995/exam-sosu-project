@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import {ref, Ref} from "vue";
-import {Citizen} from "../../models/citizen";
-import {CitizenService} from "../../services/citizen.service";
 import {School} from "../../models/school";
 import {SchoolService} from "../../services/school.service";
 
