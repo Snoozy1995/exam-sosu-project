@@ -30,18 +30,20 @@ services:
     volumes:
       - /typeorm_config/ormconfig.json:/ormconfig.json
 
-#  mysql:
-#    image: mysql:8
-#    container_name: "${DB_CONT_NAME}"
-#    ports:
-#      - 3306:3306
-#    volumes:
-#      - /db/mysql:/var/lib/mysql
-#    environment:
-#      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-#      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-#      - MYSQL_USER=${MYSQL_USER}
-#      - MYSQL_DATABASE=${MYSQL_DATABASE}
+  mysql:
+    image: mysql:8
+    networks:
+      health:
+        aliases:
+          - mysql
+    container_name: "${DB_CONT_NAME}"
+    volumes:
+      - /db/mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
 
   # K6 stuff below here
   influxdb:
