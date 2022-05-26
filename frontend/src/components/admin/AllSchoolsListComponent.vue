@@ -8,7 +8,7 @@
   <Panel header="Alle skoler" :toggleable="true" class="schools">
     <template #icons>
       <router-link to="/school/create">
-        <Button class="p-button-sm" icon="pi pi-plus" style="margin-right:10px;" v-tooltip="'Nyt template'"></Button>
+        <Button class="p-button-sm" icon="pi pi-plus" style="margin-right:10px;" v-tooltip="'Nyt skabelon'"></Button>
       </router-link>
     </template>
     <Listbox :options="school" style="border-radius:0px;border:0px;">
