@@ -1,5 +1,5 @@
 import http from 'k6/http';
-import {check} from 'k6';
+import {sleep, check} from 'k6';
 
 export let options = {
     stages: [
@@ -11,8 +11,11 @@ export let options = {
         // {duration:'5s', target:0},
     ]
 }
-
+sleep(10);
 export default function () {
+
+
+
     var url = "http://health-journal-api-container:3000";
     // var url = "http://localhost:3000";
     var payload = JSON.stringify({
