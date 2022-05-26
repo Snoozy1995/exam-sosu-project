@@ -33,13 +33,13 @@ pipeline{
                 }
             }
         }
-        /*stage("Unit test coverage"){
+        stage("Unit test coverage"){
             when {
                 changeset "backend/**"
             }
             steps{
                 dir("backend"){
-                    sh "npm run test:cov --passWithNoTests"
+                    sh "npm run test:cov"
                     clover(cloverReportDir: 'coverage', cloverReportFileName: 'clover.xml',
                         // optional, default is: method=70, conditional=80, statement=80
                         healthyTarget: [methodCoverage: 70, conditionalCoverage: 80, statementCoverage: 80],
@@ -50,7 +50,7 @@ pipeline{
                     )
                 }
             }
-        }*/
+        }
         stage("Clean containers") {
             steps {
                 script {
