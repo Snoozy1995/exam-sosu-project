@@ -13,7 +13,7 @@ export let options = {
 }
 
 export default function () {
-    var url = "http://185.196.21.189:3091/";
+    var url = "http://185.196.21.189:3091";
     var payload = JSON.stringify({
         username: 'teacher',
         password: 'teacher'
