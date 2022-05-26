@@ -14,9 +14,10 @@ export let options = {
 
 export default function () {
     var url = "http://185.196.21.189:3091";
+    // var url = "http://localhost:3000";
     var payload = JSON.stringify({
-        username: 'teacher',
-        password: 'teacher'
+        username: 'test',
+        password: 'test'
     });
 
     var params = {
@@ -29,14 +30,14 @@ export default function () {
         'status is 201': (r) => r.status === 201,
     });
     //
-    // const cookie = resPost.cookies["connect.sid"][0].value;
+    const cookie = resPost.cookies["connect.sid"][0].value;
     // console.log("cookie: ")
     // console.log(cookie)
 
 
     const resGet = http.get(url + '/fs3', {
         cookies: {
-            // "connect.sid": cookie
+            "connect.sid": cookie
         }
     });
     console.log("resGet: ")
