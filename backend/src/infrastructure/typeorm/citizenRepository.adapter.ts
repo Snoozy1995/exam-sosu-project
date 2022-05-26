@@ -1,7 +1,7 @@
-import {EntityManager, Repository} from 'typeorm';
-import {Injectable} from '@nestjs/common';
-import {Citizen} from '../../entities/citizen.entity';
-import {CitizenRepository} from '../../domain/borders/citizen.repository';
+import { EntityManager, Repository } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { Citizen } from '../../entities/citizen.entity';
+import { CitizenRepository } from '../../domain/borders/citizen.repository';
 
 @Injectable()
 export class CitizenRepositoryAdapter implements CitizenRepository {
@@ -44,9 +44,4 @@ export class CitizenRepositoryAdapter implements CitizenRepository {
     const res = await this.citizenRepo.delete(id);
     return Promise.resolve(Boolean(res.affected));
   }
-
-  /*newVersion(citizen: Citizen): Promise<Citizen> {
-    citizen.id = undefined;
-    return this.citizenRepo.save(citizen);
-  }*/
 }

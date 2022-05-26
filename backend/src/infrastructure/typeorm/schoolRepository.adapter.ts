@@ -1,7 +1,7 @@
-import {EntityManager, ILike, Repository} from 'typeorm';
-import {Injectable} from '@nestjs/common';
-import {School} from '../../entities/school.entity';
-import {SchoolRepository} from '../../domain/borders/school.repository';
+import { EntityManager, ILike, Repository } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { School } from '../../entities/school.entity';
+import { SchoolRepository } from '../../domain/borders/school.repository';
 
 @Injectable()
 export class SchoolRepositoryAdapter implements SchoolRepository {

@@ -4,6 +4,8 @@ import Button from 'primevue/button';
 import CreateAddress from '../misc/CreateAddressComponent.vue';
 import {CitizenStore} from '../../stores/citizenStore';
 import {AddressStore} from '../../stores/addressStore';
+import { Citizen } from '../../models/citizen';
+import Router from '../../router';
 
 const cv_choices=[
 'Single',
@@ -19,7 +21,9 @@ function create(){ //@todo
   if(AddressStore().street.length<4) return console.log("hmpf2");
   if(AddressStore().postCode.length!=4) return console.log("hmpf3");
   CitizenStore().createCitizen().then(res=>{
-    //Send to this id view  @todo console.log(res.data.id);
+    Router.push("/citizen/"+(res as Citizen).id)
+  }).catch((reason)=>{
+    alert(reason);
   })
 }
 </script>
