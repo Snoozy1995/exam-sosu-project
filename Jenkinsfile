@@ -9,9 +9,9 @@ pipeline{
         stage("Build project") {
             parallel {
                 stage("Build API"){
-                    //when {
-                    //    changeset "backend/**"
-                    //}
+                    when {
+                        changeset "backend/**"
+                    }
                     steps{
                         dir("backend"){
                             sh "npm install"
@@ -21,9 +21,9 @@ pipeline{
                 }
 
                 stage('Build Frontend') {
-                    //when {
-                    //    changeset "frontend/**"
-                    //}
+                    when {
+                        changeset "frontend/**"
+                    }
                     steps {
                         dir("frontend"){
                             sh "npm install"
@@ -34,9 +34,6 @@ pipeline{
             }
         }
         stage("Unit test coverage"){
-            when {
-                changeset "backend/**"
-            }
             steps{
                 dir("backend"){
                     sh "npm run test:cov"
