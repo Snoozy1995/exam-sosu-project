@@ -25,7 +25,7 @@ getSchools();
     </template>
     <Listbox :options="schools" style="border-radius:0px;border:0px;">
       <template #option="slotProps">
-        <router-link style="width:100%;display:inline-block;padding:0px;" :to="{path:'/school/'+slotProps.option.id}" >
+        <router-link style="width:100%;display:inline-block;padding:0px;" :to="{}" >
           <div class="grid border-top-1 surface-border p-1" style="margin:0px;">
             <div class="col-7 text-left overflow-hidden text-overflow-ellipsis">
               {{slotProps.option.name}}
